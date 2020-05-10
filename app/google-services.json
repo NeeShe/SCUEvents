@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "539201274672",
+    "firebase_url": "https://scuevents.firebaseio.com",
+    "project_id": "scuevents",
+    "storage_bucket": "scuevents.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:539201274672:android:5a2861ec8f05753b477ef5",
+        "android_client_info": {
+          "package_name": "com.project.scuevents"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "539201274672-kofvr0kc6dqo1nf7f8gn69g1r7ip2fr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2p24qF4wXtNguxDu-VyHM4vV_Wunpsf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "539201274672-kofvr0kc6dqo1nf7f8gn69g1r7ip2fr9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
