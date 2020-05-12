@@ -1,4 +1,4 @@
-package com.project.scuevents;
+package com.project.scuevents.model;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -6,11 +6,13 @@ import java.util.Set;
 public class EventClass implements Serializable {
     private String eventID;
     private String eventTitle;
+    private String eventDescription;
     private String hostName;
     private String hostID;
-    private String eventDay;
     private String eventDate;
     private String eventTime;
+    private String endDate;
+    private String endTime;
     private String eventLocation;
     private String eventType;
     private String department;
@@ -23,30 +25,34 @@ public class EventClass implements Serializable {
 
     }
 
-    EventClass(String eventId, String eventTitle, String hostName, String hostID, String eventDay, String eventDate, String eventTime,
-               String eventLocation, String eventType, String department, int totalSeats) {
+    EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String eventDate, String eventTime,
+               String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
+        this.eventDescription = eventDescription;
         this.hostName = hostName;
         this.hostID = hostID;
-        this.eventDay = eventDay;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.eventLocation = eventLocation;
         this.eventType = eventType;
         this.department = department;
         this.totalSeats = totalSeats;
     }
 
-    EventClass(String eventId, String eventTitle, String hostName, String hostID, String eventDay, String eventDate, String eventTime,
-               String eventLocation, String eventType, String department, String imageUrl, String videoUrl,int totalSeats) {
+    EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String eventDate, String eventTime,
+               String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl, String videoUrl,int totalSeats) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
+        this.eventDescription = eventDescription;
         this.hostName = hostName;
         this.hostID = hostID;
-        this.eventDay = eventDay;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
         this.eventLocation = eventLocation;
         this.eventType = eventType;
         this.department = department;
@@ -64,7 +70,13 @@ public class EventClass implements Serializable {
     public void setEventTitle(String eventTitle) {
         this.eventTitle = eventTitle;
     }
+    public String getEventDescription() {
+        return eventDescription;
+    }
 
+    public void setEventDescription(String description) {
+        this.eventDescription = description;
+    }
     public String getHostName() {
         return hostName;
     }
@@ -77,13 +89,7 @@ public class EventClass implements Serializable {
         return hostID;
     }
 
-    public String getEventDay() {
-        return eventDay;
-    }
 
-    public void setEventDay(String day) {
-        this.eventDay = day;
-    }
 
     public String getEventDate() {
         return eventDate;
@@ -99,6 +105,21 @@ public class EventClass implements Serializable {
 
     public void setEventTime(String eventTime) {
         this.eventTime = eventTime;
+    }
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 
     public String getEventLocation() {
