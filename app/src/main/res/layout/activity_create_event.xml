@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        tools:context=".CreateEventActivity">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/topguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightguideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="20dp" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/top2guideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="220dp" />
+
+        <ImageView
+            android:id="@+id/imageview1"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/editextbackground"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/topguideline"
+            app:layout_constraintBottom_toTopOf="@id/top2guideline"
+            />
+
+        <ImageButton
+            android:id="@+id/imagebutton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:onClick="setImage"
+            android:src="@drawable/camera"
+            android:background="@drawable/editextbackground"
+            app:layout_constraintBottom_toTopOf="@id/top2guideline"
+            app:layout_constraintEnd_toEndOf="@id/imageview1" />
+
+        <TextView
+            android:id="@+id/eventtitletv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Event Title:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/imageview1" />
+
+        <EditText
+            android:id="@+id/eventTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            android:ems="10"
+            android:hint="Enter Here"
+            android:inputType="textPersonName"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventtitletv" />
+
+        <TextView
+            android:id="@+id/eventdesctv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Event Description:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventTitle" />
+
+        <EditText
+            android:id="@+id/eventDescription"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            android:gravity="start|top"
+            android:hint="Describe!"
+            android:inputType="textMultiLine"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventdesctv" />
+
+        <TextView
+            android:id="@+id/eventdatetv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Event Date:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventDescription" />
+
+        <RelativeLayout
+            android:id="@+id/relativelayout1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventdatetv">
+
+            <TextView
+                android:id="@+id/startDatetv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="From"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/startDateInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/startDatetv"
+                android:drawableRight="@drawable/calendar"
+                android:hint="Monday, May 11, 2020"
+                android:onClick="setStartDate"
+                android:textIsSelectable="true" />
+
+            <TextView
+                android:id="@+id/startTimetv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startDatetv"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Time"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/startTimeInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startDateInput"
+                android:layout_alignLeft="@id/startDateInput"
+                android:layout_toRightOf="@id/startTimetv"
+                android:drawableRight="@drawable/clock"
+                android:ems="6"
+                android:gravity="center_horizontal"
+                android:hint="7:00 PM"
+                android:onClick="setStartTime" />
+
+            <TextView
+                android:id="@+id/endDatetv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startTimetv"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:text="To"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/endDateInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/startTimeInput"
+                android:layout_alignLeft="@id/startTimeInput"
+                android:layout_toRightOf="@id/endDatetv"
+                android:drawableRight="@drawable/calendar"
+                android:hint="Monday, May 11, 2020"
+                android:onClick="setEndDate" />
+
+            <TextView
+                android:id="@+id/endTimetv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endDatetv"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="Time"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+            <EditText
+                android:id="@+id/endTimeInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/endDateInput"
+                android:layout_toRightOf="@id/endTimetv"
+                android:drawableRight="@drawable/clock"
+                android:ems="6"
+                android:gravity="center_horizontal"
+                android:hint="8:00 PM"
+                android:onClick="setEndTime" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/eventloctv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Event Location:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/relativelayout1" />
+
+        <Spinner
+            android:id="@+id/locationSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            android:entries="@array/Location"
+            android:padding="8dp"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventloctv" />
+
+        <TextView
+            android:id="@+id/eventtypetv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Event Category:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/locationSpinner" />
+
+        <Spinner
+            android:id="@+id/typeSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            android:entries="@array/EventType"
+            android:padding="8dp"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventtypetv" />
+
+        <TextView
+            android:id="@+id/eventdepttv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Department:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/typeSpinner" />
+
+        <Spinner
+            android:id="@+id/deptSpinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            android:entries="@array/Department"
+            android:padding="8dp"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/eventdepttv" />
+
+        <TextView
+            android:id="@+id/totSeattv"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Total Seats:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/deptSpinner" />
+
+        <EditText
+            android:id="@+id/totSeatInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
+            android:ems="5"
+            android:hint="100"
+            android:inputType="number"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/totSeattv" />
+
+        <TextView
+            android:id="@+id/videotv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="20dp"
+            android:text="Choose Video (optional):"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintEnd_toStartOf="@id/videoButton"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
+
+        <ImageButton
+            android:id="@+id/videoButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/editextbackground"
+            android:onClick="setVideo"
+            android:src="@drawable/upload"
+            app:layout_constraintEnd_toStartOf="@id/removeButton"
+            app:layout_constraintStart_toEndOf="@id/videotv"
+            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
+
+        <ImageButton
+            android:id="@+id/removeButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/editextbackground"
+            android:foregroundGravity="fill"
+            android:onClick="clearVideo"
+            android:src="@drawable/remove"
+            app:layout_constraintStart_toEndOf="@id/videoButton"
+            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
+
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:background="@drawable/editextbackground"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/videotv"
+            android:visibility="gone"/>
+
+        <Button
+            android:id="@+id/pushButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:padding="8dp"
+            android:background="@drawable/buttonbg"
+            android:onClick="publish"
+            android:text="PUBLISH"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/videoView" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

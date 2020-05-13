@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">SCUEvents</string>
+    <string-array name="Location">
+        <item>Select Location</item>
+        <item>Benson Memorial Hall</item>
+        <item>Locatelli Hall</item>
+        <item>Music Recital Hall</item>
+        <item>Louis B Mayer Theatre</item>
+    </string-array>
+
+    <string-array name="EventType">
+        <item>Select Event Category</item>
+        <item>Educational</item>
+        <item>Entertainment</item>
+        <item>Conference</item>
+        <item>Cultural</item>
+    </string-array>
+
+    <string-array name="Department">
+        <item>Select Department</item>
+        <item>Arts and Sciences</item>
+        <item>Computer Science and Engineering</item>
+        <item>Electrical and Computer Engineering</item>
+        <item>BioEngineering</item>
+        <item>Other</item>
+    </string-array>
 </resources>
