@@ -1,7 +1,9 @@
 package com.project.scuevents.adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,22 +15,31 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.project.scuevents.model.EventModel;
+import com.project.scuevents.model.EventClass;
 import com.project.scuevents.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
+
+import static android.content.ContentValues.TAG;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.viewHolder> {
-    ArrayList<EventModel> eventList;
+    ArrayList<EventClass> eventList;
     Context context;
-    HashSet<String> oldEventId;
+    //Set<String> viewedEventNames;
+    //SharedPreferences prefs;
+    Set<String> viewedEventNames;
 
     //initializing the eventAdapter constructor
-    public EventAdapter(ArrayList<EventModel> eventList, Context context, HashSet<String> oldEventId) {
+    public EventAdapter(ArrayList<EventClass> eventList, Context context, Set<String> viewedEventNames) {
         this.eventList = eventList;
         this.context = context;
-        this.oldEventId = oldEventId;
+        this.viewedEventNames = viewedEventNames;
+
+        //this.prefs = prefs;
+
     }
 
     @NonNull
@@ -36,27 +47,30 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.viewHolder> 
     //inflating the view on the recyclerview
     public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.mainactivity_recyclerview,parent,false);
+
         return new viewHolder(view);
     }
 
     //binding each event to the view holder
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        final EventModel eventModel = eventList.get(position);
-        holder.eventImg.setImageResource(eventModel.getEventImg());
-        holder.eventTimeDate.setText(eventModel.getEventDateTime());
-        holder.eventName.setText(eventModel.getEventName());
-        holder.eventVenue.setText(eventModel.getEventVenue());
+        final EventClass eventClass = eventList.get(position);
+        Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
+        holder.eventTimeDate.setText(eventClass.getEventDate());
+        holder.eventName.setText(eventClass.getEventTitle());
+        holder.eventVenue.setText(eventClass.getEventLocation());
+
         //checking whether the event is already present in the cache , if  yes then red dot is not displayed else displayed
-        if(oldEventId!= null && oldEventId.contains(eventModel.getEventId())){
+       if(viewedEventNames!= null && viewedEventNames.contains(eventClass.getEventID())){
             holder.eventUpdateSign.setBackgroundColor(Color.WHITE);
         }
+
 
         //assigning onClickListener to per event view card
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"Item " + eventModel.getEventName()+ " is clicked!",Toast.LENGTH_SHORT).show();
+                Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
             }
         });
     }
