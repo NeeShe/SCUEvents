@@ -108,13 +108,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         imageView = findViewById(R.id.imageview1);
         videoView = findViewById(R.id.videoView);
 
-        //revisit
-        SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
-        SharedPreferences.Editor myEdit = sharedPreferences.edit();
-        myEdit.putString("USER_ID", "XYZ");
-        myEdit.putString("USER_NAME", "MAD ADMIN");
-        myEdit.commit();
-
     }
     // On click method of start date edit text
     public void setStartDate(View view) {
