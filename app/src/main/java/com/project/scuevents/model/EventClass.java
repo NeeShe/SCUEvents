@@ -21,11 +21,11 @@ public class EventClass implements Serializable {
     private int totalSeats;
     private Set<String> attendeeSet;
 
-    EventClass() {
+    public EventClass() {
 
     }
 
-    EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String eventDate, String eventTime,
+    public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String eventDate, String eventTime,
                String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
@@ -42,7 +42,7 @@ public class EventClass implements Serializable {
         this.totalSeats = totalSeats;
     }
 
-    EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String eventDate, String eventTime,
+    public EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String eventDate, String eventTime,
                String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl, String videoUrl,int totalSeats) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
