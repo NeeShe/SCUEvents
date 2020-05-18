@@ -166,7 +166,7 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void skip(View view) {
-        Intent intent = new Intent(this,CreateEventActivity.class);
+        Intent intent = new Intent(this,NavigationActivity.class);
         startActivity(intent);
     }
 }

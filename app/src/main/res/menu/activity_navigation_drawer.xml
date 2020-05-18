@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/homeicon"
+            android:title="SCU Events" />
+        <item
+            android:id="@+id/nav_createModify"
+            android:icon="@drawable/addsign"
+            android:title="Create/Modify Events" />
+        <item
+            android:id="@+id/nav_register"
+            android:icon="@drawable/groupicon"
+            android:title="Registered Events"/>
+        <item
+            android:id="@+id/nav_profile"
+            android:icon="@drawable/personicon"
+            android:title="My Profile" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logouticon"
+            android:title="Logout" />
+    </group>
+</menu>
