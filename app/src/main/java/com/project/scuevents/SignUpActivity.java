@@ -3,6 +3,7 @@ package com.project.scuevents;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.UserDetails;
+import com.project.scuevents.service.MyFirebaseInstanceService;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText fName;
@@ -130,6 +132,13 @@ public class SignUpActivity extends AppCompatActivity {
         FireBaseUtilClass.getDatabaseReference().child("Users").child(auth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                //saving the device tokens in database
+                SharedPreferences pref = getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                String s = pref.getString("UserToken", "null");
+                FireBaseUtilClass.getDatabaseReference().child("UserTokens").child(s).setValue(true);
+
+
+
                 SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("USER_ID", user.getUserID());
