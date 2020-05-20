@@ -374,6 +374,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
+                //Add host token to database - fix event class registered events
+                addToken();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -383,4 +385,19 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         });
     }
 
+    //To-Do
+    private void addToken(){
+        FireBaseUtilClass.getDatabaseReference().child("Events").child(event.getEventID()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(CreateEventActivity.this, "Failed to publish"+e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

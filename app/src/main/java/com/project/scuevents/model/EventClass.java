@@ -19,6 +19,7 @@ public class EventClass implements Serializable {
     private String imageUrl;
     private String videoUrl;
     private int totalSeats;
+    //To-Do
     private Set<String> attendeeSet;
 
     public EventClass() {
