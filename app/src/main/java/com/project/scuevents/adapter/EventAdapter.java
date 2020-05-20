@@ -2,6 +2,7 @@
 package com.project.scuevents.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.project.scuevents.EventDetailActivity;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.R;
 import com.squareup.picasso.Picasso;
@@ -72,6 +74,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.viewHolder> 
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, EventDetailActivity.class);
+                intent.putExtra("eaimage",eventClass.getImageUrl());
+                intent.putExtra("eatitle",eventClass.getEventTitle());
+
+                intent.putExtra("eawhen",eventClass.getEventDate());
+                intent.putExtra("eatime",eventClass.getEventTime());
+                intent.putExtra("ealocation",eventClass.getEventLocation());
+                intent.putExtra("eadescription",eventClass.getEventDescription());
+                intent.putExtra("eahname","(Event hosted by "+eventClass.getHostName()+")");
+                context.startActivity(intent);
             }
         });
     }
