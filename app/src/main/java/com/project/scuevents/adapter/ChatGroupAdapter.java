@@ -7,22 +7,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.scuevents.R;
-import com.project.scuevents.model.GroupChatClass;
+import com.project.scuevents.model.EventIDNameClass;
 import com.project.scuevents.ui.chat.ChatActivity;
 
 import java.util.ArrayList;
 
 public class ChatGroupAdapter extends RecyclerView.Adapter<ChatGroupAdapter.viewHolder> {
     Context context;
-    ArrayList<GroupChatClass> groupList;
+    ArrayList<EventIDNameClass> groupList;
 
-    public ChatGroupAdapter(Context context, ArrayList<GroupChatClass> groupList) {
+    public ChatGroupAdapter(Context context, ArrayList<EventIDNameClass> groupList) {
         this.context = context;
         this.groupList = groupList;
     }
@@ -38,14 +37,14 @@ public class ChatGroupAdapter extends RecyclerView.Adapter<ChatGroupAdapter.view
 
     @Override
     public void onBindViewHolder(@NonNull viewHolder holder, int position) {
-        final GroupChatClass groupChatClass = groupList.get(position);
-        holder.eventName.setText(groupChatClass.getEventTitle());
+        final EventIDNameClass eventIDNameClass = groupList.get(position);
+        holder.eventName.setText(eventIDNameClass.getEventTitle());
         //assigning onClickListener to per event view card
         holder.eventID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ChatActivity.class);
-                intent.putExtra("Object",groupChatClass);
+                intent.putExtra("Object", eventIDNameClass);
                 context.startActivity(intent);
             }
         });

@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
+import com.project.scuevents.ui.createevent.CreateModifyFragment;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -375,7 +376,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             public void onSuccess(Void aVoid) {
                 Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
                 //Add host token to database - fix event class registered events
-                addToken();
+                //addToken();
+                CreateEventActivity.this.finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -385,7 +387,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         });
     }
 
-    //To-Do
+    //ToDo
     private void addToken(){
         FireBaseUtilClass.getDatabaseReference().child("Events").child(event.getEventID()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override

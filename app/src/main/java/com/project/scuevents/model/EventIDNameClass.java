@@ -4,14 +4,14 @@ import android.util.Log;
 
 import java.io.Serializable;
 
-public class GroupChatClass implements Serializable {
+public class EventIDNameClass implements Serializable {
     private String eventID;
     private String eventTitle;
 
-    public GroupChatClass() {
+    public EventIDNameClass() {
 
     }
-    public GroupChatClass(String eventID, String eventTitle){
+    public EventIDNameClass(String eventID, String eventTitle){
         this.eventID = eventID;
         this.eventTitle = eventTitle;
     }
