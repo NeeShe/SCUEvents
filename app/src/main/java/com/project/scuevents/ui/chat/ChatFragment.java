@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ import com.project.scuevents.R;
 import com.project.scuevents.adapter.ChatGroupAdapter;
 
 import com.project.scuevents.model.FireBaseUtilClass;
-import com.project.scuevents.model.GroupChatClass;
+import com.project.scuevents.model.EventIDNameClass;
 
 import java.util.ArrayList;
 
@@ -34,7 +33,7 @@ public class ChatFragment extends Fragment {
 
     private static final String DEBUG_TAG = "ChatFragment";
     RecyclerView chatGroupRecyclerView ;
-    ArrayList<GroupChatClass> groupList;
+    ArrayList<EventIDNameClass> groupList;
     ChatGroupAdapter groupAdapter;
     DatabaseReference db;
 
@@ -54,15 +53,15 @@ public class ChatFragment extends Fragment {
         super.onResume();
         SharedPreferences sh = getActivity().getSharedPreferences("USER_TOKENS", Context.MODE_PRIVATE);
         String userID = sh.getString("USER_ID", "");
-        //connecting to the database
+        //connecting to the database ToDO what if user doesnt have registeredEvents
         db = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("registeredEvents");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 groupList.clear();
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                    GroupChatClass groupChatClass = dataSnapshot1.getValue(GroupChatClass.class);
-                    groupList.add(groupChatClass);
+                    EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
+                    groupList.add(eventIDNameClass);
                 }
                 groupAdapter = new ChatGroupAdapter(getActivity(),groupList);
                 chatGroupRecyclerView.setAdapter(groupAdapter);
@@ -75,6 +74,11 @@ public class ChatFragment extends Fragment {
                 Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }
 

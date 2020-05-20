@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-
 
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,7 +23,7 @@ import com.google.firebase.database.annotations.Nullable;
 import com.project.scuevents.R;
 import com.project.scuevents.adapter.MessageAdapter;
 import com.project.scuevents.model.FireBaseUtilClass;
-import com.project.scuevents.model.GroupChatClass;
+import com.project.scuevents.model.EventIDNameClass;
 import com.project.scuevents.model.MessageClass;
 
 import java.util.ArrayList;
@@ -33,13 +31,12 @@ import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
 
-    private GroupChatClass group;
+    private EventIDNameClass group;
     private static final String DEBUG_TAG ="ChatActivity";
 
     private RecyclerView recyclerView;
     private EditText msgEditText;
     private Toolbar toolbar;
-    private LinearLayout allOKLayout;
 
     private MessageAdapter mAdapter;
     private List<MessageClass> itemList = new ArrayList<>();
@@ -49,7 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         Intent i = getIntent();
-        group = (GroupChatClass) i.getSerializableExtra("Object");
+        group = (EventIDNameClass) i.getSerializableExtra("Object");
         toolbar = findViewById(R.id.chattoolbar);
         toolbar.setTitle(group.getEventTitle());
 
