@@ -91,9 +91,6 @@ public class SignUpActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // [START_EXCLUDE]
-                        // Re-enable button
-                       // mBinding.verifyEmailButton.setEnabled(true);
 
                         if (task.isSuccessful()) {
                             Toast.makeText(SignUpActivity.this,
@@ -104,7 +101,7 @@ public class SignUpActivity extends AppCompatActivity {
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
                         }
-                        // [END_EXCLUDE]
+
                     }
                 });
         auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
@@ -136,8 +133,6 @@ public class SignUpActivity extends AppCompatActivity {
                 SharedPreferences pref = getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
                 String s = pref.getString("UserToken", "null");
                 FireBaseUtilClass.getDatabaseReference().child("UserTokens").child(s).setValue(true);
-
-
 
                 SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
@@ -173,9 +168,17 @@ public class SignUpActivity extends AppCompatActivity {
                     hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
-
-    public void skip(View view) {
-        Intent intent = new Intent(this,NavigationActivity.class);
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
         startActivity(intent);
+        super.onBackPressed();
+
     }
+
+    public void back(View view) {
+
+        this.finish();
+    }
+
 }
