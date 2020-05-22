@@ -24,7 +24,7 @@ import com.project.scuevents.adapter.EventAdapter;
 import com.project.scuevents.adapter.NotificationAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
-import com.project.scuevents.model.NotificationClass;
+
 import com.project.scuevents.model.UserDetails;
 
 import java.util.ArrayList;
@@ -35,14 +35,12 @@ import java.util.Set;
 public class NotificationActivity extends AppCompatActivity {
     RecyclerView notificationActivityRecyclerView ;
     private static final String TAG = "SCUEvents";
-    ArrayList<NotificationClass> notificationList;
     ArrayList<String> notificationBodyList;
     ArrayList<String> notificationKeys;
     ArrayList<String> eventIdList;
     ArrayList<String> eventNameList;
     DatabaseReference db;
     NotificationAdapter notificationAdapter;
-    NotificationClass notificationClass;
     ProgressDialog nDialog;
     SharedPreferences prefs;
     Set<String> viewedNotifications;
@@ -55,7 +53,6 @@ public class NotificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification);
         notificationActivityRecyclerView = findViewById(R.id.notificationRecyclerView);
-        notificationList = new ArrayList<>();
         notificationBodyList = new ArrayList<>();
         notificationKeys = new ArrayList<>();
         eventIdList = new ArrayList<>();
