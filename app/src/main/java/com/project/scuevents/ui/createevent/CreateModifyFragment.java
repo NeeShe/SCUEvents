@@ -132,9 +132,9 @@ public class CreateModifyFragment extends Fragment {
     @Override
     public void onPause() {
         eventList.clear();
-        eventAdapter.notifyDataSetChanged();
-        db.removeEventListener(valueEventListener);
-        db.removeEventListener(valueListener);
+        if(eventAdapter!= null){eventAdapter.notifyDataSetChanged();}
+        if(valueEventListener!= null){db.removeEventListener(valueEventListener);}
+        if(valueListener!=null){db.removeEventListener(valueListener);}
         super.onPause();
     }
 }

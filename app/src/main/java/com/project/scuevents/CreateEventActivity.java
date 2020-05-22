@@ -45,7 +45,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private final static String DEBUG_TAG = "CreateEventActivity";
     private final int PICK_IMAGE_REQUEST = 71;
-    private final int PICK_VIDEO_REQUEST = 72;
 
     EditText eventTitle;
     EditText eventDescript;
@@ -60,15 +59,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     Spinner deptSpinner;
 
     ImageView imageView;
-    VideoView videoView;
-
+    Uri imageFilePath;
+    MediaController mediaControls;
 
     Calendar startDateCal;
     int datePicker; //0-start, 1-end
-
-    Uri imageFilePath;
-    Uri videoFilePath;
-    MediaController mediaControls;
 
     FirebaseStorage storage;
     StorageReference storageReference;
@@ -107,8 +102,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         totalSeats = findViewById(R.id.totSeatInput);
 
         imageView = findViewById(R.id.imageview1);
-        videoView = findViewById(R.id.videoView);
-
     }
     // On click method of start date edit text
     public void setStartDate(View view) {
@@ -200,13 +193,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
     }
 
-    //on click method of set video button
-    public void setVideo(View v){
-        Intent intent = new Intent();
-        intent.setType("video/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Video"), PICK_VIDEO_REQUEST);
-    }
+
     // on activity result () after getting image and video content
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -224,23 +211,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 e.printStackTrace();
             }
         }
-        if(requestCode == PICK_VIDEO_REQUEST && resultCode == RESULT_OK
-                && data != null && data.getData() != null )
-        {
-            videoFilePath = data.getData();
-            mediaControls= new MediaController(CreateEventActivity.this);
-            mediaControls.setAnchorView(videoView);
-            videoView.setMediaController(mediaControls);
-            videoView.setVideoURI(Uri.parse(data.getDataString()));
-            videoView.setVisibility(View.VISIBLE);
-            videoView.start();
-        }
     }
 
-    //on click method of remove video button
-    public void clearVideo(View view) {
-        videoView.setVisibility(View.GONE);
-    }
+
 
     //on click method of publish button
     public void publish(View view){
@@ -312,13 +285,13 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }
 
         this.publishToFireBase(titleStr,descStr, sDateStr,sTimeStr,eDateStr,eTimeStr,
-                locStr,catStr,deptStr,Integer.parseInt(seatStr),imageFilePath,videoFilePath);
+                locStr,catStr,deptStr,Integer.parseInt(seatStr),imageFilePath);
     }
 
     //publish to firebase
     private void  publishToFireBase(String title, String desc, String startDate, String startTime, String endDate,
                                        String endTime, String loc, String type, String dept, int totSeats,
-                                       Uri imageUri, Uri videoUri){
+                                       Uri imageUri){
         //get new id
        String pushId = FireBaseUtilClass.getDatabaseReference().child("Events").push().getKey();
         //String pushId = "abc";
@@ -328,19 +301,19 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         String hostId = sh.getString("USER_ID", "");
         String hostName = sh.getString("USER_NAME","");
 
+        SharedPreferences pref = getSharedPreferences("MyPreferenceFileName", MODE_PRIVATE);
+        String hostToken=pref.getString("UserToken","");
+
         //create eventclass instance
-        event = new EventClass(pushId,title,desc,hostName,hostId,startDate,startTime,endDate,
-                endTime,loc,type,dept,totSeats);
+        event = new EventClass(pushId,title,desc,hostName,hostId,hostToken,startDate,startTime,endDate,
+                endTime,loc,type,dept,totSeats,totSeats);
         //upload image to storage
-        uploadStorage(imageUri,true);
+        uploadStorage(imageUri);
     }
 
     //upload media to storage
-    private void uploadStorage(Uri uri, final boolean isImage){
+    private void uploadStorage(Uri uri){
         String folder="images/";
-        if(!isImage){
-            folder = "videos/";
-        }
         final StorageReference ref = storageReference.child(folder + UUID.randomUUID().toString());
         ref.putFile(uri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -352,11 +325,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                         downloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>(){
                            @Override
                            public void onSuccess(final Uri uri) {
-                               if(isImage){
                                    event.setImageUrl(uri.toString());
                                    //call upload to database method
                                    uploadDatabase();
-                               }
                             }
                         });
                     }
@@ -365,7 +336,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(CreateEventActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
-
                     }
                 });
     }
