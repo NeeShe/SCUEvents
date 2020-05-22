@@ -98,6 +98,7 @@ public class NotificationActivity extends AppCompatActivity {
                                 String notificationKey = dataSnapshot1.getKey();
                                 notificationKeys.add(notificationKey);
                                 //if not work remove from here, retrieving evenetIds first, working now but need to recheck
+                                eventIdList.clear();
                                 DatabaseReference dbEventId = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("notification").child(notificationKey).child("eventId");
                                 dbEventId.addValueEventListener(new ValueEventListener() {
                                     @Override
@@ -119,7 +120,8 @@ public class NotificationActivity extends AppCompatActivity {
                                       //  Log.d(TAG, "notification body retrieved from database " + dataSnapshot.getValue());
                                         notificationBodyList.add(dataSnapshot.getValue().toString());
                                         nDialog.hide();
-
+                                        Collections.reverse(notificationBodyList);
+                                        Collections.reverse(eventIdList);
                                         //passing the notificationBodyList, viewedNotifications, notificationkeys and eventId list  to the adapter
                                         notificationAdapter = new NotificationAdapter(notificationBodyList, NotificationActivity.this, eventIdList,notificationKeys,viewedNotifications);
                                         notificationActivityRecyclerView.setAdapter(notificationAdapter);
