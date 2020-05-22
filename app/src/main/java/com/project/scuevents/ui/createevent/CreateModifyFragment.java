@@ -125,7 +125,6 @@ public class CreateModifyFragment extends Fragment {
                 }
             };
             db1.addValueEventListener(valueListener);
-
         }
     }
 

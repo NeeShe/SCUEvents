@@ -36,6 +36,7 @@ public class ChatFragment extends Fragment {
     ArrayList<EventIDNameClass> groupList;
     ChatGroupAdapter groupAdapter;
     DatabaseReference db;
+    String userID;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,13 +53,39 @@ public class ChatFragment extends Fragment {
     public void onResume() {
         super.onResume();
         SharedPreferences sh = getActivity().getSharedPreferences("USER_TOKENS", Context.MODE_PRIVATE);
-        String userID = sh.getString("USER_ID", "");
-        //connecting to the database ToDO what if user doesnt have registeredEvents
-        db = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("registeredEvents");
+        userID = sh.getString("USER_ID", "");
+        //first add hosted events group
+        db = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("hostedEvents");
         db.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 groupList.clear();
+                for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                    EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
+                    groupList.add(eventIDNameClass);
+                }
+                addRegEventsGroups();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    public void addRegEventsGroups(){
+        DatabaseReference db1 = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("registeredEvents");
+        db1.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
                     groupList.add(eventIDNameClass);
@@ -74,11 +101,6 @@ public class ChatFragment extends Fragment {
                 Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 }
 

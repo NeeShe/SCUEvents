@@ -36,7 +36,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private EditText msgEditText;
-    private Toolbar toolbar;
+
 
     private MessageAdapter mAdapter;
     private List<MessageClass> itemList = new ArrayList<>();
@@ -47,14 +47,9 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Intent i = getIntent();
         group = (EventIDNameClass) i.getSerializableExtra("Object");
-        toolbar = findViewById(R.id.chattoolbar);
-        toolbar.setTitle(group.getEventTitle());
-
-
+        getSupportActionBar().setTitle(group.getEventTitle());
         recyclerView = findViewById(R.id.msgRecyclerView);
         msgEditText = findViewById(R.id.msgEditText);
-
-
     }
 
     @Override

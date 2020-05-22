@@ -35,8 +35,7 @@
             android:name=".CreateEventActivity"
             android:configChanges="screenLayout|orientation|screenSize" />
         <activity
-            android:name=".ui.chat.ChatActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:name=".ui.chat.ChatActivity"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

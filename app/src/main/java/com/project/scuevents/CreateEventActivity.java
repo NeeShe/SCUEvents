@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,6 +39,7 @@ import com.project.scuevents.ui.createevent.CreateModifyFragment;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -60,11 +62,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     ImageView imageView;
     Uri imageFilePath;
-    MediaController mediaControls;
 
     Calendar startDateCal;
     int datePicker; //0-start, 1-end
 
+    ProgressDialog progressDialog;
     FirebaseStorage storage;
     StorageReference storageReference;
 
@@ -74,7 +76,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
-
+        getSupportActionBar().setTitle("Create Event");
         //Initialize variables
         datePicker=0;
         storage = FirebaseStorage.getInstance();
@@ -111,6 +113,12 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         int day = c.get(Calendar.DAY_OF_MONTH);
         datePicker = 0;
         new DatePickerDialog(this, this, year, month, day).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.e(DEBUG_TAG,"On back pressed");
+        super.onBackPressed();
     }
 
     //on date picked
@@ -283,18 +291,20 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             Toast.makeText(this,"Select Cover Picture",Toast.LENGTH_SHORT).show();
             return;
         }
-
+        long startTimestamp = startDateCal.getTimeInMillis();
         this.publishToFireBase(titleStr,descStr, sDateStr,sTimeStr,eDateStr,eTimeStr,
-                locStr,catStr,deptStr,Integer.parseInt(seatStr),imageFilePath);
+                locStr,catStr,deptStr,Integer.parseInt(seatStr),imageFilePath,startTimestamp);
     }
 
     //publish to firebase
     private void  publishToFireBase(String title, String desc, String startDate, String startTime, String endDate,
                                        String endTime, String loc, String type, String dept, int totSeats,
-                                       Uri imageUri){
+                                       Uri imageUri, long startTimestamp){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Publishing");
+        progressDialog.show();
         //get new id
        String pushId = FireBaseUtilClass.getDatabaseReference().child("Events").push().getKey();
-        //String pushId = "abc";
 
         //get host id and host name
         SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
@@ -306,7 +316,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
         //create eventclass instance
         event = new EventClass(pushId,title,desc,hostName,hostId,hostToken,startDate,startTime,endDate,
-                endTime,loc,type,dept,totSeats,totSeats);
+                endTime,loc,type,dept,totSeats,totSeats,startTimestamp);
         //upload image to storage
         uploadStorage(imageUri);
     }
@@ -319,7 +329,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        Toast.makeText(CreateEventActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(CreateEventActivity.this, "Uploaded", Toast.LENGTH_SHORT).show();
                         StorageMetadata sMetaData= taskSnapshot.getMetadata();
                           Task<Uri> downloadUrl = ref.getDownloadUrl();
                         downloadUrl.addOnSuccessListener(new OnSuccessListener<Uri>(){
@@ -344,26 +354,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         FireBaseUtilClass.getDatabaseReference().child("Events").child(event.getEventID()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+                progressDialog.hide();
                 Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
-                //Add host token to database - fix event class registered events
-                //addToken();
                 CreateEventActivity.this.finish();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CreateEventActivity.this, "Failed to publish"+e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    //ToDo
-    private void addToken(){
-        FireBaseUtilClass.getDatabaseReference().child("Events").child(event.getEventID()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

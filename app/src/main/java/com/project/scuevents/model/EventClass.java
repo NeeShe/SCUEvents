@@ -23,12 +23,13 @@ public class EventClass implements Serializable {
     private String imageUrl;
     private int totalSeats;
     private int availableSeats;
+    private long startTimestamp;
 
     public EventClass() {
     }
 
     public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken,String eventDate, String eventTime,
-               String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats, int availableSeats) {
+               String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats, int availableSeats, long startTimestamp) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
@@ -44,10 +45,11 @@ public class EventClass implements Serializable {
         this.department = department;
         this.totalSeats = totalSeats;
         this.availableSeats=availableSeats;
+        this.startTimestamp=startTimestamp;
     }
 
     public EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String hostToken,String eventDate, String eventTime,
-               String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl,int totalSeats, int availableSeats) {
+               String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl,int totalSeats, int availableSeats,long startTimestamp) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
@@ -64,6 +66,7 @@ public class EventClass implements Serializable {
         this.imageUrl = imageUrl;
         this.totalSeats = totalSeats;
         this.availableSeats=availableSeats;
+        this.startTimestamp=startTimestamp;
     }
     public String getEventID() {
         return eventID;
@@ -158,5 +161,8 @@ public class EventClass implements Serializable {
 
     public int getAvailableSeats(){return availableSeats;}
     public void setAvailableSeats(int availableSeats){this.availableSeats = availableSeats;}
+
+    public long getStartTimestamp(){return startTimestamp;}
+    public void setStartTimestamp(long timestamp){this.startTimestamp = timestamp;}
 
 }
