@@ -325,57 +325,6 @@
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/totSeattv" />
 
-        <TextView
-            android:id="@+id/videotv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="20dp"
-            android:text="Choose Video (optional):"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toStartOf="@id/videoButton"
-            app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
-
-        <ImageButton
-            android:id="@+id/videoButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/editextbackground"
-            android:onClick="setVideo"
-            android:src="@drawable/upload"
-            app:layout_constraintEnd_toStartOf="@id/removeButton"
-            app:layout_constraintStart_toEndOf="@id/videotv"
-            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
-
-        <ImageButton
-            android:id="@+id/removeButton"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@drawable/editextbackground"
-            android:foregroundGravity="fill"
-            android:onClick="clearVideo"
-            android:src="@drawable/remove"
-            app:layout_constraintStart_toEndOf="@id/videoButton"
-            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
-
-        <VideoView
-            android:id="@+id/videoView"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:scaleType="fitXY"
-            android:background="@drawable/editextbackground"
-            app:layout_constraintEnd_toStartOf="@id/rightguideline"
-            app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/videotv"
-            android:visibility="gone"/>
-
         <Button
             android:id="@+id/pushButton"
             android:layout_width="wrap_content"
@@ -392,7 +341,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/videoView" />
+            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

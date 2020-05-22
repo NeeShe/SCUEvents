@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.project.scuevents.NotificationActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
-import com.project.scuevents.model.NotificationClass;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
