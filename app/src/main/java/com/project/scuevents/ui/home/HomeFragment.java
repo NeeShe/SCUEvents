@@ -28,7 +28,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.NotificationActivity;
-import com.project.scuevents.NotificationTrial;
 import com.project.scuevents.R;
 import com.project.scuevents.adapter.EventAdapter;
 import com.project.scuevents.model.EventClass;
