@@ -52,12 +52,12 @@
         android:background="@drawable/editextbackground"
         android:entries="@array/SearchSelection"
         android:padding="8dp"
-        app:layout_constraintEnd_toStartOf="@id/checkBox"
+        app:layout_constraintEnd_toStartOf="@id/search_button"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/searchtv" />
 
     <ImageButton
-        android:id="@+id/checkBox"
+        android:id="@+id/search_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -90,6 +90,110 @@
         app:layout_constraintBottom_toTopOf="@id/top2guideline"/>
 
     <TextView
+        android:id="@+id/selecttv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Select:"
+        android:visibility="gone"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/searchSpinner" />
+
+    <Spinner
+        android:id="@+id/selectSpinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:background="@drawable/editextbackground"
+        android:padding="8dp"
+        app:layout_constraintEnd_toStartOf="@id/check_button"
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/searchSpinner"
+        app:layout_constraintBottom_toTopOf="@id/top2guideline"/>
+
+    <ImageButton
+        android:id="@+id/check_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@color/colorAccent"
+        android:elevation="4dp"
+        android:visibility="gone"
+        android:src="@drawable/check"
+        android:onClick="spinSelection"
+        android:padding="8dp"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintStart_toEndOf="@id/selectSpinner"
+        app:layout_constraintTop_toBottomOf="@id/searchSpinner"
+        app:layout_constraintBottom_toTopOf="@id/top2guideline" />
+
+    <RelativeLayout
+        android:id="@+id/rellayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/editextbackground"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/selecttv"
+        app:layout_constraintBottom_toTopOf="@id/top2guideline">
+
+        <TextView
+            android:id="@+id/sdatetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="From"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <EditText
+            android:id="@+id/sdateedit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/sdatetext"
+            android:drawableRight="@drawable/calendar"
+            android:hint="Monday, May 11, 2020"
+            android:visibility="gone"
+            android:onClick="setStartDate"
+            android:textIsSelectable="true" />
+
+        <TextView
+            android:id="@+id/edatetext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sdatetext"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:text="To"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+        <EditText
+            android:id="@+id/edateedit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sdateedit"
+            android:layout_alignLeft="@id/sdateedit"
+            android:layout_toRightOf="@id/edatetext"
+            android:drawableRight="@drawable/calendar"
+            android:visibility="gone"
+            android:hint="Monday, May 15, 2020"
+            android:onClick="setEndDate" />
+
+    </RelativeLayout>
+
+
+    <TextView
         android:id="@+id/resulttv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -104,11 +208,11 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/resulttv" />
 </androidx.constraintlayout.widget.ConstraintLayout>
