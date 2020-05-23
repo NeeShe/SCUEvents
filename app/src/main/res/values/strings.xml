@@ -1,10 +1,7 @@
 <resources>
     <string name="app_name">SCUEvents</string>
     <string name="title_activity_navigation">NavigationActivity</string>
-
     <string name="nav_header_desc">Navigation header</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string-array name="Location">
         <item>Select Location</item>
@@ -13,6 +10,7 @@
         <item>Music Recital Hall</item>
         <item>Louis B Mayer Theatre</item>
     </string-array>
+
     <string-array name="EventType">
         <item>Select Event Category</item>
         <item>Educational</item>
@@ -21,7 +19,6 @@
         <item>Cultural</item>
     </string-array>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string-array name="Department">
         <item>Select Department</item>
         <item>Arts and Sciences</item>
@@ -29,5 +26,13 @@
         <item>Electrical and Computer Engineering</item>
         <item>BioEngineering</item>
         <item>Other</item>
+    </string-array>
+
+    <string-array name="SearchSelection">
+        <item>Name</item>
+        <item>Date</item>
+        <item>Location</item>
+        <item>Category</item>
+        <item>Department</item>
     </string-array>
 </resources>
