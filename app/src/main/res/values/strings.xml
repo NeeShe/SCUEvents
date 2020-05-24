@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">SCUEvents</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="nav_header_desc">Navigation header</string>
+
     <string-array name="Location">
         <item>Select Location</item>
         <item>Benson Memorial Hall</item>
@@ -25,12 +28,11 @@
         <item>Other</item>
     </string-array>
 
-    <string name="title_activity_navigation">NavigationActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
-
+    <string-array name="SearchSelection">
+        <item>Name</item>
+        <item>Date</item>
+        <item>Location</item>
+        <item>Category</item>
+        <item>Department</item>
+    </string-array>
 </resources>

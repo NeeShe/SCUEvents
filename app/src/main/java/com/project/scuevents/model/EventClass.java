@@ -1,6 +1,9 @@
 package com.project.scuevents.model;
 
+import android.util.Log;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Set;
 
 public class EventClass implements Serializable {
@@ -9,6 +12,7 @@ public class EventClass implements Serializable {
     private String eventDescription;
     private String hostName;
     private String hostID;
+    private String hostToken;
     private String eventDate;
     private String eventTime;
     private String endDate;
@@ -17,21 +21,21 @@ public class EventClass implements Serializable {
     private String eventType;
     private String department;
     private String imageUrl;
-    private String videoUrl;
     private int totalSeats;
-    private Set<String> attendeeSet;
+    private int availableSeats;
+    private long startTimestamp;
 
     public EventClass() {
-
     }
 
-    public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String eventDate, String eventTime,
-               String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats) {
+    public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken,String eventDate, String eventTime,
+               String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats, int availableSeats, long startTimestamp) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.hostName = hostName;
         this.hostID = hostID;
+        this.hostToken=hostToken;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.endDate = endDate;
@@ -40,15 +44,18 @@ public class EventClass implements Serializable {
         this.eventType = eventType;
         this.department = department;
         this.totalSeats = totalSeats;
+        this.availableSeats=availableSeats;
+        this.startTimestamp=startTimestamp;
     }
 
-    public EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String eventDate, String eventTime,
-               String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl, String videoUrl,int totalSeats) {
+    public EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String hostToken,String eventDate, String eventTime,
+               String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl,int totalSeats, int availableSeats,long startTimestamp) {
         this.eventID = eventId;
         this.eventTitle = eventTitle;
         this.eventDescription = eventDescription;
         this.hostName = hostName;
         this.hostID = hostID;
+        this.hostToken=hostToken;
         this.eventDate = eventDate;
         this.eventTime = eventTime;
         this.endDate = endDate;
@@ -57,30 +64,31 @@ public class EventClass implements Serializable {
         this.eventType = eventType;
         this.department = department;
         this.imageUrl = imageUrl;
-        this.videoUrl = videoUrl;
         this.totalSeats = totalSeats;
+        this.availableSeats=availableSeats;
+        this.startTimestamp=startTimestamp;
     }
     public String getEventID() {
         return eventID;
     }
+
     public String getEventTitle() {
         return eventTitle;
     }
-
     public void setEventTitle(String eventTitle) {
         this.eventTitle = eventTitle;
     }
+
     public String getEventDescription() {
         return eventDescription;
     }
-
     public void setEventDescription(String description) {
         this.eventDescription = description;
     }
+
     public String getHostName() {
         return hostName;
     }
-
     public void setHostName(String hostName) {
         this.hostName = hostName;
     }
@@ -88,13 +96,9 @@ public class EventClass implements Serializable {
     public String getHostID() {
         return hostID;
     }
+    public String getHostToken(){return hostToken;}
 
-
-
-    public String getEventDate() {
-        return eventDate;
-    }
-
+    public String getEventDate() { return eventDate; }
     public void setEventDate(String eventDate) {
         this.eventDate = eventDate;
     }
@@ -102,14 +106,13 @@ public class EventClass implements Serializable {
     public String getEventTime() {
         return eventTime;
     }
-
     public void setEventTime(String eventTime) {
         this.eventTime = eventTime;
     }
+
     public String getEndDate() {
         return endDate;
     }
-
     public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
@@ -117,7 +120,6 @@ public class EventClass implements Serializable {
     public String getEndTime() {
         return endTime;
     }
-
     public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
@@ -125,7 +127,6 @@ public class EventClass implements Serializable {
     public String getEventLocation() {
         return eventLocation;
     }
-
     public void setEventLocation(String eventLocation) {
         this.eventLocation = eventLocation;
     }
@@ -133,45 +134,35 @@ public class EventClass implements Serializable {
     public String getEventType() {
         return eventType;
     }
-
     public void setEventType(String eventType) {
         this.eventType = eventType;
     }
+
     public String getDepartment() {
         return department;
     }
-
     public void setDepartment(String department) {
         this.department = department;
     }
+
     public String getImageUrl() {
         return imageUrl;
     }
-
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
-    public String getVideoUrl() {
-        return videoUrl;
-    }
 
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl;
-    }
     public int getTotalSeats() {
         return totalSeats;
     }
-
-    public void setTotalSeats(int TotalSeats) {
+    public void setTotalSeats(int totalSeats) {
         this.totalSeats = totalSeats;
     }
 
+    public int getAvailableSeats(){return availableSeats;}
+    public void setAvailableSeats(int availableSeats){this.availableSeats = availableSeats;}
 
-    public Set<String> getAttendeeSet() {
-        return attendeeSet;
-    }
+    public long getStartTimestamp(){return startTimestamp;}
+    public void setStartTimestamp(long timestamp){this.startTimestamp = timestamp;}
 
-    public void setAttendeeSet(Set<String> attendeeSet) {
-        this.attendeeSet = attendeeSet;
-    }
 }

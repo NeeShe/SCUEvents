@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.google.firebase.messaging.FirebaseMessagingService;
+import com.google.firebase.messaging.RemoteMessage;
 
 public class MyFirebaseInstanceService extends FirebaseMessagingService {
     String TAG = "SCUEvents";
@@ -25,4 +28,9 @@ public class MyFirebaseInstanceService extends FirebaseMessagingService {
         editor.commit();
     }
 
-  }
+    @Override
+    public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        super.onMessageReceived(remoteMessage);
+        Log.d(TAG,remoteMessage.getNotification().getBody());
+    }
+}
