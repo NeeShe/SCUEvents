@@ -59,9 +59,7 @@ public class EventDetailActivity extends AppCompatActivity {
             String elocation = getIntent().getStringExtra("ealocation");
             String edes = getIntent().getStringExtra("eadescription");
             String ehname = getIntent().getStringExtra("eahname");
-
             setImage(edimageUrl,edeventTitle,ehname,ewhen,etime,elocation,edes);
-
         }
     }
 
