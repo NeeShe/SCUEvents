@@ -45,6 +45,7 @@ public class SignUpActivity extends AppCompatActivity {
         confPassword=findViewById(R.id.cnfpwd);
 
         auth = FirebaseAuth.getInstance();
+        getActionBar().hide();
     }
 
     public void signup(View view) {
@@ -69,6 +70,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         signUp(fname, lname, emailStr, passwordStr);
+
     }
 
     private void signUp(final String fname, final String lname, final String email, final String password) {
@@ -84,6 +86,7 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
     private void verifyEmail(){
         final FirebaseUser user = auth.getCurrentUser();
