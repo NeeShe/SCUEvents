@@ -52,7 +52,6 @@
             />
 
         <ImageButton
-            android:id="@+id/imagebutton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:onClick="setImage"
@@ -326,7 +325,6 @@
             app:layout_constraintTop_toBottomOf="@id/totSeattv" />
 
         <Button
-            android:id="@+id/pushButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

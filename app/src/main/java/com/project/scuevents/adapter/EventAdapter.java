@@ -40,9 +40,11 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.viewHolder> 
         this.eventList = eventList;
         this.context = context;
         this.viewedEventNames = viewedEventNames;
+    }
 
-        //this.prefs = prefs;
-
+    public EventAdapter(ArrayList<EventClass> eventList, Context context) {
+        this.eventList = eventList;
+        this.context = context;
     }
 
     @NonNull

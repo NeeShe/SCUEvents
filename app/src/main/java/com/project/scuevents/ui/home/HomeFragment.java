@@ -28,6 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.NotificationActivity;
 import com.project.scuevents.R;
+import com.project.scuevents.SearchActivity;
 import com.project.scuevents.adapter.EventAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
@@ -234,7 +235,8 @@ public class HomeFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_search:
-                Toast.makeText(getActivity(), "Search Code", Toast.LENGTH_SHORT).show();
+                Intent searchIntent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(searchIntent);
                 return true;
             case R.id.action_notify:
                 notificationCount.setVisibility(View.INVISIBLE);

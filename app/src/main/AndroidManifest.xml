@@ -39,6 +39,9 @@
         <activity android:name=".EventDetailActivity"
             android:configChanges="screenLayout|orientation|screenSize" />
 
+        <activity android:name=".SearchActivity"
+            android:configChanges="screenLayout|orientation|screenSize"
+            android:parentActivityName=".NavigationActivity"/>
 
         <activity
             android:name=".CreateEventActivity"
