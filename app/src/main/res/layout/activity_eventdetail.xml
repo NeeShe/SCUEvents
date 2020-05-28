@@ -141,6 +141,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/buttonbg"
             android:text="Register"
+            android:onClick="registerUsers"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#FFFFFF"
             android:textSize="24sp"

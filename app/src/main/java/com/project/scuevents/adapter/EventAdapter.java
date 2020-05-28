@@ -77,14 +77,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.viewHolder> 
             public void onClick(View v) {
                 Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, EventDetailActivity.class);
-                intent.putExtra("eaimage",eventClass.getImageUrl());
-                intent.putExtra("eatitle",eventClass.getEventTitle());
-
-                intent.putExtra("eawhen",eventClass.getEventDate());
-                intent.putExtra("eatime",eventClass.getEventTime());
-                intent.putExtra("ealocation",eventClass.getEventLocation());
-                intent.putExtra("eadescription",eventClass.getEventDescription());
-                intent.putExtra("eahname","(Event hosted by "+eventClass.getHostName()+")");
+                intent.putExtra("Object", eventClass);
                 context.startActivity(intent);
             }
         });
