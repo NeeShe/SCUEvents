@@ -126,7 +126,6 @@ public class EventDetailActivity extends AppCompatActivity{
         SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
         final String uId = sh.getString("USER_ID", "");
         Query delQuery=db.child("Events").child(group.getEventID()).child("registeredUsers").child(uId);
-
         delQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -141,10 +140,26 @@ public class EventDetailActivity extends AppCompatActivity{
                 Log.e(TAG, "onCancelled", databaseError.toException());
             }
         });
-        Toast.makeText(getBaseContext(),"Deregister Users.",Toast.LENGTH_SHORT).show();
+
+        Query delEvent=db.child("Users").child(uId).child("registeredEvents").child(group.getEventID());
+        delEvent.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot delSnapshot: dataSnapshot.getChildren()) {
+                    delSnapshot.getRef().removeValue();
+                    //RegButton.setText("Register");
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+
+        Toast.makeText(getBaseContext(),"Deregistered Successfully",Toast.LENGTH_SHORT).show();
         //RegButton.setText("Register");
     }
-
 
     public void registerUsers(View view){
         String regID = FireBaseUtilClass.getDatabaseReference().child("Events").child("registeredUsers").push().getKey();
