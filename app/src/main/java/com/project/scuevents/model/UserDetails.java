@@ -9,8 +9,7 @@ public class UserDetails {
     private String lName;
     private String email;
     private String userID;
-    private String uToken;
-    private String dname;
+    private String userToken;
 
 
     private Set<String> regEventIDSet;
@@ -45,16 +44,16 @@ public class UserDetails {
     }
 
 
-    public UserDetails(String userID,String uToken) {
+    public UserDetails(String userID,String userToken) {
         this.userID = userID;
-        this.uToken = uToken;
+        this.userToken = userToken;
     }
 
 
     public String getfName() {
         return fName;
     }
-    public String getuToken(){return uToken;}
+    public String getuserToken(){return userToken;}
 
     public void setfName(String name) {
         this.fName = name;
