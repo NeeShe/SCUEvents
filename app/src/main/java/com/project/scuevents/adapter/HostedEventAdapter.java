@@ -16,8 +16,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.project.scuevents.EventDetailActivity;
+import com.project.scuevents.HostEventDetailActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
+import com.project.scuevents.model.FireBaseUtilClass;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -27,6 +33,8 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
 
     ArrayList<EventClass> eventList;
     Context context;
+    DatabaseReference db;
+
 
 
     //initializing the eventAdapter constructor
@@ -35,7 +43,6 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
         this.eventList = eventList;
         this.context = context;
     }
-
     @NonNull
     @Override
     //inflating the view on the recyclerview
@@ -52,12 +59,30 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
         holder.eventTimeDate.setText(eventClass.getEventDate());
         holder.eventName.setText(eventClass.getEventTitle());
         holder.eventVenue.setText(eventClass.getEventLocation());
+        //StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Speakers").child(item.getSpeakerPushId());
         //assigning onClickListener to per event view card
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
- //ToDo: fix datetime format
+
+                Intent intent = new Intent(context, HostEventDetailActivity.class);
+                intent.putExtra("eaimage",eventClass.getImageUrl());
+                intent.putExtra("eatitle",eventClass.getEventTitle());
+                intent.putExtra("estartdate",eventClass.getEventDate());
+                intent.putExtra("eenddate",eventClass.getEndDate());
+                intent.putExtra("eendtime",eventClass.getEndTime());
+                intent.putExtra("estarttime",eventClass.getEventTime());
+                intent.putExtra("ealocation",eventClass.getEventLocation());
+                intent.putExtra("eadescription",eventClass.getEventDescription());
+                intent.putExtra("eahname","(Event hosted by "+eventClass.getHostName()+")");
+                intent.putExtra("totalseats",eventClass.getTotalSeats());
+                intent.putExtra("availableseats",eventClass.getAvailableSeats());
+                intent.putExtra("eventtype",eventClass.getEventType());
+                intent.putExtra("department",eventClass.getDepartment());
+//                intent.putExtra("regusers",eventClass.getRegusers());
+
+// ToDo: fix datetime format
 //                Log.e("DEBUG","Event ID:"+eventClass.getEventID());
 //                Log.e("DEBUG","Event Title:"+eventClass.getEventTitle());
 //                Log.e("DEBUG","Event Description:"+eventClass.getEventDescription());
@@ -76,9 +101,19 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
 //                Log.e("DEBUG","Available seats:"+eventClass.getAvailableSeats());
                 //Intent intent = new Intent(context, EventDetailActivity.class);
                 //context.startActivity(intent);
+                context.startActivity(intent);
+
             }
         });
     }
+
+    public ArrayList getregisteredusers()
+    {
+        ArrayList users=new ArrayList();
+        db = FireBaseUtilClass.getDatabaseReference().child("Events").child("registeredUsers");
+        return users;
+    }
+
 
     @Override
     //returning the size of the eventList

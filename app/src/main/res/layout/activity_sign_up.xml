@@ -35,19 +35,36 @@
         app:layout_constraintGuide_end="20dp" />
 
     <TextView
+        android:id="@+id/scuevents"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="44dp"
+        android:text="SCU EVENTS"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="32dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+
+        app:layout_constraintHorizontal_bias="0.492"
+
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/topguideline" />
+
+    <TextView
         android:id="@+id/signup"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="SIGN UP"
+        android:text="Create Account"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="32dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:gravity="center"
 
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/topguideline" />
+        app:layout_constraintTop_toBottomOf="@id/scuevents" />
 
     <TextView
         android:id="@+id/firstnametv"
@@ -207,22 +224,22 @@
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/cnfpwd" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="72dp"
-        android:background="@drawable/buttonbg"
-        android:onClick="back"
-        android:padding="8dp"
-        android:text="Back to Sign In"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@id/rightguideline"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/signButton" />
+<!--    <Button-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="72dp"-->
+<!--        android:background="@drawable/buttonbg"-->
+<!--        android:onClick="back"-->
+<!--        android:padding="8dp"-->
+<!--        android:text="Back to Sign In"-->
+<!--        android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--        android:textColor="#FFFFFF"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold"-->
+<!--        app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
+<!--        app:layout_constraintHorizontal_bias="0.497"-->
+<!--        app:layout_constraintStart_toEndOf="@id/leftguideline"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/signButton" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

@@ -52,6 +52,7 @@
             />
 
         <ImageButton
+            android:id="@+id/imagebutton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:onClick="setImage"
@@ -309,48 +310,86 @@
 
         <TextView
             android:id="@+id/totSeattv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="193dp"
+            android:layout_height="30dp"
             android:layout_marginTop="8dp"
-            android:text="Total Seats:"
+            android:text="Number of Attendees:"
             android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/deptSpinner" />
 
-        <EditText
-            android:id="@+id/totSeatInput"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/editextbackground"
-            android:ems="5"
-            android:hint="100"
-            android:inputType="number"
-            android:paddingStart="10dp"
-            android:paddingTop="10dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintEnd_toStartOf="@id/rightguideline"
-            app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/totSeattv" />
-
         <Button
+            android:id="@+id/updateButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:padding="8dp"
             android:background="@drawable/buttonbg"
-            android:onClick="publish"
-            android:text="PUBLISH"
+            android:onClick="update"
+            android:padding="8dp"
+            android:text="UPDATE"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#FFFFFF"
             android:textSize="24sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/totSeatInput" />
+            app:layout_constraintTop_toBottomOf="@+id/list"/>
+<!--            tools:layout_editor_absoluteY="888dp" -->
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/buttonbg"
+            android:onClick="delete"
+            android:padding="8dp"
+            android:text="DELETE"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintTop_toBottomOf="@+id/list"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="1015dp" />
+
+        <TextView
+            android:id="@+id/numatten"
+            android:layout_width="99dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:text="num"
+
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:layout_constraintStart_toEndOf="@id/totSeattv"
+            app:layout_constraintTop_toBottomOf="@+id/deptSpinner"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/listattendees"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="List of Attendees :"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            tools:ignore="MissingConstraints"
+            app:layout_constraintTop_toBottomOf="@id/totSeattv"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            tools:layout_editor_absoluteX="24dp"
+            tools:layout_editor_absoluteY="852dp" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="369dp"
+            android:layout_height="45dp"
+            app:layout_constraintBottom_toTopOf="@+id/updateButton"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@+id/listattendees"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

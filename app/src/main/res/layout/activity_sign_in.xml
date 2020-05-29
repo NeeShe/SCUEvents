@@ -121,7 +121,7 @@
         android:layout_marginTop="96dp"
         android:background="@color/colorPrimaryDark"
         android:onClick="Signin"
-        android:text="Sign In"
+        android:text="SIGN IN"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="#FFFFFF"
         android:textSize="24sp"

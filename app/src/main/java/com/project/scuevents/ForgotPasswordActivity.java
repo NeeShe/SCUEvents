@@ -42,21 +42,28 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if(task.isSuccessful()){
                                 Toast.makeText(ForgotPasswordActivity.this, "Reset Link has been sent to the mail", Toast.LENGTH_LONG).show();
+                                onBackPressed();
                             }
                             else{
                                 Toast.makeText(ForgotPasswordActivity.this, "Email Id not registered", Toast.LENGTH_LONG).show();
 
                             }
 
+
                         }
                     });
                 }
 
-
-
             }
+
         });
 
 
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
 }

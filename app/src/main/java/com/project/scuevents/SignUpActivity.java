@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -45,6 +46,7 @@ public class SignUpActivity extends AppCompatActivity {
         confPassword=findViewById(R.id.cnfpwd);
 
         auth = FirebaseAuth.getInstance();
+//        getActionBar().hide();
     }
 
     public void signup(View view) {
@@ -69,6 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         signUp(fname, lname, emailStr, passwordStr);
+
     }
 
     private void signUp(final String fname, final String lname, final String email, final String password) {
@@ -84,44 +87,47 @@ public class SignUpActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
     private void verifyEmail(){
         final FirebaseUser user = auth.getCurrentUser();
+
+//        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
+//            @Override
+//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+//                FirebaseUser user = firebaseAuth.getCurrentUser();
+//                if (user.isEmailVerified()) {
+//                    Toast.makeText(SignUpActivity.this,
+//                            "Email verified:" + user.getEmail(),
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//                else {
+//                    Toast.makeText(SignUpActivity.this,
+//                            "Email not verified" + user.getEmail(),
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(SignUpActivity.this,
                                     "Failed to send verification email.",
                                     Toast.LENGTH_SHORT).show();
                         }
 
+                        onBackPressed();
                     }
                 });
-        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user.isEmailVerified()) {
-                    Toast.makeText(SignUpActivity.this,
-                            "Email verified" + user.getEmail(),
-                            Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(SignUpActivity.this,
-                            "Email not verified" + user.getEmail(),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
 
 
+//        onBackPressed();
     }
     private void updateToFirebase(final String fName,final String lName, final String email){
         String uid = auth.getCurrentUser().getUid();
@@ -170,15 +176,14 @@ public class SignUpActivity extends AppCompatActivity {
     }
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-        startActivity(intent);
         super.onBackPressed();
-
+//        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+//        startActivity(intent);
     }
 
-    public void back(View view) {
-
-        this.finish();
-    }
+//    public void back(View view) {
+//
+//        this.finish();
+//    }
 
 }

@@ -3,6 +3,7 @@ package com.project.scuevents.model;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -24,6 +25,7 @@ public class EventClass implements Serializable {
     private int totalSeats;
     private int availableSeats;
     private long startTimestamp;
+//    private ArrayList regusers;
 
     public EventClass() {
     }
@@ -47,6 +49,27 @@ public class EventClass implements Serializable {
         this.availableSeats=availableSeats;
         this.startTimestamp=startTimestamp;
     }
+
+//    public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken, String eventDate, String eventTime,
+//                      String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats, int availableSeats, long startTimestamp, ArrayList regusers) {
+//        this.eventID = eventId;
+//        this.eventTitle = eventTitle;
+//        this.eventDescription = eventDescription;
+//        this.hostName = hostName;
+//        this.hostID = hostID;
+//        this.hostToken=hostToken;
+//        this.eventDate = eventDate;
+//        this.eventTime = eventTime;
+//        this.endDate = endDate;
+//        this.endTime = endTime;
+//        this.eventLocation = eventLocation;
+//        this.eventType = eventType;
+//        this.department = department;
+//        this.totalSeats = totalSeats;
+//        this.availableSeats=availableSeats;
+//        this.startTimestamp=startTimestamp;
+//        this.regusers=regusers;
+//    }
 
     public EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String hostToken,String eventDate, String eventTime,
                String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl,int totalSeats, int availableSeats,long startTimestamp) {
@@ -164,5 +187,8 @@ public class EventClass implements Serializable {
 
     public long getStartTimestamp(){return startTimestamp;}
     public void setStartTimestamp(long timestamp){this.startTimestamp = timestamp;}
+
+    //public ArrayList getRegusers(){return regusers;}
+   // public void setRegusers(ArrayList regusers){this.regusers=regusers;}
 
 }
