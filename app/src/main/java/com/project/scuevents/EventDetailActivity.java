@@ -1,5 +1,7 @@
 package com.project.scuevents;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,8 +35,10 @@ public class EventDetailActivity extends AppCompatActivity {
         RegButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick (View v) {
+                SharedPreferences sp=getSharedPreferences("user_details",MODE_PRIVATE);
                 final int status =(Integer) v.getTag();
                 if(status == 1) {
+                    Toast.makeText(EventDetailActivity.this,sp.getString("firstname",null)+" "+sp.getString("lastname",null),Toast.LENGTH_LONG ).show();
                     RegButton.setText("Deregister");
                     v.setTag(0);
                 } else {

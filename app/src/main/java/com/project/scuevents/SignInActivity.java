@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -26,14 +27,20 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.model.FireBaseUtilClass;
+import com.project.scuevents.model.UserDetails;
 import com.project.scuevents.model.ValidationClass;
 import com.project.scuevents.service.MyFirebaseInstanceService;
 import com.project.scuevents.ui.home.HomeFragment;
 
 
 public class SignInActivity extends AppCompatActivity {
-
+final String TAG="SIGNINACTIVITY";
     FirebaseAuth auth;
     private ProgressDialog progressDialog;
     TextView createAccount;
@@ -74,8 +81,10 @@ public class SignInActivity extends AppCompatActivity {
 
     public void Signin(View view) {
 
-        String email = emailEditText.getText().toString().trim();
-        String password = passwordEditText.getText().toString().trim();
+       final String email = emailEditText.getText().toString().trim();
+       final String password = passwordEditText.getText().toString().trim();
+//        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+
         ValidationClass validationClass = new ValidationClass(emailEditText, passwordEditText);
         if (validationClass.validateEmail() && validationClass.validatePassword()) {
 
@@ -91,9 +100,44 @@ public class SignInActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             progressDialog.dismiss();
+
+                            FirebaseDatabase database = FireBaseUtilClass.getDatabase();
                             //if the task is successfull
                             if (task.isSuccessful()) {
                                 if (auth.getCurrentUser().isEmailVerified()) {
+                                    DatabaseReference reference= database.getReference().child("Users");
+                                    reference.addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                            for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
+                                                UserDetails user=dataSnapshot1.getValue(UserDetails.class);
+                                                if(user.getEmail()!=null){
+                                                Log.d(TAG,user.getEmail());}
+                                                if(email.equals(user.getEmail()))
+                                                {
+                                                    Log.d(TAG,"helo from signin if lopala");
+                                                    SharedPreferences sharedPref = getSharedPreferences("user_details",MODE_PRIVATE);
+                                                    SharedPreferences.Editor editor = sharedPref.edit();
+                                                    editor.putString("firstname",user.getfName());
+                                                    editor.putString("lastname",user.getlName());
+                                                    editor.putString("email",user.getEmail());
+                                                    Log.d(TAG,user.getfName()+" "+user.getlName());
+                                                    editor.commit();
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError databaseError) {
+Log.d(TAG,databaseError.toString());
+                                        }
+                                    });
+//                                    SharedPreferences.Editor editor = sharedPref.edit();
+//                                    editor.putString("Email", email);
+//                                    editor.putString("Password", password);
+//                                    editor.apply();
 
                                     startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
                                 } else {

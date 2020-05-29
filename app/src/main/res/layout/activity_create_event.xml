@@ -66,6 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Title:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -93,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Description:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -120,6 +122,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Date:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -144,6 +147,7 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="From"
+                android:textColor="@color/colorPrimaryDark"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <EditText
@@ -166,6 +170,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Time"
+                android:textColor="@color/colorPrimaryDark"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <EditText
@@ -192,6 +197,7 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="To"
+                android:textColor="@color/colorPrimaryDark"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <EditText
@@ -215,6 +221,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Time"
+                android:textColor="@color/colorPrimaryDark"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
             <EditText
@@ -237,6 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Location:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -259,6 +267,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Category:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -281,6 +290,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Department:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -303,6 +313,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Total Seats:"
+            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"

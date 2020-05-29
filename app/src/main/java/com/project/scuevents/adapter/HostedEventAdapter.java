@@ -78,10 +78,11 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
                 intent.putExtra("eahname","(Event hosted by "+eventClass.getHostName()+")");
                 intent.putExtra("totalseats",eventClass.getTotalSeats());
                 intent.putExtra("availableseats",eventClass.getAvailableSeats());
+                intent.putExtra("eventtype",eventClass.getEventType());
+                intent.putExtra("department",eventClass.getDepartment());
 //                intent.putExtra("regusers",eventClass.getRegusers());
-                context.startActivity(intent);
 
- //ToDo: fix datetime format
+// ToDo: fix datetime format
 //                Log.e("DEBUG","Event ID:"+eventClass.getEventID());
 //                Log.e("DEBUG","Event Title:"+eventClass.getEventTitle());
 //                Log.e("DEBUG","Event Description:"+eventClass.getEventDescription());
@@ -100,6 +101,8 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
 //                Log.e("DEBUG","Available seats:"+eventClass.getAvailableSeats());
                 //Intent intent = new Intent(context, EventDetailActivity.class);
                 //context.startActivity(intent);
+                context.startActivity(intent);
+
             }
         });
     }

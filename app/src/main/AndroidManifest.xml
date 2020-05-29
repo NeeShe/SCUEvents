@@ -24,7 +24,8 @@
             android:theme="@style/AppTheme.NoActionBar"/>
 
         <activity android:name=".ForgotPasswordActivity" />
-
+        <activity android:name=".HostEventDetailActivity"
+            android:configChanges="screenLayout|orientation|screenSize"/>
         <activity
             android:name=".NavigationActivity"
             android:label="@string/title_activity_navigation"
