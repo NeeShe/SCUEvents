@@ -21,6 +21,12 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.MessageClass;
@@ -37,11 +43,8 @@ public class EventDetailActivity extends AppCompatActivity{
     TextView location;
     TextView description;
     ImageView image;
-    Context context;
     Button RegButton;
-
-
-
+    DatabaseReference db;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +56,35 @@ public class EventDetailActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
         group = (EventClass) i.getSerializableExtra("Object");
+
+        SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
+        final String uId = sh.getString("USER_ID", "");
+        Log.d(TAG, "onCreate: "+uId);
+        db = FirebaseDatabase.getInstance().getReference();
+        Query query = db.child("Events").child(group.getEventID()).child("registeredUsers");
+
+        //DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+        Query q=db.child("Events").child(group.getEventID()).child("registeredUsers").child(uId);
+        Log.d(TAG, "onCreateUID: "+q);
+        q.addValueEventListener(new ValueEventListener() {
+           @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+               Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+                if (dataSnapshot.getValue()==null) {
+                    RegButton.setText("Register");
+                }
+                else {
+                    RegButton.setText("Deregister");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        Log.d(TAG, "onCreate: "+query);
 
         edeventTitle = findViewById(R.id.edtitle);
         edeventTitle.setText(group.getEventTitle());
@@ -74,8 +106,44 @@ public class EventDetailActivity extends AppCompatActivity{
 
         image = findViewById(R.id.edimage);
         Glide.with(this).asBitmap().load(group.getImageUrl()).into(image);
+
     }
 
+    public void regButtonClick(View view){
+        if(RegButton.getText()=="Register"){
+            registerUsers(view);
+        }
+        else if(RegButton.getText()=="Deregister"){
+            deregisterUsers(view);
+        }
+        else{
+            Toast.makeText(getBaseContext(),"System not responding",Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void deregisterUsers(View view) {
+        db = FirebaseDatabase.getInstance().getReference();
+        SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
+        final String uId = sh.getString("USER_ID", "");
+        Query delQuery=db.child("Events").child(group.getEventID()).child("registeredUsers").child(uId);
+
+        delQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot delSnapshot: dataSnapshot.getChildren()) {
+                    delSnapshot.getRef().removeValue();
+                    RegButton.setText("Register");
+                }
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+        Toast.makeText(getBaseContext(),"Deregister Users.",Toast.LENGTH_SHORT).show();
+        //RegButton.setText("Register");
+    }
 
 
     public void registerUsers(View view){
@@ -83,8 +151,6 @@ public class EventDetailActivity extends AppCompatActivity{
         SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
         String userId = sh.getString("USER_ID", "");
        // String dName = sh.getString("USER_NAME","");
-
-
         SharedPreferences pref = getSharedPreferences("MyPreferenceFileName", MODE_PRIVATE);
         String uToken=pref.getString("UserToken","");
         this.addUsersToFirebase(new UserDetails(userId,uToken));
