@@ -64,7 +64,11 @@ final String TAG="SIGNINACTIVITY";
         signinButton = findViewById(R.id.signinButton);
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
+            Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(intent);
         }
 
         progressDialog = new ProgressDialog(SignInActivity.this);
@@ -138,8 +142,11 @@ Log.d(TAG,databaseError.toString());
 //                                    editor.putString("Email", email);
 //                                    editor.putString("Password", password);
 //                                    editor.apply();
-
-                                    startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
+                                    Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
                                 } else {
                                     Toast.makeText(SignInActivity.this, "Email not verified", Toast.LENGTH_LONG).show();
                                 }
