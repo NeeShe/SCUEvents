@@ -164,6 +164,7 @@ public class SignInActivity extends AppCompatActivity {
                                         }
                                     });
 
+
                                     //providing a delay to start the activity , so that shared preference gets saved
                                     mHandler.postDelayed(mUpdateTimeTask, 500);
                                    /* Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
@@ -171,6 +172,7 @@ public class SignInActivity extends AppCompatActivity {
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     finish();
                                     startActivity(intent);
+
                                     progressDialog.hide();*/
                                     //startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
                                 } else {
