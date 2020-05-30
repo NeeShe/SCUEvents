@@ -17,6 +17,10 @@ public class UserDetails {
     private Set<String> hostedEventIDSet;
     private String imageUri;
 
+    public UserDetails(){
+
+    }
+
 
     public UserDetails(String fName, String lName, String email, String userID) {
         this.fName = fName;

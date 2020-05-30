@@ -1,5 +1,6 @@
 package com.project.scuevents.ui.home;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +33,7 @@ import com.project.scuevents.SearchActivity;
 import com.project.scuevents.adapter.EventAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
+import com.project.scuevents.service.MyFirebaseInstanceService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -67,7 +69,10 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        //checking whether user token is getting properly saved in shared preference
+        SharedPreferences pref = getActivity().getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
+        String s = pref.getString("UserToken", "null");
+        Log.d(TAG, "user fresh token upon Installation/reinstallation "+ s);
 
         //initializing the recycler view
         mainActivityRecyclerView = root.findViewById(R.id.HomeRecyclerView);
