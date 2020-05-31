@@ -166,7 +166,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
                                     //providing a delay to start the activity , so that shared preference gets saved
-                                    mHandler.postDelayed(mUpdateTimeTask, 500);
+                                    mHandler.postDelayed(mUpdateTimeTask, 1000);
                                    /* Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
