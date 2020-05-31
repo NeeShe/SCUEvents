@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 
 import android.text.TextUtils;
@@ -40,19 +41,27 @@ import com.project.scuevents.ui.home.HomeFragment;
 
 
 public class SignInActivity extends AppCompatActivity {
-final String TAG="SIGNINACTIVITY";
+    final String TAG="LogoutModule";
     FirebaseAuth auth;
     private ProgressDialog progressDialog;
     TextView createAccount;
     Button signinButton;
     EditText emailEditText;
     EditText passwordEditText;
+    DatabaseReference db;
+    private Handler mHandler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
+        SharedPreferences prefsUser = getSharedPreferences("USER_TOKENS", Context.MODE_PRIVATE);
+        String userID= prefsUser.getString("USER_ID", "null");
+        Log.d(TAG ,"logged userID in SignIn Acivity " + userID);
+        String userName = prefsUser.getString("USER_NAME", "null");
+        Log.d(TAG ,"logged userName in SignIn Acivity " + userName);
 
         emailEditText = findViewById(R.id.email_textview);
 
@@ -64,22 +73,28 @@ final String TAG="SIGNINACTIVITY";
         signinButton = findViewById(R.id.signinButton);
 
         if (auth.getCurrentUser() != null) {
-            startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
+            Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(intent);
         }
 
         progressDialog = new ProgressDialog(SignInActivity.this);
-
 
     }
 
 
     public void createaccount(View view) {
+        Log.d(TAG, "create account clicked");
+        Toast.makeText(SignInActivity.this, "going to create account activity", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(intent);
     }
 
 
     public void Signin(View view) {
+
 
        final String email = emailEditText.getText().toString().trim();
        final String password = passwordEditText.getText().toString().trim();
@@ -99,46 +114,67 @@ final String TAG="SIGNINACTIVITY";
                     .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            progressDialog.dismiss();
+                            //progressDialog.dismiss();
 
-                            FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+                            //FirebaseDatabase database = FireBaseUtilClass.getDatabase();
                             //if the task is successfull
                             if (task.isSuccessful()) {
                                 if (auth.getCurrentUser().isEmailVerified()) {
-                                    DatabaseReference reference= database.getReference().child("Users");
-                                    reference.addValueEventListener(new ValueEventListener() {
+                                    //saving the device tokens in database
+                                    SharedPreferences pref = getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                                    String s = pref.getString("UserToken", "null");
+                                    Log.d(TAG, "user fresh token upon Installation/reinstallation "+ s);
+                                    FireBaseUtilClass.getDatabaseReference().child("UserTokens").child(s).setValue(true);
+                                    //after email verification , need to save user id and user name over here, or else after uninstalling
+                                    //and installing we won't get the user id and name as it is never going to the sign up activity as
+                                    //user is already authenticated
+
+                                    db= FireBaseUtilClass.getDatabaseReference().child("Users").child(auth.getCurrentUser().getUid());
+                                    db.addListenerForSingleValueEvent(new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                            UserDetails user = dataSnapshot.getValue(UserDetails.class);
+                                            Log.d(TAG, "userID " + user.getUserID());
+                                            Log.d(TAG, "userName " + user.getfName() + " " + user.getlName());
 
-                                            for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
-                                                UserDetails user=dataSnapshot1.getValue(UserDetails.class);
-                                                if(user.getEmail()!=null){
-                                                Log.d(TAG,user.getEmail());}
-                                                if(email.equals(user.getEmail()))
-                                                {
-                                                    SharedPreferences sharedPref = getSharedPreferences("user_details",MODE_PRIVATE);
-                                                    SharedPreferences.Editor editor = sharedPref.edit();
-                                                    editor.putString("firstname",user.getfName());
-                                                    editor.putString("lastname",user.getlName());
-                                                    editor.putString("email",user.getEmail());
-                                                    Log.d(TAG,user.getfName()+" "+user.getlName());
-                                                    editor.commit();
-                                                    break;
-                                                }
+                                            if (email != null && email.equals(user.getEmail())) {
+                                                SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
+                                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                                myEdit.putString("USER_ID", user.getUserID());
+                                                myEdit.putString("USER_NAME", user.getfName() + " " + user.getlName());
+                                                myEdit.commit();
+                                                //starting the activity here due to the async nature of data fetching from db, but helpful only when
+                                                //installing the app first time, as somehow first time its going to the navigation activity first and the
+                                                //shared preference getting saved once data is retrieved
+                                                //startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
+                                               /* Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                finish();
+                                                startActivity(intent);
+                                                progressDialog.hide();*/
+                                            }else{
+                                                Toast.makeText(SignInActivity.this, "Incorrect Email provided", Toast.LENGTH_LONG).show();
                                             }
                                         }
 
                                         @Override
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
-Log.d(TAG,databaseError.toString());
+                                            Toast.makeText(SignInActivity.this, "Sorry Something went wrong ", Toast.LENGTH_SHORT).show();
                                         }
                                     });
-//                                    SharedPreferences.Editor editor = sharedPref.edit();
-//                                    editor.putString("Email", email);
-//                                    editor.putString("Password", password);
-//                                    editor.apply();
 
-                                    startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
+
+                                    //providing a delay to start the activity , so that shared preference gets saved
+                                    mHandler.postDelayed(mUpdateTimeTask, 1000);
+                                   /* Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    finish();
+                                    startActivity(intent);
+
+                                    progressDialog.hide();*/
+                                    //startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
                                 } else {
                                     Toast.makeText(SignInActivity.this, "Email not verified", Toast.LENGTH_LONG).show();
                                 }
@@ -149,6 +185,20 @@ Log.d(TAG,databaseError.toString());
                     });
         }
     }
+
+    //starting the activity after delay
+    private Runnable mUpdateTimeTask = new Runnable() {
+        public void run() {
+            // do what you need to do here after the delay
+            Log.d(TAG, "delaying the start of Navigation activity ");
+            Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            finish();
+            startActivity(intent);
+            progressDialog.hide();
+        }
+    };
 
     public void forgotpassword(View view) {
 

@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -23,7 +24,6 @@ import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,12 +34,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
-import com.project.scuevents.ui.createevent.CreateModifyFragment;
 
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
 
 
@@ -77,6 +75,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
         getSupportActionBar().setTitle("Create Event");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
         //Initialize variables
         datePicker=0;
         storage = FirebaseStorage.getInstance();
@@ -104,6 +104,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         totalSeats = findViewById(R.id.totSeatInput);
 
         imageView = findViewById(R.id.imageview1);
+
     }
     // On click method of start date edit text
     public void setStartDate(View view) {
@@ -116,11 +117,14 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     }
 
     @Override
-    public void onBackPressed() {
-        Log.e(DEBUG_TAG,"On back pressed");
-        super.onBackPressed();
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
-
     //on date picked
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

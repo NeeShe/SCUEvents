@@ -136,15 +136,15 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 //saving the device tokens in database
-                SharedPreferences pref = getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
+                /*SharedPreferences pref = getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
                 String s = pref.getString("UserToken", "null");
-                FireBaseUtilClass.getDatabaseReference().child("UserTokens").child(s).setValue(true);
+                FireBaseUtilClass.getDatabaseReference().child("UserTokens").child(s).setValue(true);*/
 
-                SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
+              /*  SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
                 SharedPreferences.Editor myEdit = sharedPreferences.edit();
                 myEdit.putString("USER_ID", user.getUserID());
                 myEdit.putString("USER_NAME", user.getfName()+" "+user.getlName());
-                myEdit.commit();
+                myEdit.commit();*/
 
             }
 

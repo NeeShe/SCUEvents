@@ -1,6 +1,7 @@
 package com.project.scuevents.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.util.Log;
@@ -15,9 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+import com.project.scuevents.EventDetailActivity;
 import com.project.scuevents.NotificationActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
+import com.project.scuevents.model.FireBaseUtilClass;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -32,7 +39,9 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     ArrayList<String> notificationKeyList;
     Set<String> viewedNotifications;
     SharedPreferences prefs;
+  // ArrayList<NotificationClass> notificationClassList;
     Context context;
+    private static final String TAG = "NotificationModule";
 
 
 
@@ -46,6 +55,11 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 
     }
 
+  /*public NotificationAdapter(ArrayList<NotificationClass> notificationClassList,Context context){
+      this.notificationClassList = notificationClassList;
+      this.context = context;
+  }*/
+
     @NonNull
     @Override
     //inflating the view on the recyclerview
@@ -58,6 +72,8 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     //binding each event to the view holder
     @Override
     public void onBindViewHolder(@NonNull final NotificationAdapter.viewHolder holder, int position) {
+      /*final String notificationBodyItem = notificationClassList.get(position).getNotificationBody();
+      holder.notificationBody.setText(notificationBodyItem);*/
         final String notificationKeyStr = notificationKeyList.get(position);
         final String notificationBodyStr = notificationBodyList.get(position);
         final String eventId = eventIds.get(position);
@@ -85,7 +101,24 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
                editor.clear();
                editor.putStringSet("viewNotifiationNames", viewedNotifications);
                editor.apply();
-               //Log.d(TAG ,"notification is " + notificationKeyStr);
+               //getting the particular event object which needs to be passed on the event detail activity
+                DatabaseReference db = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventId);
+                db.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        EventClass eventClass = dataSnapshot.getValue(EventClass.class);
+                        Log.d(TAG ,"event name " + eventClass.getEventTitle());
+                        Log.d(TAG ,"event id " + eventClass.getEventID());
+                        Intent intent = new Intent(context, EventDetailActivity.class);
+                        intent.putExtra("Object", eventClass);
+                        context.startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        Toast.makeText(context,"Sorry Something went wrong ",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
@@ -94,7 +127,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     //returning the size of the eventList
     public int getItemCount() {
         return notificationBodyList.size();
-       // return notificationList.size();
+        //return notificationClassList.size();
     }
 
     //assignning the views variables required to be passed to the viewHolder class

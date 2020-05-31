@@ -1,5 +1,6 @@
 package com.project.scuevents.model;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,9 +9,17 @@ public class UserDetails {
     private String lName;
     private String email;
     private String userID;
+    private String userToken;
+
+
     private Set<String> regEventIDSet;
     private Set<String> hostedEventIDSet;
     private String imageUri;
+
+    public UserDetails(){
+
+    }
+
 
     public UserDetails(String fName, String lName, String email, String userID) {
         this.fName = fName;
@@ -38,13 +47,17 @@ public class UserDetails {
         this.hostedEventIDSet = hostedEventIDSet;
     }
 
-    public UserDetails() {
 
+    public UserDetails(String userID,String userToken) {
+        this.userID = userID;
+        this.userToken = userToken;
     }
+
 
     public String getfName() {
         return fName;
     }
+    public String getuserToken(){return userToken;}
 
     public void setfName(String name) {
         this.fName = name;
