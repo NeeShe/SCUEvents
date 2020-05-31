@@ -54,6 +54,8 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
     }
     private void getRegusers(){
+
+        //fetching reguserids
         FirebaseDatabase database = FireBaseUtilClass.getDatabase();
         DatabaseReference reference= database.getReference().child("Events").child(getIntent().getStringExtra("eid")).child("registeredUsers");
         reference.addValueEventListener(new ValueEventListener() {
@@ -73,7 +75,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
                 Toast.makeText(EventDetailHostActivity.this,"Error getting registered Users",Toast.LENGTH_LONG).show();
             }
         });
-
+//fetching usernames
         reference=database.getReference().child("Users");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
@@ -99,6 +101,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
             }
         });
+        //setting recyclerview
         RecyclerView recyclerView = findViewById(R.id.list_item);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         Log.d(TAG,"Befoer calling Adapter");

@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.project.scuevents.EventDetailActivity;
+import com.project.scuevents.EventDetailHostActivity;
 import com.project.scuevents.HostEventDetailActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
