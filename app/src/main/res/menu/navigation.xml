@@ -14,18 +14,4 @@
         app:actionLayout="@layout/notification_counter"
         app:showAsAction="always"
         android:orderInCategory="100"/>
-
-   <!-- <item
-        android:id="@+id/action_search"
-        android:icon="@drawable/search"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:title="Search" />
-    <item
-        android:id="@+id/action_notify"
-        android:icon="@drawable/notification"
-        android:orderInCategory="100"
-        app:showAsAction="always"
-        android:title="Notification" />-->
-
 </menu>

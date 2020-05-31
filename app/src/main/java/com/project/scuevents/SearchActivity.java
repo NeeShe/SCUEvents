@@ -11,7 +11,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -33,7 +32,6 @@ import com.project.scuevents.model.FireBaseUtilClass;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 
 public class SearchActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener{
     private static final String DEBUG_TAG="SearchActivity";
@@ -59,6 +57,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
 
     String selectCriteria;
     Calendar startDateCal;
+    Calendar endDateCal;
     int datePicker;
 
     @Override
@@ -85,6 +84,17 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         endDate.setInputType(InputType.TYPE_NULL);
 
         eventList=new ArrayList<>();
+
+        nameText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    showKeyboard();
+                } else {
+                    hideKeyboard();
+                }
+            }
+        });
     }
 
     public void searchSelection(View view) {
@@ -96,6 +106,8 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         }else{
             this.searchByOptions(searchSelection);
         }
+        resultText.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
     }
 
     private void searchByNameOptions() {
@@ -120,7 +132,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         nameText.setVisibility(View.GONE);
         subSelectionSpinner.setVisibility(View.GONE);
         checkButton.setVisibility(View.GONE);
-
+        hideKeyboard();
     }
 
     private void searchByOptions(String string) {
@@ -134,6 +146,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         startDate.setVisibility(View.GONE);
         eDateText.setVisibility(View.GONE);
         endDate.setVisibility(View.GONE);
+        hideKeyboard();
         String[] options=null;
         switch(string){
             case "Department":
@@ -164,6 +177,8 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         }
         resultText.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.VISIBLE);
+        hideKeyboard();
+        nameText.clearFocus();
         this.searchInDB("NAME",titleStr,this);
     }
 
@@ -213,14 +228,22 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
             startDateCal = c;
         }else{
             endDate.setText(dateString);
-            resultText.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.VISIBLE);
-            this.searchInDBByDate(startDateCal.getTimeInMillis(),c.getTimeInMillis(),this);
+            endDateCal = c;
+        }
+        if(startDateCal!= null && endDateCal!= null){
+            if(endDateCal.getTimeInMillis() > startDateCal.getTimeInMillis()){
+                resultText.setVisibility(View.VISIBLE);
+                recyclerView.setVisibility(View.VISIBLE);
+                this.searchInDBByDate(startDateCal.getTimeInMillis(),endDateCal.getTimeInMillis(),this);
+            }else{
+                endDate.setText("");
+                endDateCal = null;
+                recyclerView.setVisibility(View.GONE);
+            }
         }
     }
 
     private void searchInDBByDate(final long start, final long end,final Context context) {
-        hideKeyboard();
         db = FireBaseUtilClass.getDatabaseReference().child("Events");
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..");
@@ -240,11 +263,16 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                     }
                 }
                 progressDialog.hide();
-                eventAdapter = new EventAdapter(eventList,context);
-                recyclerView.setAdapter(eventAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                //showKeybord();
+                if(eventList.size() == 0){
+                    Toast.makeText(context,"No match found",Toast.LENGTH_SHORT).show();
+                    recyclerView.setVisibility(View.GONE);
+                }else{
+                    eventAdapter = new EventAdapter(eventList,context);
+                    recyclerView.setAdapter(eventAdapter);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                    recyclerView.setLayoutManager(linearLayoutManager);
+                }
+
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
@@ -255,9 +283,6 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
     }
 
     private void searchInDB(final String criteria, final String searchString,final Context context) {
-        if(criteria.equals("NAME")){
-            hideKeyboard();
-        }
         db = FireBaseUtilClass.getDatabaseReference().child("Events");
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Loading..");
@@ -291,12 +316,14 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                     }
                 }
                 progressDialog.hide();
-                eventAdapter = new EventAdapter(eventList,context);
-                recyclerView.setAdapter(eventAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-                recyclerView.setLayoutManager(linearLayoutManager);
-                if(criteria.equals("NAME")){
-                    showKeybord();
+                if(eventList.size() == 0){
+                    recyclerView.setVisibility(View.GONE);
+                    Toast.makeText(context,"No match found",Toast.LENGTH_SHORT).show();
+                }else{
+                    eventAdapter = new EventAdapter(eventList,context);
+                    recyclerView.setAdapter(eventAdapter);
+                    LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                    recyclerView.setLayoutManager(linearLayoutManager);
                 }
             }
 
@@ -308,7 +335,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
         db.addValueEventListener(valueEventListener);
     }
 
-    private void showKeybord() {
+    private void showKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
             ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE)).

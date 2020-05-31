@@ -24,9 +24,5 @@
             android:id="@+id/nav_chat"
             android:icon="@drawable/chat"
             android:title="Chat" />
-        <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/logouticon"
-            android:title="Logout" />
     </group>
 </menu>
