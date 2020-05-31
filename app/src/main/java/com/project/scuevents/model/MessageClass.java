@@ -71,7 +71,7 @@ public class MessageClass implements Serializable {
         if (!(obj instanceof MessageClass))
             return false;
         MessageClass other = (MessageClass) obj;
-        return chatID == null ? false :chatID.equals(other.chatID);//Compare Id if null falseF
+        return chatID != null && chatID.equals(other.chatID);//Compare Id if null falseF
     }
 
 

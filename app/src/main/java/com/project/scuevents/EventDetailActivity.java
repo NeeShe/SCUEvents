@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,7 +53,7 @@ public class EventDetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_eventdetail);
         Log.d(TAG, "onCreate: started.");
         // getIncomingIntent();
-        RegButton = (Button) findViewById(R.id.edregister);
+        RegButton = findViewById(R.id.edregister);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
         group = (EventClass) i.getSerializableExtra("Object");
@@ -107,6 +108,15 @@ public class EventDetailActivity extends AppCompatActivity{
         image = findViewById(R.id.edimage);
         Glide.with(this).asBitmap().load(group.getImageUrl()).into(image);
 
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void regButtonClick(View view){
