@@ -14,6 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="1dp"
+            android:background="@drawable/borderbottomline"
             android:orientation="vertical">
             <TextView
                 android:id="@+id/registered_event_title"
