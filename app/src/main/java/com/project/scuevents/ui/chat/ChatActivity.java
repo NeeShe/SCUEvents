@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -47,7 +49,11 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         Intent i = getIntent();
         group = (EventIDNameClass) i.getSerializableExtra("Object");
+
         getSupportActionBar().setTitle(group.getEventTitle());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         recyclerView = findViewById(R.id.msgRecyclerView);
         msgEditText = findViewById(R.id.msgEditText);
     }
@@ -62,6 +68,16 @@ public class ChatActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
         itemList.clear();
         this.retrieveMessages();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void retrieveMessages() {

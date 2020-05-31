@@ -59,13 +59,11 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
         holder.eventTimeDate.setText(eventClass.getEventDate());
         holder.eventName.setText(eventClass.getEventTitle());
         holder.eventVenue.setText(eventClass.getEventLocation());
-        //StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("Speakers").child(item.getSpeakerPushId());
+
         //assigning onClickListener to per event view card
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent(context, HostEventDetailActivity.class);
                 intent.putExtra("eaimage",eventClass.getImageUrl());
                 intent.putExtra("eatitle",eventClass.getEventTitle());
@@ -81,26 +79,6 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
                 intent.putExtra("eventtype",eventClass.getEventType());
                 intent.putExtra("department",eventClass.getDepartment());
 //                intent.putExtra("regusers",eventClass.getRegusers());
-
-// ToDo: fix datetime format
-//                Log.e("DEBUG","Event ID:"+eventClass.getEventID());
-//                Log.e("DEBUG","Event Title:"+eventClass.getEventTitle());
-//                Log.e("DEBUG","Event Description:"+eventClass.getEventDescription());
-//                Log.e("DEBUG","Host Name:"+eventClass.getHostName());
-//                Log.e("DEBUG","Host ID:"+eventClass.getHostID());
-//                Log.e("DEBUG","Host Token:"+eventClass.getHostToken());
-//                Log.e("DEBUG","Event Date:"+eventClass.getEventDate());
-//                Log.e("DEBUG","Event Time:"+eventClass.getEventTime());
-//                Log.e("DEBUG","End Date:"+eventClass.getEndDate());
-//                Log.e("DEBUG","End Time:"+eventClass.getEndTime());
-//                Log.e("DEBUG","Event Location:"+eventClass.getEventLocation());
-//                Log.e("DEBUG","Event Type:"+eventClass.getEventType());
-//                Log.e("DEBUG","Department:"+eventClass.getDepartment());
-//                Log.e("DEBUG","Image URL:"+eventClass.getImageUrl());
-//                Log.e("DEBUG","Total seats:"+eventClass.getTotalSeats());
-//                Log.e("DEBUG","Available seats:"+eventClass.getAvailableSeats());
-                //Intent intent = new Intent(context, EventDetailActivity.class);
-                //context.startActivity(intent);
                 context.startActivity(intent);
 
             }

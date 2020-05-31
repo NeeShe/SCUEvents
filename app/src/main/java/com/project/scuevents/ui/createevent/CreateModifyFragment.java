@@ -91,7 +91,7 @@ public class CreateModifyFragment extends Fragment {
                     EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
                     eventIDList.add(eventIDNameClass.getEventID());
                 }
-
+                nDialog.hide();
                 setEventAdapter(eventIDList);
 
             }
