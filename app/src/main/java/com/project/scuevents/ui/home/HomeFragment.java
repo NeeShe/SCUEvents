@@ -177,7 +177,7 @@ public class HomeFragment extends Fragment {
         inflater.inflate(R.menu.navigation, menu);
         final MenuItem menuItem = menu.findItem(R.id.action_notify);
         View actionView = menuItem.getActionView();
-        notificationCount = (TextView) actionView.findViewById(R.id.notification_badge);
+        notificationCount = actionView.findViewById(R.id.notification_badge);
         setupBadge();
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override

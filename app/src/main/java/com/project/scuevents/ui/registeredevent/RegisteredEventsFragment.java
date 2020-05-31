@@ -149,10 +149,10 @@ public class RegisteredEventsFragment extends Fragment {
     }
 
     private ArrayList<RegisteredEventClassified> buildClassifiedEventList(ArrayList<EventClass> eventList) {
-        Log.d(TAG ,"eventList retrieved from user table " );
-        for(EventClass eventClass:eventList){
-            Log.d(TAG ,"eventId " + eventClass.getEventID() );
-        }
+//        Log.d(TAG ,"eventList retrieved from user table " );
+//        for(EventClass eventClass:eventList){
+//            Log.d(TAG ,"eventId " + eventClass.getEventID() );
+//        }
 
         registeredEventClassifiedList = new ArrayList<>();
         classified = buildEventList(eventList);

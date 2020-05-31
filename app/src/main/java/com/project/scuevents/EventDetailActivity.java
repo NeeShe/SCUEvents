@@ -52,7 +52,7 @@ public class EventDetailActivity extends AppCompatActivity{
         setContentView(R.layout.activity_eventdetail);
         Log.d(TAG, "onCreate: started.");
         // getIncomingIntent();
-        RegButton = (Button) findViewById(R.id.edregister);
+        RegButton = findViewById(R.id.edregister);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
         group = (EventClass) i.getSerializableExtra("Object");
