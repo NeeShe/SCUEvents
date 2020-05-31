@@ -47,7 +47,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         //getting the current user
-        user = auth.getInstance().getCurrentUser();
+        user = FirebaseAuth.getInstance().getCurrentUser();
         Log.d(TAG, "user is " + user);
     }
 
