@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.project.scuevents" >
+    package="com.project.scuevents">
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -9,46 +12,47 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SplashActivity" android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".EventDetailHostActivity"></activity>
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
-        <activity android:name=".SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
-
+        <activity
+            android:name=".SignInActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".SignUpActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ForgotPasswordActivity" />
-        <activity android:name=".HostEventDetailActivity"
-            android:configChanges="screenLayout|orientation|screenSize"/>
+        <activity
+            android:name=".HostEventDetailActivity"
+            android:configChanges="screenLayout|orientation|screenSize" />
         <activity
             android:name=".NavigationActivity"
+            android:configChanges="screenLayout|orientation|screenSize"
             android:label="@string/title_activity_navigation"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="screenLayout|orientation|screenSize" />
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".NotificationActivity"
             android:label="Notifications"
-            android:parentActivityName=".NavigationActivity"/>
-
-        <activity android:name=".EventDetailActivity"
+            android:parentActivityName=".NavigationActivity" />
+        <activity
+            android:name=".EventDetailActivity"
             android:configChanges="screenLayout|orientation|screenSize" />
-
-        <activity android:name=".SearchActivity"
+        <activity
+            android:name=".SearchActivity"
             android:configChanges="screenLayout|orientation|screenSize"
-            android:parentActivityName=".NavigationActivity"/>
-
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".CreateEventActivity"
             android:configChanges="screenLayout|orientation|screenSize" />
-        <activity
-            android:name=".ui.chat.ChatActivity"/>
+        <activity android:name=".ui.chat.ChatActivity" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -59,8 +63,5 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

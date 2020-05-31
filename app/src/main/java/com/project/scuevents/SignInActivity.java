@@ -116,7 +116,6 @@ final String TAG="SIGNINACTIVITY";
                                                 Log.d(TAG,user.getEmail());}
                                                 if(email.equals(user.getEmail()))
                                                 {
-                                                    Log.d(TAG,"helo from signin if lopala");
                                                     SharedPreferences sharedPref = getSharedPreferences("user_details",MODE_PRIVATE);
                                                     SharedPreferences.Editor editor = sharedPref.edit();
                                                     editor.putString("firstname",user.getfName());

@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.project.scuevents.EventDetailActivity;
+import com.project.scuevents.EventDetailHostActivity;
 import com.project.scuevents.HostEventDetailActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
@@ -30,11 +31,10 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.hostViewHolder>{
-
+final String TAG="";
     ArrayList<EventClass> eventList;
     Context context;
     DatabaseReference db;
-
 
 
     //initializing the eventAdapter constructor
@@ -55,6 +55,7 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
     @Override
     public void onBindViewHolder(@NonNull hostViewHolder holder, int position) {
         final EventClass eventClass = eventList.get(position);
+        if(eventClass==null){Log.d(TAG,"event class is null");}
         Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
         holder.eventTimeDate.setText(eventClass.getEventDate());
         holder.eventName.setText(eventClass.getEventTitle());
@@ -66,7 +67,7 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
             public void onClick(View v) {
                 Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(context, HostEventDetailActivity.class);
+                Intent intent = new Intent(context, EventDetailHostActivity.class);
                 intent.putExtra("eaimage",eventClass.getImageUrl());
                 intent.putExtra("eatitle",eventClass.getEventTitle());
                 intent.putExtra("estartdate",eventClass.getEventDate());
@@ -80,6 +81,9 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
                 intent.putExtra("availableseats",eventClass.getAvailableSeats());
                 intent.putExtra("eventtype",eventClass.getEventType());
                 intent.putExtra("department",eventClass.getDepartment());
+                intent.putExtra("eid",eventClass.getEventID());
+                intent.putExtra("ehostid",eventClass.getHostID());
+                intent.putExtra("ehosttoken",eventClass.getHostToken());
 //                intent.putExtra("regusers",eventClass.getRegusers());
 
 // ToDo: fix datetime format
