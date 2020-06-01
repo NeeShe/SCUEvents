@@ -86,8 +86,8 @@ public class SignInActivity extends AppCompatActivity {
 
 
     public void createaccount(View view) {
-        Log.d(TAG, "create account clicked");
-        Toast.makeText(SignInActivity.this, "going to create account activity", Toast.LENGTH_LONG).show();
+        //Log.d(TAG, "create account clicked");
+        //Toast.makeText(SignInActivity.this, "going to create account activity", Toast.LENGTH_LONG).show();
         Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
         startActivity(intent);
     }

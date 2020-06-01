@@ -7,9 +7,6 @@
     android:layout_height="match_parent">
 
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SignUpActivity">
@@ -46,9 +43,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-
-        app:layout_constraintHorizontal_bias="0.492"
-
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/topguideline" />
 
@@ -71,17 +65,18 @@
         android:id="@+id/firstnametv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="FIRST NAME"
         android:gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@id/fName"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/signup" />
+        app:layout_constraintTop_toTopOf="@id/fName"
+        app:layout_constraintBottom_toBottomOf="@id/fName"/>
 
     <EditText
         android:id="@+id/fName"
         android:layout_width="0dp"
+        android:layout_marginTop="24dp"
         android:layout_height="wrap_content"
         android:background="@drawable/editextbackground"
         android:ems="10"
@@ -99,18 +94,19 @@
         android:id="@+id/lastnametv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
         android:gravity="center"
         android:text="LAST NAME"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@id/lName"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/firstnametv" />
+        app:layout_constraintTop_toTopOf="@id/lName"
+        app:layout_constraintBottom_toBottomOf="@id/lName"/>
 
     <EditText
         android:id="@+id/lName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:background="@drawable/editextbackground"
         android:ems="10"
         android:hint="Enter Here"
@@ -127,18 +123,19 @@
         android:id="@+id/emailtv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="EMAIL ID"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@id/email"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/lastnametv" />
+        app:layout_constraintTop_toTopOf="@id/email"
+        app:layout_constraintBottom_toBottomOf="@id/email"/>
 
     <EditText
         android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:background="@drawable/editextbackground"
         android:ems="10"
         android:hint="user@scu.edu"
@@ -155,18 +152,19 @@
         android:id="@+id/pwdtv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="PASSWORD"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@id/pwd"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/emailtv" />
+        app:layout_constraintTop_toTopOf="@id/pwd"
+        app:layout_constraintBottom_toBottomOf="@id/pwd"/>
 
     <EditText
         android:id="@+id/pwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:background="@drawable/editextbackground"
         android:ems="10"
         android:hint="password"
@@ -183,18 +181,19 @@
         android:id="@+id/cnfpwdtv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:gravity="center"
         android:text="CONFIRM PASSWORD"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         app:layout_constraintEnd_toStartOf="@id/cnfpwd"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-        app:layout_constraintTop_toBottomOf="@id/pwdtv" />
+        app:layout_constraintTop_toTopOf="@id/cnfpwd"
+        app:layout_constraintBottom_toBottomOf="@id/cnfpwd"/>
 
     <EditText
         android:id="@+id/cnfpwd"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:background="@drawable/editextbackground"
         android:ems="10"
         android:hint="password"
@@ -212,16 +211,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:background="@drawable/buttonbg"
+        android:background="@drawable/buttonpositivedesign"
         android:onClick="signup"
         android:padding="8dp"
         android:text="SIGN UP"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/cnfpwd" />
 

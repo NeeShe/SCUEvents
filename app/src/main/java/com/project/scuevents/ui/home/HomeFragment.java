@@ -251,7 +251,7 @@ public class HomeFragment extends Fragment {
                 editorNotification.putInt("notificationCount", mNotificationCountNew);
                 editorNotification.apply();
                 //notificationButtonClicked = true;
-                Toast.makeText(getActivity(), "Going to notification activity", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "Going to notification activity", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), NotificationActivity.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
