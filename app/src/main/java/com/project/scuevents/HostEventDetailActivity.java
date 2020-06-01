@@ -19,6 +19,13 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.project.scuevents.model.EventClass;
+import com.project.scuevents.model.FireBaseUtilClass;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -38,6 +45,43 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     EditText totalSeats;
     ImageView imageView;
     Uri imageFilePath;
+    EventClass event;
+    String edimageUrl ;
+    String edeventTitle;
+    String estartdate ;
+    String estarttime;
+    String elocation ;
+    String edes ;
+    String ehname;
+    String eendtime;
+    String eenddate ;
+    String category ;
+    String department;
+    String eventid;
+    EditText title ;
+
+    EditText when;
+    EditText enddate ;
+//        TextView hname = findViewById(R.id.edhname);
+//        hname.setText(ehname);
+
+    EditText time ;
+
+    EditText endtime ;
+
+    Spinner locSpinner;
+
+    Spinner depatspinner;
+
+    Spinner catspinner;
+
+    EditText description ;
+    ImageView image;
+
+    //ImageView image = findViewById(R.id.imageview1);
+
+
+
 
     Calendar startDateCal;
     @Override
@@ -83,18 +127,24 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
                 && getIntent().hasExtra("eahname")){
             Log.d(TAG, "getIncomingIntent: foundintentExtras");
             Log.d(TAG, getIntent().getStringExtra("eatitle"));
-            String edimageUrl = getIntent().getStringExtra("eaimage");
-            String edeventTitle = getIntent().getStringExtra("eatitle");
-            String estartdate = getIntent().getStringExtra("estartdate");
-            String estarttime = getIntent().getStringExtra("estarttime");
-            String elocation = getIntent().getStringExtra("ealocation");
-            String edes = getIntent().getStringExtra("eadescription");
-            //String ehname = getIntent().getStringExtra("eahname");
-            String eendtime=getIntent().getStringExtra("eendtime");
-            String eenddate =getIntent().getStringExtra("eenddate");
-            String category =getIntent().getStringExtra("eventtype");
-            String department =getIntent().getStringExtra("department");
-//            ArrayList regusers=getIntent().getCharSequenceArrayListExtra("regusers");
+            edimageUrl = getIntent().getStringExtra("eaimage");
+             edeventTitle = getIntent().getStringExtra("eatitle");
+             estartdate = getIntent().getStringExtra("estartdate");
+             estarttime = getIntent().getStringExtra("estarttime");
+             elocation = getIntent().getStringExtra("ealocation");
+             edes = getIntent().getStringExtra("eadescription");
+             ehname = getIntent().getStringExtra("eahname");
+             eendtime=getIntent().getStringExtra("eendtime");
+             eenddate =getIntent().getStringExtra("eenddate");
+             category =getIntent().getStringExtra("eventtype");
+             department =getIntent().getStringExtra("department");
+             eventid=getIntent().getStringExtra("eid");
+
+
+            //String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken,
+              //      String eventDate, String eventTime,
+                //    String endDate, String endTime, String eventLocation, String eventType, String department
+
             setImage(edimageUrl,edeventTitle,estartdate,estarttime,elocation,edes,eenddate,eendtime,category,department);
 
         }
@@ -210,39 +260,75 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     private void setImage(String edimageUrl,String edeventTitle,String estartdate, String estarttime,
                           String elocation,String edes,String eenddate,String eendtime,String category,String department){
         Log.d(TAG, "setImage: setting the image and name to widgets");
-        EditText title = findViewById(R.id.eventTitle);
+         title = findViewById(R.id.eventTitle);
         title.setText(edeventTitle);
 
-        EditText when = findViewById(R.id.startDateInput);
+        when = findViewById(R.id.startDateInput);
         when.setText(estartdate);
 
-        EditText enddate = findViewById(R.id.endDateInput);
+         enddate = findViewById(R.id.endDateInput);
         enddate.setText(eenddate);
 
 //        TextView hname = findViewById(R.id.edhname);
 //        hname.setText(ehname);
 
-        EditText time = findViewById(R.id.startTimeInput);
+         time = findViewById(R.id.startTimeInput);
         time.setText(estarttime);
 
-        EditText endtime = findViewById(R.id.endTimeInput);
+         endtime = findViewById(R.id.endTimeInput);
         endtime.setText(eendtime);
 
-        Spinner locSpinner=findViewById(R.id.locationSpinner);
+         locSpinner=findViewById(R.id.locationSpinner);
         locSpinner.setSelection(getIndex(locSpinner,elocation));
 
-        Spinner depatspinner=findViewById(R.id.deptSpinner);
+         depatspinner=findViewById(R.id.deptSpinner);
         depatspinner.setSelection(getIndex(depatspinner,department));
 
-        Spinner catspinner=findViewById(R.id.typeSpinner);
+         catspinner=findViewById(R.id.typeSpinner);
         catspinner.setSelection(getIndex(catspinner,category));
 
-        EditText description = findViewById(R.id.eventDescription);
+         description = findViewById(R.id.eventDescription);
         description.setText(edes);
 
-        ImageView image = findViewById(R.id.imageview1);
+        image = findViewById(R.id.imageview1);
 
         Glide.with(this).asBitmap().load(edimageUrl).into(image);
     }
 
+    public void update(View view) {
+        event=new EventClass();
+        event.setEventTitle(title.getText().toString());
+        event.setEventTime(startTime.getText().toString());
+        event.setDepartment(depatspinner.getSelectedItem().toString());
+        event.setEndDate(endDate.getText().toString());
+        event.setEventDate(startDate.getText().toString());
+        event.setEventDescription(eventDescript.getText().toString());
+        event.setEventType(catspinner.getSelectedItem().toString());
+        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+            //database = FirebaseDatabase.getInstance();
+
+        DatabaseReference reference= database.getReference().child("Events");
+            reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    dataSnapshot.getRef().child("eventType").setValue(catspinner.getSelectedItem().toString());
+                    dataSnapshot.getRef().child("endDate").setValue(endDate.getText().toString());
+                    dataSnapshot.getRef().child("department").setValue(depatspinner.getSelectedItem().toString());
+                    dataSnapshot.getRef().child("eventDate").setValue(startDate.getText().toString());
+                    dataSnapshot.getRef().child("endTime").setValue(endTime.getText().toString());
+                    dataSnapshot.getRef().child("eventLocation").setValue(locSpinner.getSelectedItem().toString());
+                    dataSnapshot.getRef().child("eventTime").setValue(startTime.getText().toString());
+                    dataSnapshot.getRef().child("eventTitle").setValue(eventTitle.getText().toString());
+                    dataSnapshot.getRef().child("eventDescription").setValue(eventDescript.getText().toString());
+
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    Log.d("User", databaseError.getMessage());
+                }
+            });
+
+
+    }
 }

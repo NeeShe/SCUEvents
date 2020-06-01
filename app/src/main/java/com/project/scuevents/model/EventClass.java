@@ -50,26 +50,22 @@ public class EventClass implements Serializable {
         this.startTimestamp=startTimestamp;
     }
 
-//    public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken, String eventDate, String eventTime,
-//                      String endDate, String endTime, String eventLocation, String eventType, String department, int totalSeats, int availableSeats, long startTimestamp, ArrayList regusers) {
-//        this.eventID = eventId;
-//        this.eventTitle = eventTitle;
-//        this.eventDescription = eventDescription;
-//        this.hostName = hostName;
-//        this.hostID = hostID;
-//        this.hostToken=hostToken;
-//        this.eventDate = eventDate;
-//        this.eventTime = eventTime;
-//        this.endDate = endDate;
-//        this.endTime = endTime;
-//        this.eventLocation = eventLocation;
-//        this.eventType = eventType;
-//        this.department = department;
-//        this.totalSeats = totalSeats;
-//        this.availableSeats=availableSeats;
-//        this.startTimestamp=startTimestamp;
-//        this.regusers=regusers;
-//    }
+    public EventClass(String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken, String eventDate, String eventTime,
+                      String endDate, String endTime, String eventLocation, String eventType, String department) {
+        this.eventID = eventId;
+        this.eventTitle = eventTitle;
+        this.eventDescription = eventDescription;
+        this.hostName = hostName;
+        this.hostID = hostID;
+        this.hostToken=hostToken;
+        this.eventDate = eventDate;
+        this.eventTime = eventTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.eventLocation = eventLocation;
+        this.eventType = eventType;
+        this.department = department;
+    }
 
     public EventClass(String eventId, String eventTitle, String eventDescription,String hostName, String hostID, String hostToken,String eventDate, String eventTime,
                String endDate, String endTime, String eventLocation, String eventType, String department, String imageUrl,int totalSeats, int availableSeats,long startTimestamp) {
