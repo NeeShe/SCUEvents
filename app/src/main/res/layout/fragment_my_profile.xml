@@ -72,7 +72,7 @@
         android:layout_width="250dp"
         android:layout_height="50dp"
         android:layout_margin="20dp"
-        android:background="@drawable/logoutlinearshape"
+        android:background="@drawable/buttonnegativedesign"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

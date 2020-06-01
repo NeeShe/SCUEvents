@@ -75,7 +75,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.viewHolder> 
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context,"Item " + eventClass.getEventTitle()+ " is clicked!",Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context, EventDetailActivity.class);
                 intent.putExtra("Object", eventClass);
                 context.startActivity(intent);

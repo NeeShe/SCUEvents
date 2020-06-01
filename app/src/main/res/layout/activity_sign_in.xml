@@ -15,7 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="395dp" />
+        app:layout_constraintGuide_end="20dp"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/leftguideline"
@@ -50,9 +50,6 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-
-        app:layout_constraintHorizontal_bias="0.492"
-
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/topguideline" />
 
@@ -64,17 +61,15 @@
 
         app:layout_constraintBottom_toTopOf="@id/bottomguideline"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
-
         app:layout_constraintTop_toBottomOf="@id/topguideline"
-        app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/logo_transparent" />
 
     <EditText
         android:id="@+id/email_textview"
-        android:layout_width="372dp"
-        android:layout_height="44dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_marginTop="32dp"
@@ -82,20 +77,18 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/bottomguideline" />
 
     <EditText
         android:id="@+id/password_textview"
-        android:layout_width="371dp"
-        android:layout_height="44dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/email_textview" />
 
@@ -125,7 +118,6 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-        app:layout_constraintHorizontal_bias="0.493"
         app:layout_constraintStart_toEndOf="@+id/leftguideline"
         app:layout_constraintTop_toBottomOf="@id/password_textview" />
 
@@ -140,7 +132,6 @@
         android:text="Forgot Password"
         android:textColor="@color/colorPrimaryDark"
         app:layout_constraintEnd_toStartOf="@id/rightguideline"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintTop_toBottomOf="@+id/createAccount" />
 
 

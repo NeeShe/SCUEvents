@@ -41,10 +41,10 @@
 
 
         <ImageView
+            android:id="@+id/edimage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="99"
-            android:id="@+id/edimage"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
@@ -54,9 +54,9 @@
 
         <TextView
             android:id="@+id/edtitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:gravity="center"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/satisfy"
             android:text="event name"
@@ -67,20 +67,21 @@
             app:layout_constraintTop_toBottomOf="@id/edimage" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/edhname"
             android:layout_marginLeft="10dp"
             android:text="hostName"
             android:textSize="16sp"
             android:textColor="#9B8D8D"
+            android:gravity="center"
             app:layout_constraintTop_toBottomOf="@id/edtitle"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            tools:ignore="MissingConstraints" />
+             />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/edwhen"
             android:gravity="center"
@@ -89,11 +90,12 @@
             android:textSize="20sp"
             android:textColor="#000"
             android:drawableLeft="@drawable/whenicon"
+            android:drawablePadding="10dp"
             app:layout_constraintTop_toBottomOf="@id/edhname"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintStart_toEndOf="@id/leftguideline" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/edtime"
             android:layout_marginLeft="10dp"
@@ -102,8 +104,9 @@
             android:textSize="20sp"
             android:textColor="#000"
             android:drawableLeft="@drawable/clockicon"
+            android:drawablePadding="10dp"
             app:layout_constraintTop_toBottomOf="@id/edwhen"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintStart_toEndOf="@id/leftguideline"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,10 +116,11 @@
             android:layout_marginTop="20dp"
             android:text="event location"
             android:drawableLeft="@drawable/locationicon"
+            android:drawablePadding="10dp"
             android:textSize="20sp"
             android:textColor="#000"
             app:layout_constraintTop_toBottomOf="@id/edtime"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintStart_toEndOf="@id/leftguideline"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -128,14 +132,15 @@
             android:textSize="20sp"
             android:textColor="#000"
             android:drawableLeft="@drawable/descicon"
+            android:drawablePadding="10dp"
             app:layout_constraintTop_toBottomOf="@id/edlocation"
-            tools:ignore="MissingConstraints" />
+            app:layout_constraintStart_toEndOf="@id/leftguideline" />
 
         <Button
             android:id="@+id/edregister"
+            android:layout_marginTop="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp"
             android:padding="8dp"
             android:layout_gravity="center_horizontal"

@@ -92,7 +92,7 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             public void onClick(View v) {
                 //on click setting the background color from red to white and redirecting to event details page
                 //saving the viewed notifications in shared preference
-               Toast.makeText(context,"eventId" +eventId + "is clicked!",Toast.LENGTH_SHORT).show();
+               //Toast.makeText(context,"eventId" +eventId + "is clicked!",Toast.LENGTH_SHORT).show();
                holder.notificationId.setBackgroundColor(Color.WHITE);
                holder.notificationBody.setTextColor(Color.parseColor("#B30738"));
                viewedNotifications.add(notificationKeyStr);
