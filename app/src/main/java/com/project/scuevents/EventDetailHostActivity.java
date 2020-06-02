@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -47,6 +48,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event_detail_host);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Log.d(TAG, "onCreate: started.");
         getIncomingIntent();
         getRegusers();
@@ -57,7 +59,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
         //fetching reguserids
         FirebaseDatabase database = FireBaseUtilClass.getDatabase();
-        DatabaseReference reference= database.getReference().child("Events").child(getIntent().getStringExtra("eid")).child("registeredUsers");
+        DatabaseReference reference= database.getReference().child("Events").child(getIntent().getStringExtra("eventid")).child("registeredUsers");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -102,13 +104,13 @@ public class EventDetailHostActivity extends AppCompatActivity {
             }
         });
         //setting recyclerview
-        RecyclerView recyclerView = findViewById(R.id.list_item);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        Log.d(TAG,"Befoer calling Adapter");
-        regUsersAdapter = new RegUsersAdapter(this, regusers);
-        recyclerView.setAdapter(regUsersAdapter);
-
-        Log.d(TAG,"in regusersid"+Integer.toString(regUserID.size()));
+//        RecyclerView recyclerView = findViewById(R.id.list_item);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        Log.d(TAG,"Befoer calling Adapter");
+//        regUsersAdapter = new RegUsersAdapter(this, regusers);
+//        recyclerView.setAdapter(regUsersAdapter);
+//
+//        Log.d(TAG,"in regusersid"+Integer.toString(regUserID.size()));
     }
 
     private void getIncomingIntent(){
@@ -177,10 +179,26 @@ public class EventDetailHostActivity extends AppCompatActivity {
         intent.putExtra("eahname",getIntent().getStringExtra("eahname"));
         intent.putExtra("eventtype",getIntent().getStringExtra("eventtype"));
         intent.putExtra("department",getIntent().getStringExtra("department"));
-        intent.putExtra("eid",getIntent().getStringExtra("eid"));
-        intent.putExtra("ehostid",getIntent().getStringExtra("ehostid"));
-        intent.putExtra("ehosttoken",getIntent().getStringExtra("ehosttoken"));
+        intent.putExtra("totalseats",getIntent().getIntExtra("totalseats",0));
+        intent.putExtra("eventid",getIntent().getStringExtra("eventid"));
         startActivity(intent);
+    }
+
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void listattendees(View view) {
+
+//        Intent intent = new Intent(EventDetailHostActivity.this, ListofAttendeesActivity.class);
+//        startActivity(intent);
     }
 }
 

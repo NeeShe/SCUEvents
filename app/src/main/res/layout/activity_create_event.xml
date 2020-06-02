@@ -72,7 +72,8 @@
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/imageview1" />
 
-        <EditText
+
+                <EditText
             android:id="@+id/eventTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -88,6 +89,7 @@
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/eventtitletv" />
 
+
         <TextView
             android:id="@+id/eventdesctv"
             android:layout_width="0dp"
@@ -100,7 +102,10 @@
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/eventTitle" />
 
-        <EditText
+
+
+
+                <EditText
             android:id="@+id/eventDescription"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

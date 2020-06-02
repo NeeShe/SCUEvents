@@ -65,7 +65,7 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, HostEventDetailActivity.class);
+                Intent intent = new Intent(context, EventDetailHostActivity.class);
                 intent.putExtra("eaimage",eventClass.getImageUrl());
                 intent.putExtra("eatitle",eventClass.getEventTitle());
                 intent.putExtra("estartdate",eventClass.getEventDate());
@@ -79,6 +79,7 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
                 intent.putExtra("availableseats",eventClass.getAvailableSeats());
                 intent.putExtra("eventtype",eventClass.getEventType());
                 intent.putExtra("department",eventClass.getDepartment());
+                intent.putExtra("eventid",eventClass.getEventID());
 //                intent.putExtra("regusers",eventClass.getRegusers());
                 context.startActivity(intent);
 

@@ -2,13 +2,16 @@ package com.project.scuevents;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
@@ -36,8 +40,8 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     private final static String DEBUG_TAG = "CreateEventActivity";
     private final int PICK_IMAGE_REQUEST = 71;
     int datePicker;
-    EditText eventTitle;
-    EditText eventDescript;
+    TextView eventTitle;
+    TextView eventDescript;
     EditText startDate;
     EditText startTime;
     EditText endDate;
@@ -58,7 +62,8 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     String category ;
     String department;
     String eventid;
-    EditText title ;
+    int TotalSeats;
+    TextView title ;
 
     EditText when;
     EditText enddate ;
@@ -75,7 +80,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
     Spinner catspinner;
 
-    EditText description ;
+    TextView description ;
     ImageView image;
 
     //ImageView image = findViewById(R.id.imageview1);
@@ -88,7 +93,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_event_detail);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         datePicker=0;
         eventTitle = findViewById(R.id.eventTitle);
         eventDescript = findViewById(R.id.eventDescription);
@@ -138,7 +143,8 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
              eenddate =getIntent().getStringExtra("eenddate");
              category =getIntent().getStringExtra("eventtype");
              department =getIntent().getStringExtra("department");
-             eventid=getIntent().getStringExtra("eid");
+             eventid=getIntent().getStringExtra("eventid");
+             TotalSeats=getIntent().getIntExtra("totalseats",0);
 
 
             //String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken,
@@ -257,6 +263,17 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         return 0;
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setImage(String edimageUrl,String edeventTitle,String estartdate, String estarttime,
                           String elocation,String edes,String eenddate,String eendtime,String category,String department){
         Log.d(TAG, "setImage: setting the image and name to widgets");
@@ -269,8 +286,8 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
          enddate = findViewById(R.id.endDateInput);
         enddate.setText(eenddate);
 
-//        TextView hname = findViewById(R.id.edhname);
-//        hname.setText(ehname);
+        totalSeats = findViewById(R.id.totalSeatInput);
+        totalSeats.setText(TotalSeats+"");
 
          time = findViewById(R.id.startTimeInput);
         time.setText(estarttime);
@@ -294,41 +311,108 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
         Glide.with(this).asBitmap().load(edimageUrl).into(image);
     }
+public void  updatedatabase(){
+    event=new EventClass();
+    event.setEventTitle(title.getText().toString());
+    event.setEventTime(startTime.getText().toString());
+    event.setDepartment(depatspinner.getSelectedItem().toString());
+    event.setEndDate(endDate.getText().toString());
+    event.setEventDate(startDate.getText().toString());
+    event.setEventDescription(eventDescript.getText().toString());
+    event.setEventType(catspinner.getSelectedItem().toString());
 
+    FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+    Log.d(TAG, eventid+ "event id" );
+//                                        database = FirebaseDatabase.getInstance();
+
+    DatabaseReference reference= database.getReference().child("Events");
+    reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+
+            dataSnapshot.getRef().child("eventType").setValue(catspinner.getSelectedItem().toString());
+            dataSnapshot.getRef().child("endDate").setValue(endDate.getText().toString());
+            dataSnapshot.getRef().child("department").setValue(depatspinner.getSelectedItem().toString());
+            dataSnapshot.getRef().child("eventDate").setValue(startDate.getText().toString());
+            dataSnapshot.getRef().child("endTime").setValue(endTime.getText().toString());
+            dataSnapshot.getRef().child("eventLocation").setValue(locSpinner.getSelectedItem().toString());
+            dataSnapshot.getRef().child("eventTime").setValue(startTime.getText().toString());
+            dataSnapshot.getRef().child("eventTitle").setValue(eventTitle.getText().toString());
+            dataSnapshot.getRef().child("eventDescription").setValue(eventDescript.getText().toString());
+            dataSnapshot.getRef().child("totalSeats").setValue(Integer.parseInt(totalSeats.getText().toString()));
+
+        }
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            Log.d("User", databaseError.getMessage());
+        }
+    });
+
+
+
+    Toast.makeText(HostEventDetailActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
+
+}
     public void update(View view) {
-        event=new EventClass();
-        event.setEventTitle(title.getText().toString());
-        event.setEventTime(startTime.getText().toString());
-        event.setDepartment(depatspinner.getSelectedItem().toString());
-        event.setEndDate(endDate.getText().toString());
-        event.setEventDate(startDate.getText().toString());
-        event.setEventDescription(eventDescript.getText().toString());
-        event.setEventType(catspinner.getSelectedItem().toString());
-        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
-            //database = FirebaseDatabase.getInstance();
 
-        DatabaseReference reference= database.getReference().child("Events");
-            reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
+
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setMessage("Do you want to save the information?");
+                    alertDialogBuilder.setPositiveButton("yes",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface arg0, int arg1) {
+                    updatedatabase();
+                                }
+                            });
+
+            alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-
-                    dataSnapshot.getRef().child("eventType").setValue(catspinner.getSelectedItem().toString());
-                    dataSnapshot.getRef().child("endDate").setValue(endDate.getText().toString());
-                    dataSnapshot.getRef().child("department").setValue(depatspinner.getSelectedItem().toString());
-                    dataSnapshot.getRef().child("eventDate").setValue(startDate.getText().toString());
-                    dataSnapshot.getRef().child("endTime").setValue(endTime.getText().toString());
-                    dataSnapshot.getRef().child("eventLocation").setValue(locSpinner.getSelectedItem().toString());
-                    dataSnapshot.getRef().child("eventTime").setValue(startTime.getText().toString());
-                    dataSnapshot.getRef().child("eventTitle").setValue(eventTitle.getText().toString());
-                    dataSnapshot.getRef().child("eventDescription").setValue(eventDescript.getText().toString());
-
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                    Log.d("User", databaseError.getMessage());
+                public void onClick(DialogInterface dialog, int which) {
+                    finish();
                 }
             });
 
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
+        }
+
+
+
+//        event=new EventClass();
+//        event.setEventTitle(title.getText().toString());
+//        event.setEventTime(startTime.getText().toString());
+//        event.setDepartment(depatspinner.getSelectedItem().toString());
+//        event.setEndDate(endDate.getText().toString());
+//        event.setEventDate(startDate.getText().toString());
+//        event.setEventDescription(eventDescript.getText().toString());
+//        event.setEventType(catspinner.getSelectedItem().toString());
+//        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+//            //database = FirebaseDatabase.getInstance();
+//
+//        DatabaseReference reference= database.getReference().child("Events");
+//            reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                    dataSnapshot.getRef().child("eventType").setValue(catspinner.getSelectedItem().toString());
+//                    dataSnapshot.getRef().child("endDate").setValue(endDate.getText().toString());
+//                    dataSnapshot.getRef().child("department").setValue(depatspinner.getSelectedItem().toString());
+//                    dataSnapshot.getRef().child("eventDate").setValue(startDate.getText().toString());
+//                    dataSnapshot.getRef().child("endTime").setValue(endTime.getText().toString());
+//                    dataSnapshot.getRef().child("eventLocation").setValue(locSpinner.getSelectedItem().toString());
+//                    dataSnapshot.getRef().child("eventTime").setValue(startTime.getText().toString());
+//                    dataSnapshot.getRef().child("eventTitle").setValue(eventTitle.getText().toString());
+//                    dataSnapshot.getRef().child("eventDescription").setValue(eventDescript.getText().toString());
+//
+//                }
+//                @Override
+//                public void onCancelled(DatabaseError databaseError) {
+//                    Log.d("User", databaseError.getMessage());
+//                }
+//            });
+
 
     }
-}
+//}
