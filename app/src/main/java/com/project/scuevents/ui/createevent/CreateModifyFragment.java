@@ -9,15 +9,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -28,22 +23,21 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.CreateEventActivity;
 import com.project.scuevents.R;
-import com.project.scuevents.adapter.EventAdapter;
 import com.project.scuevents.adapter.HostedEventAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.EventIDNameClass;
 import com.project.scuevents.model.FireBaseUtilClass;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
+
 
 public class CreateModifyFragment extends Fragment {
     RecyclerView eventRecyclerView ;
     private static final String DEBUG_TAG = "CreateModifyFragment";
     ArrayList<EventClass> eventList;
     DatabaseReference db;
+    DatabaseReference db1;
     HostedEventAdapter eventAdapter;
     ProgressDialog nDialog;
     ValueEventListener valueEventListener;
@@ -64,6 +58,7 @@ public class CreateModifyFragment extends Fragment {
         eventList = new ArrayList<>();
         return root;
     }
+
 
     @Override
     public void onResume() {
@@ -91,7 +86,7 @@ public class CreateModifyFragment extends Fragment {
                     EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
                     eventIDList.add(eventIDNameClass.getEventID());
                 }
-                nDialog.hide();
+                nDialog.dismiss();
                 setEventAdapter(eventIDList);
 
             }
@@ -106,13 +101,13 @@ public class CreateModifyFragment extends Fragment {
 
     private void setEventAdapter(final HashSet<String >eventIDList) {
         for(String eventID: eventIDList){
-            DatabaseReference db1 = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventID);
+            db1 = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventID);
             valueListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     EventClass eventClass = dataSnapshot.getValue(EventClass.class);
                     eventList.add(eventClass);
-                    nDialog.hide();
+                    nDialog.dismiss();
                     eventAdapter = new HostedEventAdapter(eventList,getActivity());
                     eventRecyclerView.setAdapter(eventAdapter);
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -121,19 +116,23 @@ public class CreateModifyFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
+                    Log.e(DEBUG_TAG,databaseError.toString());
+                    //Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
                 }
             };
-            db1.addValueEventListener(valueListener);
+            db1.addListenerForSingleValueEvent(valueListener);
         }
     }
 
     @Override
     public void onPause() {
+        Log.e(DEBUG_TAG,"onPause");
         eventList.clear();
         if(eventAdapter!= null){eventAdapter.notifyDataSetChanged();}
-        if(valueEventListener!= null){db.removeEventListener(valueEventListener);}
-        if(valueListener!=null){db.removeEventListener(valueListener);}
+        if(valueEventListener!= null){
+            db.removeEventListener(valueEventListener);}
+        if(valueListener!=null){
+            db1.removeEventListener(valueListener);}
         super.onPause();
     }
 }

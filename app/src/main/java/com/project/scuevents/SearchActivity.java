@@ -262,7 +262,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                         eventList.add(eventClass);
                     }
                 }
-                progressDialog.hide();
+                progressDialog.dismiss();
                 if(eventList.size() == 0){
                     Toast.makeText(context,"No match found",Toast.LENGTH_SHORT).show();
                     recyclerView.setVisibility(View.GONE);
@@ -315,7 +315,7 @@ public class SearchActivity extends AppCompatActivity implements DatePickerDialo
                         }
                     }
                 }
-                progressDialog.hide();
+                progressDialog.dismiss();
                 if(eventList.size() == 0){
                     recyclerView.setVisibility(View.GONE);
                     Toast.makeText(context,"No match found",Toast.LENGTH_SHORT).show();

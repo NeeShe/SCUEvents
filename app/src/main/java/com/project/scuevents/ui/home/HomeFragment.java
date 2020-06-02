@@ -13,12 +13,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,23 +40,32 @@ import java.util.Set;
 
 public class HomeFragment extends Fragment {
 
-    RecyclerView mainActivityRecyclerView ;
     private static final String TAG = "SCUEvents";
-    ArrayList<EventClass> eventList;
-    DatabaseReference db;
-    DatabaseReference dbNotifications;
-    EventAdapter eventAdapter;
+
+    RecyclerView mainActivityRecyclerView ;
     ProgressDialog nDialog;
-    SharedPreferences prefs;
-    Set<String> viewedEventNames;
     TextView notificationCount;
+
+
+
+
+    EventAdapter eventAdapter;
+    ArrayList<EventClass> eventList;
+    Set<String> viewedEventNames;
+
     int mNotificationCountOld;
     int mNotificationCountNew;
-    ArrayList<String> notificationKeyList;
-    boolean notificationButtonClicked;
+    String userID;
+
+    SharedPreferences prefs;
     SharedPreferences prefsUser;
     SharedPreferences prefsNotification;
-    String userID;
+
+
+    DatabaseReference db;
+    DatabaseReference dbNotifications;
+    ValueEventListener valueEventListener;
+    ValueEventListener notifyListener;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +75,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        Log.e(TAG,"onCreateView");
         View root = inflater.inflate(R.layout.fragment_home, container, false);
         //checking whether user token is getting properly saved in shared preference
         SharedPreferences pref = getActivity().getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
@@ -80,26 +88,10 @@ public class HomeFragment extends Fragment {
         eventList = new ArrayList<>();
         return root;
     }
-   /* @Override
-    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-        super.onViewStateRestored(savedInstanceState);
-        Log.d("Notificationbutton" ,"notification button onViewStateRestored ");
-        // This bundle has also been passed to onCreate.
-        if(savedInstanceState != null) {
-            Log.d("Notificationbutton" ,"enetering when savedInstance not null ");
-            notificationButtonClicked = savedInstanceState.getBoolean("notificationBellCounter");
-            mNotificationCountOld = savedInstanceState.getInt("notificationBellCount");
-        }
-        else {
-            notificationButtonClicked = false;
-            mNotificationCountOld =0;
-            mNotificationCountNew = 0;
-        }
-    }*/
 
     @Override
     public void onResume() {
-       // Log.d("Notificationbutton" ,"after retrieving onViewStateRestored values "+mNotificationCountOld+" "+mNotificationCountNew+" "+notificationButtonClicked);
+
         prefsNotification = getActivity().getSharedPreferences("NOTIFICATION_COUNT", Context.MODE_PRIVATE);
         //prefsNotification.edit().commit();
         mNotificationCountNew = 0;
@@ -112,8 +104,7 @@ public class HomeFragment extends Fragment {
         //retrieving the previous displayed events on recycler view
         prefs= getActivity().getSharedPreferences("com.projects.scuevents", Context.MODE_PRIVATE);
         viewedEventNames= prefs.getStringSet("viewEventNames", new HashSet<String>());
-        //Log.d(TAG ,"already viewed events " + viewedEventNames);
-        //Log.d(TAG ,"Fragment is in onResume and connecting to database ");
+
         super.onResume();
 
         //connecting to notification database to get the notification counts to display in notification badge
@@ -123,7 +114,7 @@ public class HomeFragment extends Fragment {
 
         //getting the no of notifications at present
         dbNotifications = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("notification");
-        dbNotifications.addValueEventListener(new ValueEventListener() {
+        notifyListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -132,7 +123,7 @@ public class HomeFragment extends Fragment {
                         mNotificationCountNew++;
                     }
                 }else{
-                    Log.d(TAG, "entering into non notification exixting part ");
+                    Log.d(TAG, "entering into non notification existing part ");
                 }
             }
 
@@ -140,14 +131,15 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getActivity(), "Sorry Something went wrong ", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        dbNotifications.addValueEventListener(notifyListener);
 
         //connecting to the database for events
         db = FireBaseUtilClass.getDatabaseReference().child("Events");
         nDialog = new ProgressDialog(getActivity());
         nDialog.setMessage("Loading..");
         nDialog.show();
-        db.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 eventList.clear();
@@ -156,7 +148,7 @@ public class HomeFragment extends Fragment {
                     EventClass eventClass = dataSnapshot1.getValue(EventClass.class);
                     eventList.add(eventClass);
                 }
-                nDialog.hide();
+                nDialog.dismiss();
                 Collections.reverse(eventList);
                 Log.d(TAG ,"the viewedEvents passed to an adapter " + viewedEventNames);
                 eventAdapter = new EventAdapter(eventList,getActivity(),viewedEventNames);
@@ -169,8 +161,10 @@ public class HomeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getActivity(),"Sorry Something went wrong ",Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        db.addValueEventListener(valueEventListener);
     }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -188,22 +182,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void setupBadge() {
-        //uncomment this if last attemp didn't work
-       /* if(notificationCount != null){
-            if(mNotificationCountOld < mNotificationCountNew ||
-                    !notificationButtonClicked && mNotificationCountOld < mNotificationCountNew ){
-                    notificationCount.setText(String.valueOf(Math.min(mNotificationCountNew, 20)));
-                    if (notificationCount.getVisibility() != View.VISIBLE) {
-                        notificationCount.setVisibility(View.VISIBLE);
-                    }
-            }else if(mNotificationCountNew == mNotificationCountOld||mNotificationCountNew == 0||notificationButtonClicked) {
-                if (notificationCount.getVisibility() != View.INVISIBLE) {
-                    notificationCount.setVisibility(View.INVISIBLE);
-                }
-                notificationButtonClicked = false;
-            }
-        }*/
-        Log.d(TAG ,"notification old "+mNotificationCountOld+" notification new "+mNotificationCountNew);
+        //Log.d(TAG ,"notification old "+mNotificationCountOld+" notification new "+mNotificationCountNew);
        if(mNotificationCountNew == mNotificationCountOld || mNotificationCountOld>mNotificationCountNew){
            if (notificationCount.getVisibility() != View.INVISIBLE) {
                notificationCount.setVisibility(View.INVISIBLE);
@@ -218,22 +197,8 @@ public class HomeFragment extends Fragment {
                notificationCount.setText(String.valueOf(mNotificationCountNew-mNotificationCountOld));
            }
        }
-
-        /*if (notificationCount != null) {
-           // Log.d("Notificationbutton" ,"notificationCountOld "+ mNotificationCountOld + "notificationCountNew "+mNotificationCountNew );
-            if (notificationButtonClicked && mNotificationCountNew == 0) {
-                if (notificationCount.getVisibility() != View.INVISIBLE) {
-                    notificationCount.setVisibility(View.INVISIBLE);
-                }
-            } else {
-                notificationCount.setText(String.valueOf(Math.min(mNotificationCountNew, 20)));
-                if (notificationCount.getVisibility() != View.VISIBLE) {
-                    notificationCount.setVisibility(View.VISIBLE);
-                }
-            }
-        }
-        // mNotificationCount = 0;*/
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -251,7 +216,6 @@ public class HomeFragment extends Fragment {
                 editorNotification.putInt("notificationCount", mNotificationCountNew);
                 editorNotification.apply();
                 //notificationButtonClicked = true;
-                //Toast.makeText(getActivity(), "Going to notification activity", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), NotificationActivity.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
@@ -261,65 +225,22 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    //saving the UI state for notification badge update
-   /* @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
-        Log.d("Notificationbutton" ,"mNotificationCountNew in onSavedInstance "+notificationButtonClicked);
-        savedInstanceState.putBoolean("notificationBellCounter", notificationButtonClicked);
-        savedInstanceState.putInt("notificationBellCount",mNotificationCountNew);
-    }*/
-
-
     @Override
     public void onPause() {
+        Log.e(TAG,"onPause");
+        if(valueEventListener!= null){db.removeEventListener(valueEventListener);}
+        if(notifyListener!=null){dbNotifications.removeEventListener(notifyListener);}
         super.onPause();
-        //Log.d(TAG ,"EventList in onPause ");
+
         //setting the shared preferences
         viewedEventNames.clear();
         for(int i = 0 ; i < eventList.size(); i++){
             viewedEventNames.add(eventList.get(i).getEventID());
         }
-        //Log.d(TAG ,"newly added viewed events " + viewedEventNames);
+
         SharedPreferences.Editor editor = prefs.edit();
         editor.clear();
         editor.putStringSet("viewEventNames", viewedEventNames);
         editor.apply();
-
-
-        Log.d("Notificationbutton" ,"notification button onPause ");
-
-       /* prefsNotification = getActivity().getSharedPreferences("NOTIFICATION_COUNT", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorNotification = prefsNotification.edit().clear();
-        //editorNotification.clear();
-        editorNotification.putInt("notificationCount", mNotificationCountNew);
-        editorNotification.apply();*/
     }
-
-   /* @Override
-    public void onStop() {
-        if(FirebaseDatabase.getInstance()!=null)
-        {
-            FirebaseDatabase.getInstance().goOffline();
-        }
-        super.onStop();
-        prefsNotification = getActivity().getSharedPreferences("NOTIFICATION_COUNT", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editorNotification = prefsNotification.edit().clear();
-        //editorNotification.clear();
-        editorNotification.putInt("notificationCount", mNotificationCountNew);
-        editorNotification.apply();
-    }*/
-
-
-    //original code
-   /* @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // TODO Add your menu entries here
-
-        inflater.inflate(R.menu.navigation, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }*/
 }

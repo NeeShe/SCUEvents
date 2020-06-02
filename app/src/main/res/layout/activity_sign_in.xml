@@ -111,7 +111,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="96dp"
         android:background="@drawable/buttonpositivedesign"
-        android:onClick="Signin"
+        android:onClick="signIn"
         android:text="SIGN IN"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@color/colorPrimary"
@@ -127,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:clickable="true"
-        android:onClick="forgotpassword"
+        android:onClick="forgotPassword"
 
         android:text="Forgot Password"
         android:textColor="@color/colorPrimaryDark"
