@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.MediaController;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -28,6 +27,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -66,6 +66,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     ProgressDialog progressDialog;
     FirebaseStorage storage;
+
     StorageReference storageReference;
 
     EventClass event;
@@ -106,15 +107,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         imageView = findViewById(R.id.imageview1);
 
     }
-    // On click method of start date edit text
-    public void setStartDate(View view) {
-        Calendar c = Calendar.getInstance();
-        int year = c.get(Calendar.YEAR);
-        int month = c.get(Calendar.MONTH);
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        datePicker = 0;
-        new DatePickerDialog(this, this, year, month, day).show();
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -125,6 +117,16 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         }
         return super.onOptionsItemSelected(item);
     }
+    // On click method of start date edit text
+    public void setStartDate(View view) {
+        Calendar c = Calendar.getInstance();
+        int year = c.get(Calendar.YEAR);
+        int month = c.get(Calendar.MONTH);
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        datePicker = 0;
+        new DatePickerDialog(this, this, year, month, day).show();
+    }
+
     //on date picked
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -224,8 +226,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             }
         }
     }
-
-
 
     //on click method of publish button
     public void publish(View view){
@@ -358,7 +358,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         FireBaseUtilClass.getDatabaseReference().child("Events").child(event.getEventID()).setValue(event).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                progressDialog.hide();
+                progressDialog.dismiss();
                 Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
                 CreateEventActivity.this.finish();
             }

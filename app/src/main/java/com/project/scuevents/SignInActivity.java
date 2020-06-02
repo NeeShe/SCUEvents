@@ -10,12 +10,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -26,22 +22,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.UserDetails;
 import com.project.scuevents.model.ValidationClass;
 import com.project.scuevents.service.MyFirebaseInstanceService;
-import com.project.scuevents.ui.home.HomeFragment;
+
 
 
 public class SignInActivity extends AppCompatActivity {
-    final String TAG="LogoutModule";
+    final String TAG="SignInActivity";
     FirebaseAuth auth;
     private ProgressDialog progressDialog;
     TextView createAccount;
@@ -59,9 +54,9 @@ public class SignInActivity extends AppCompatActivity {
 
         SharedPreferences prefsUser = getSharedPreferences("USER_TOKENS", Context.MODE_PRIVATE);
         String userID= prefsUser.getString("USER_ID", "null");
-        Log.d(TAG ,"logged userID in SignIn Acivity " + userID);
+        Log.d(TAG ,"logged userID in SignIn Activity " + userID);
         String userName = prefsUser.getString("USER_NAME", "null");
-        Log.d(TAG ,"logged userName in SignIn Acivity " + userName);
+        Log.d(TAG ,"logged userName in SignIn Activity " + userName);
 
         emailEditText = findViewById(R.id.email_textview);
 
@@ -93,19 +88,12 @@ public class SignInActivity extends AppCompatActivity {
     }
 
 
-    public void Signin(View view) {
-
-
+    public void signIn(View view) {
        final String email = emailEditText.getText().toString().trim();
        final String password = passwordEditText.getText().toString().trim();
-//        final SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-
         ValidationClass validationClass = new ValidationClass(emailEditText, passwordEditText);
+
         if (validationClass.validateEmail() && validationClass.validatePassword()) {
-
-
-
-
             progressDialog.setMessage("Signing In Please Wait...");
             progressDialog.show();
 
@@ -114,10 +102,6 @@ public class SignInActivity extends AppCompatActivity {
                     .addOnCompleteListener(SignInActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            //progressDialog.dismiss();
-
-                            //FirebaseDatabase database = FireBaseUtilClass.getDatabase();
-                            //if the task is successfull
                             if (task.isSuccessful()) {
                                 if (auth.getCurrentUser().isEmailVerified()) {
                                     //saving the device tokens in database
@@ -143,16 +127,7 @@ public class SignInActivity extends AppCompatActivity {
                                                 myEdit.putString("USER_ID", user.getUserID());
                                                 myEdit.putString("USER_NAME", user.getfName() + " " + user.getlName());
                                                 myEdit.commit();
-                                                //starting the activity here due to the async nature of data fetching from db, but helpful only when
-                                                //installing the app first time, as somehow first time its going to the navigation activity first and the
-                                                //shared preference getting saved once data is retrieved
-                                                //startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
-                                               /* Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                                finish();
-                                                startActivity(intent);
-                                                progressDialog.hide();*/
+
                                             }else{
                                                 Toast.makeText(SignInActivity.this, "Incorrect Email provided", Toast.LENGTH_LONG).show();
                                             }
@@ -164,17 +139,8 @@ public class SignInActivity extends AppCompatActivity {
                                         }
                                     });
 
-
                                     //providing a delay to start the activity , so that shared preference gets saved
                                     mHandler.postDelayed(mUpdateTimeTask, 1000);
-                                   /* Intent intent = new Intent(SignInActivity.this, NavigationActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    finish();
-                                    startActivity(intent);
-
-                                    progressDialog.hide();*/
-                                    //startActivity(new Intent(SignInActivity.this, NavigationActivity.class));
                                 } else {
                                     Toast.makeText(SignInActivity.this, "Email not verified", Toast.LENGTH_LONG).show();
                                 }
@@ -196,15 +162,13 @@ public class SignInActivity extends AppCompatActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             finish();
             startActivity(intent);
-            progressDialog.hide();
+            progressDialog.dismiss();
         }
     };
 
-    public void forgotpassword(View view) {
-
+    public void forgotPassword(View view) {
         Intent intent = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
-
     }
 }
 

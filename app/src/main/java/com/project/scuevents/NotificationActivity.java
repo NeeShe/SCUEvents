@@ -119,7 +119,7 @@ public class NotificationActivity extends AppCompatActivity {
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                       //  Log.d(TAG, "notification body retrieved from database " + dataSnapshot.getValue());
                                         notificationBodyList.add(dataSnapshot.getValue().toString());
-                                        nDialog.hide();
+                                        nDialog.dismiss();
                                         Collections.reverse(notificationBodyList);
                                         Collections.reverse(eventIdList);
                                         //passing the notificationBodyList, viewedNotifications, notificationkeys and eventId list  to the adapter

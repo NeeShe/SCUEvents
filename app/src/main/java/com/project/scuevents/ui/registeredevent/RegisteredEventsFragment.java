@@ -44,6 +44,7 @@ public class RegisteredEventsFragment extends Fragment {
     Calendar startDateCal;
     long todayTimestamp;
     DatabaseReference db;
+    DatabaseReference db1;
     ProgressDialog nDialog;
     TreeMap<String,ArrayList<EventClass>> classified;
     ArrayList<EventClass> eventList;
@@ -125,7 +126,7 @@ public class RegisteredEventsFragment extends Fragment {
         }
 
         for(String eventID: eventIDList){
-            DatabaseReference db1 = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventID);
+            db1 = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventID);
             valueListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -136,7 +137,7 @@ public class RegisteredEventsFragment extends Fragment {
                     eventCLassifiedRecyclerView.setAdapter(registeredEventClassifiedAdapter);
                     LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
                     eventCLassifiedRecyclerView.setLayoutManager(layoutManager);
-                    nDialog.hide();
+                    nDialog.dismiss();
                 }
 
                 @Override
@@ -144,7 +145,7 @@ public class RegisteredEventsFragment extends Fragment {
                     Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
                 }
             };
-            db1.addValueEventListener(valueListener);
+            db1.addListenerForSingleValueEvent(valueListener);
         }
     }
 
@@ -208,7 +209,7 @@ public class RegisteredEventsFragment extends Fragment {
         eventList.clear();
         if(registeredEventClassifiedAdapter!= null){registeredEventClassifiedAdapter.notifyDataSetChanged();}
         if(valueEventListener!= null){db.removeEventListener(valueEventListener);}
-        if(valueListener!=null){db.removeEventListener(valueListener);}
+        if(valueListener!=null){db1.removeEventListener(valueListener);}
         super.onPause();
     }
 

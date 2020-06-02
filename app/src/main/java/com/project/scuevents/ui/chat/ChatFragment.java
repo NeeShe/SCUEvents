@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,11 +33,18 @@ import java.util.ArrayList;
 public class ChatFragment extends Fragment {
 
     private static final String DEBUG_TAG = "ChatFragment";
+
     RecyclerView chatGroupRecyclerView ;
+
     ArrayList<EventIDNameClass> groupList;
     ChatGroupAdapter groupAdapter;
+
     DatabaseReference db;
+    DatabaseReference db1;
+    ValueEventListener hostListener;
+    ValueEventListener userListener;
     String userID;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -56,7 +64,7 @@ public class ChatFragment extends Fragment {
         userID = sh.getString("USER_ID", "");
         //first add hosted events group
         db = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("hostedEvents");
-        db.addValueEventListener(new ValueEventListener() {
+        hostListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 groupList.clear();
@@ -71,19 +79,22 @@ public class ChatFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        db.addValueEventListener(hostListener);
 
 
     }
 
     @Override
     public void onPause() {
+        if(hostListener!= null){db.removeEventListener(hostListener);}
+        if(userListener!=null){db1.removeEventListener(userListener);}
         super.onPause();
     }
 
     public void addRegEventsGroups(){
-        DatabaseReference db1 = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("registeredEvents");
-        db1.addValueEventListener(new ValueEventListener() {
+        db1 = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("registeredEvents");
+        userListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
@@ -98,9 +109,11 @@ public class ChatFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
+                Log.e(DEBUG_TAG,databaseError.toString());
+                //Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+        db1.addValueEventListener(userListener);
     }
 }
 
