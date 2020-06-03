@@ -44,6 +44,10 @@ public class EventDetailHostActivity extends AppCompatActivity {
     String elocation;
     String edes ;
     String ehname;
+    String estartime;
+    String eenddate;
+    String eventtype;
+    String department;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +56,8 @@ public class EventDetailHostActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: started.");
         getIncomingIntent();
         getRegusers();
-
-
     }
+
     private void getRegusers(){
 
         //fetching reguserids
@@ -90,32 +93,32 @@ public class EventDetailHostActivity extends AppCompatActivity {
                         Log.d(TAG,user.getfName()+" "+user.getlName());
 
                     }
-
+                    setadapter();
 
                 }
                 TextView numofattendees=findViewById(R.id.nattendee);
                 numofattendees.setText(Integer.toString(regusers.size()));
 
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
+
         });
-        //setting recyclerview
-//        RecyclerView recyclerView = findViewById(R.id.list_item);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        Log.d(TAG,"Befoer calling Adapter");
-//        regUsersAdapter = new RegUsersAdapter(this, regusers);
-//        recyclerView.setAdapter(regUsersAdapter);
-//
-//        Log.d(TAG,"in regusersid"+Integer.toString(regUserID.size()));
+        Log.d(TAG,"in regusersid"+Integer.toString(regUserID.size()));
+    }
+
+    private void setadapter(){
+    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_item);
+    Log.d(TAG,"Befoer calling Adapter");
+    regUsersAdapter = new RegUsersAdapter(this, regusers);
+    recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    recyclerView.setAdapter(regUsersAdapter);
     }
 
     private void getIncomingIntent(){
         Log.d(TAG, "getIncomingIntent: checking for Incoming Intents");
-
         Log.d(TAG,""+Integer.toString(regusers.size()));
         if(getIntent().hasExtra("eaimage") && getIntent().hasExtra("eatitle")
                 && getIntent().hasExtra("estartdate") && getIntent().hasExtra("ealocation")
@@ -129,14 +132,23 @@ public class EventDetailHostActivity extends AppCompatActivity {
              elocation = getIntent().getStringExtra("ealocation");
              edes = getIntent().getStringExtra("eadescription");
              ehname = getIntent().getStringExtra("eahname");
+             eenddate=getIntent().getStringExtra("eenddate");
+             estartime=getIntent().getStringExtra("estarttime");
+             eventtype=getIntent().getStringExtra("eventtype");
+             department=getIntent().getStringExtra("department");
             int total=getIntent().getIntExtra("totalseats",0);
             int available=getIntent().getIntExtra("availableseats",0);
             int numattendees=regUserID.size();
-            setImage(edimageUrl,edeventTitle,ehname,ewhen,etime,elocation,edes,numattendees);
+            if(!(ewhen.equalsIgnoreCase(eenddate)))
+            {
+                ewhen = ewhen +" to " + eenddate;
+            }
+                       estartime=estartime+" to "+etime;
+            setImage(edimageUrl,edeventTitle,ehname,ewhen,estartime,elocation,edes,numattendees,department,eventtype);
         }
     }
 //String nattend
-    private void setImage(String edimageUrl,String edeventTitle,String ehname,String ewhen, String etime,String elocation,String edes,int numa){
+    private void setImage(String edimageUrl,String edeventTitle,String ehname,String ewhen, String etime,String elocation,String edes,int numa, String etype, String edept){
         Log.d(TAG, "setImage: setting the image and name to widgets");
         TextView title = findViewById(R.id.edtitle);
         title.setText(edeventTitle);
@@ -156,6 +168,12 @@ public class EventDetailHostActivity extends AppCompatActivity {
         TextView description = findViewById(R.id.eddescription);
         description.setText(edes);
 
+        TextView eventtype = findViewById(R.id.etype);
+        eventtype.setText(etype);
+
+        TextView department = findViewById(R.id.edept);
+        department.setText(edept);
+
 
 
         ImageView image = findViewById(R.id.edimage);
@@ -166,7 +184,6 @@ public class EventDetailHostActivity extends AppCompatActivity {
     public void edit(View view) {
         Log.d(TAG,"from eventdetail to host");
         Intent intent = new Intent(EventDetailHostActivity.this, HostEventDetailActivity.class);
-        Log.d(TAG,getIntent().getStringExtra("eatitle"));
         Log.d(TAG,getIntent().getStringExtra("eatitle"));
         intent.putExtra("eaimage",getIntent().getStringExtra("eaimage"));
         intent.putExtra("eatitle",getIntent().getStringExtra("eatitle"));
@@ -194,43 +211,4 @@ public class EventDetailHostActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void listattendees(View view) {
-
-//        Intent intent = new Intent(EventDetailHostActivity.this, ListofAttendeesActivity.class);
-//        startActivity(intent);
-    }
 }
-
-//comment this thing
-
-/*public class MainActivity extends AppCompatActivity implements MyRecyclerViewAdapter.ItemClickListener {
-
-    MyRecyclerViewAdapter adapter;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // data to populate the RecyclerView with
-        ArrayList<String> animalNames = new ArrayList<>();
-        animalNames.add("Horse");
-        animalNames.add("Cow");
-        animalNames.add("Camel");
-        animalNames.add("Sheep");
-        animalNames.add("Goat");
-
-        // set up the RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.rvAnimals);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new MyRecyclerViewAdapter(this, animalNames);
-        adapter.setClickListener(this);
-        recyclerView.setAdapter(adapter);
-    }
-
-    @Override
-    public void onItemClick(View view, int position) {
-        Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
-    }
-}*/

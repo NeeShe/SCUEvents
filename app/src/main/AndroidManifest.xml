@@ -14,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".ListofAttendeesActivity"></activity>
         <activity
             android:name=".ChangePasswordActivity"
             android:configChanges="screenLayout|orientation|screenSize"

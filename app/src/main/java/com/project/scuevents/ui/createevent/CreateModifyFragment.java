@@ -77,6 +77,7 @@ public class CreateModifyFragment extends Fragment {
         SharedPreferences sh = getActivity().getSharedPreferences("USER_TOKENS", Context.MODE_PRIVATE);
         String userID = sh.getString("USER_ID", "");
         //connecting to the database
+        Log.d(DEBUG_TAG,"userid is "+userID);
         db = FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("hostedEvents");
         nDialog = new ProgressDialog(getActivity());
         nDialog.setMessage("Loading..");
@@ -90,6 +91,7 @@ public class CreateModifyFragment extends Fragment {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
                     EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
                     eventIDList.add(eventIDNameClass.getEventID());
+                    Log.d(DEBUG_TAG,"eventid is"+eventIDNameClass.getEventID());
                 }
                 nDialog.hide();
                 setEventAdapter(eventIDList);
@@ -112,6 +114,7 @@ public class CreateModifyFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     EventClass eventClass = dataSnapshot.getValue(EventClass.class);
                     eventList.add(eventClass);
+                    Log.d(DEBUG_TAG,"event host name"+eventClass.getHostName());
                     nDialog.hide();
                     eventAdapter = new HostedEventAdapter(eventList,getActivity());
                     eventRecyclerView.setAdapter(eventAdapter);

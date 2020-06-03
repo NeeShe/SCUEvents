@@ -67,8 +67,6 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
     EditText when;
     EditText enddate ;
-//        TextView hname = findViewById(R.id.edhname);
-//        hname.setText(ehname);
 
     EditText time ;
 
@@ -82,11 +80,6 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
     TextView description ;
     ImageView image;
-
-    //ImageView image = findViewById(R.id.imageview1);
-
-
-
 
     Calendar startDateCal;
     @Override
@@ -146,16 +139,11 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
              eventid=getIntent().getStringExtra("eventid");
              TotalSeats=getIntent().getIntExtra("totalseats",0);
 
-
-            //String eventId, String eventTitle, String eventDescription, String hostName, String hostID, String hostToken,
-              //      String eventDate, String eventTime,
-                //    String endDate, String endTime, String eventLocation, String eventType, String department
-
             setImage(edimageUrl,edeventTitle,estartdate,estarttime,elocation,edes,eenddate,eendtime,category,department);
 
         }
     }
-//    // On click method of start date edit text
+   // On click method of start date edit text
     public void setStartDate(View view) {
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -323,7 +311,7 @@ public void  updatedatabase(){
 
     FirebaseDatabase database = FireBaseUtilClass.getDatabase();
     Log.d(TAG, eventid+ "event id" );
-//                                        database = FirebaseDatabase.getInstance();
+//  database = FirebaseDatabase.getInstance();
 
     DatabaseReference reference= database.getReference().child("Events");
     reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -363,7 +351,8 @@ public void  updatedatabase(){
                             new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface arg0, int arg1) {
-                    updatedatabase();
+                                        updatedatabase();
+
                                 }
                             });
 
@@ -378,41 +367,5 @@ public void  updatedatabase(){
             alertDialog.show();
         }
 
-
-
-//        event=new EventClass();
-//        event.setEventTitle(title.getText().toString());
-//        event.setEventTime(startTime.getText().toString());
-//        event.setDepartment(depatspinner.getSelectedItem().toString());
-//        event.setEndDate(endDate.getText().toString());
-//        event.setEventDate(startDate.getText().toString());
-//        event.setEventDescription(eventDescript.getText().toString());
-//        event.setEventType(catspinner.getSelectedItem().toString());
-//        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
-//            //database = FirebaseDatabase.getInstance();
-//
-//        DatabaseReference reference= database.getReference().child("Events");
-//            reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                    dataSnapshot.getRef().child("eventType").setValue(catspinner.getSelectedItem().toString());
-//                    dataSnapshot.getRef().child("endDate").setValue(endDate.getText().toString());
-//                    dataSnapshot.getRef().child("department").setValue(depatspinner.getSelectedItem().toString());
-//                    dataSnapshot.getRef().child("eventDate").setValue(startDate.getText().toString());
-//                    dataSnapshot.getRef().child("endTime").setValue(endTime.getText().toString());
-//                    dataSnapshot.getRef().child("eventLocation").setValue(locSpinner.getSelectedItem().toString());
-//                    dataSnapshot.getRef().child("eventTime").setValue(startTime.getText().toString());
-//                    dataSnapshot.getRef().child("eventTitle").setValue(eventTitle.getText().toString());
-//                    dataSnapshot.getRef().child("eventDescription").setValue(eventDescript.getText().toString());
-//
-//                }
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//                    Log.d("User", databaseError.getMessage());
-//                }
-//            });
-
-
     }
-//}
+

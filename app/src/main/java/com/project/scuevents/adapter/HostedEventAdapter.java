@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.hostViewHolder>{
-
+    private static final String TAG = "EventDetailHostActivity";
     ArrayList<EventClass> eventList;
     Context context;
     DatabaseReference db;
@@ -56,11 +56,13 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
     @Override
     public void onBindViewHolder(@NonNull hostViewHolder holder, int position) {
         final EventClass eventClass = eventList.get(position);
-        Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
-        holder.eventTimeDate.setText(eventClass.getEventDate());
-        holder.eventName.setText(eventClass.getEventTitle());
-        holder.eventVenue.setText(eventClass.getEventLocation());
-
+        if(eventClass==null){Log.d(TAG,"event class is null");}
+        else {
+            Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
+            holder.eventTimeDate.setText(eventClass.getEventDate());
+            holder.eventName.setText(eventClass.getEventTitle());
+            holder.eventVenue.setText(eventClass.getEventLocation());
+        }
         //assigning onClickListener to per event view card
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override

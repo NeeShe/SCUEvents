@@ -129,6 +129,7 @@
             android:textColor="#000"
             android:drawableLeft="@drawable/descicon"
             app:layout_constraintTop_toBottomOf="@id/edlocation"
+
             tools:ignore="MissingConstraints" />
 
 
@@ -136,13 +137,13 @@
             android:id="@+id/enuma"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
             android:text="Number of Attendees : "
             android:textColor="#000"
             android:drawableLeft="@drawable/ic_people_black_24dp"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/eddescription"
+            app:layout_constraintTop_toBottomOf="@id/edept"
             tools:ignore="MissingConstraints" />
 
 
@@ -150,10 +151,9 @@
             android:id="@+id/elista"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="16dp"
-            android:text="List of Attendees"
-            android:onClick="listattendees"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:text="List of Attendees:"
             android:textColor="#000"
             android:textSize="20sp"
             android:drawableLeft="@drawable/ic_person_black_24dp"
@@ -169,9 +169,10 @@
             android:textColor="#000"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
+
             app:layout_constraintHorizontal_bias="0.558"
             app:layout_constraintStart_toEndOf="@id/enuma"
-            app:layout_constraintTop_toBottomOf="@+id/eddescription"
+            app:layout_constraintTop_toBottomOf="@+id/edept"
             tools:ignore="MissingConstraints" />
 
 
@@ -191,7 +192,7 @@
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/elista" />
+            app:layout_constraintTop_toBottomOf="@+id/list_item" />
 
 
         <Button
@@ -210,17 +211,45 @@
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintHorizontal_bias="0.934"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/elista" />
+            app:layout_constraintTop_toBottomOf="@+id/list_item" />
 
-<!--        <androidx.recyclerview.widget.RecyclerView-->
-<!--            android:id="@+id/list_item"-->
-<!--            android:layout_width="46dp"-->
-<!--            android:layout_height="229dp"-->
-<!--            tools:layout_editor_absoluteX="103dp"-->
-<!--            tools:layout_editor_absoluteY="295dp"-->
-<!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/elista"-->
-<!--            tools:ignore="MissingConstraints" />-->
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_item"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            app:layout_constraintTop_toBottomOf="@id/elista"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/edept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_label_black_24dp"
+            android:text="event type"
+            android:textColor="#000"
+            android:textSize="20sp"
+
+            app:layout_constraintTop_toBottomOf="@id/etype"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/etype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_local_offer_black_24dp"
+            android:text="event department"
+            android:textColor="#000"
+            android:textSize="20sp"
+
+            app:layout_constraintTop_toBottomOf="@id/eddescription"
+            tools:ignore="MissingConstraints" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
