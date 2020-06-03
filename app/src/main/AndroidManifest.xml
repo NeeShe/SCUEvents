@@ -11,9 +11,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".ChangePasswordActivity"
+        <activity android:name=".Notification1Activity"
+            android:label="Notifications"
+            android:parentActivityName=".NavigationActivity" ></activity>
+        <activity
+            android:name=".ChangePasswordActivity"
             android:configChanges="screenLayout|orientation|screenSize"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:label="Change Password" />
         <activity
             android:name=".SplashActivity"
             android:theme="@style/AppTheme.NoActionBar">
@@ -64,8 +68,8 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

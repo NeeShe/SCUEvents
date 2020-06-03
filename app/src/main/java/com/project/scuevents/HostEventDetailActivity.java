@@ -33,7 +33,6 @@ import java.util.Calendar;
 
 public class HostEventDetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "HostEventDetailActivity";
-    private final static String DEBUG_TAG = "CreateEventActivity";
     private final int PICK_IMAGE_REQUEST = 71;
     int datePicker;
     EditText eventTitle;
@@ -161,7 +160,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
     @Override
     public void onBackPressed() {
-        Log.e(DEBUG_TAG,"On back pressed");
+        Log.e(TAG,"On back pressed");
         super.onBackPressed();
     }
 

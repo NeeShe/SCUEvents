@@ -19,9 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.project.scuevents.ChangePasswordActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.SignInActivity;
+import com.project.scuevents.model.FireBaseUtilClass;
 
 
 public class MyProfileFragment extends Fragment implements View.OnClickListener {
@@ -56,12 +58,14 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
 
                 alertDialog.setButton( Dialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener()    {
                     public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(getActivity(), "Going to sign in activity", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), "Going to sign in activity", Toast.LENGTH_LONG).show();
                         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USER_TOKENS", Context.MODE_PRIVATE);
                         SharedPreferences.Editor myEdit = sharedPreferences.edit();
                         myEdit.putString("USER_ID", "null");
                         myEdit.putString("USER_NAME", "null");
                         myEdit.commit();
+                        DatabaseReference db = FireBaseUtilClass.getDatabaseReference();
+                        db.onDisconnect().cancel();
                         FirebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(getActivity(), SignInActivity.class);
                         startActivity(intent);

@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.UserDetails;
-import com.project.scuevents.service.MyFirebaseInstanceService;
 
 public class SignUpActivity extends AppCompatActivity {
     EditText fName;
@@ -46,7 +45,6 @@ public class SignUpActivity extends AppCompatActivity {
         confPassword=findViewById(R.id.cnfpwd);
 
         auth = FirebaseAuth.getInstance();
-//        getActionBar().hide();
     }
 
     public void signup(View view) {
@@ -91,24 +89,6 @@ public class SignUpActivity extends AppCompatActivity {
     }
     private void verifyEmail(){
         final FirebaseUser user = auth.getCurrentUser();
-
-//        auth.addAuthStateListener(new FirebaseAuth.AuthStateListener() {
-//            @Override
-//            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-//                FirebaseUser user = firebaseAuth.getCurrentUser();
-//                if (user.isEmailVerified()) {
-//                    Toast.makeText(SignUpActivity.this,
-//                            "Email verified:" + user.getEmail(),
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//                else {
-//                    Toast.makeText(SignUpActivity.this,
-//                            "Email not verified" + user.getEmail(),
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
         user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -125,9 +105,6 @@ public class SignUpActivity extends AppCompatActivity {
                         onBackPressed();
                     }
                 });
-
-
-//        onBackPressed();
     }
     private void updateToFirebase(final String fName,final String lName, final String email){
         String uid = auth.getCurrentUser().getUid();
@@ -135,16 +112,6 @@ public class SignUpActivity extends AppCompatActivity {
         FireBaseUtilClass.getDatabaseReference().child("Users").child(auth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                //saving the device tokens in database
-                /*SharedPreferences pref = getSharedPreferences(MyFirebaseInstanceService.PREFERENCE_NAME, Activity.MODE_PRIVATE);
-                String s = pref.getString("UserToken", "null");
-                FireBaseUtilClass.getDatabaseReference().child("UserTokens").child(s).setValue(true);*/
-
-              /*  SharedPreferences sharedPreferences = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
-                SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                myEdit.putString("USER_ID", user.getUserID());
-                myEdit.putString("USER_NAME", user.getfName()+" "+user.getlName());
-                myEdit.commit();*/
 
             }
 
@@ -177,13 +144,5 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-//        Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-//        startActivity(intent);
     }
-
-//    public void back(View view) {
-//
-//        this.finish();
-//    }
-
 }
