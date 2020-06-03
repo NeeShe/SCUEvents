@@ -48,6 +48,8 @@ public class EventDetailHostActivity extends AppCompatActivity {
     String eenddate;
     String eventtype;
     String department;
+
+    int i=0;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +64,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
         //fetching reguserids
         FirebaseDatabase database = FireBaseUtilClass.getDatabase();
-        DatabaseReference reference= database.getReference().child("Events").child(getIntent().getStringExtra("eventid")).child("registeredUsers");
+        final DatabaseReference reference= database.getReference().child("Events").child(getIntent().getStringExtra("eventid")).child("registeredUsers");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -73,6 +75,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
                 }
                 Log.d(TAG,"in USERID ref");
                 Log.d(TAG,Integer.toString(regUserID.size()));
+               // reference.goOffline();
             }
 
             @Override
@@ -81,8 +84,9 @@ public class EventDetailHostActivity extends AppCompatActivity {
             }
         });
 //fetching usernames
-        reference=database.getReference().child("Users");
-        reference.addValueEventListener(new ValueEventListener() {
+
+        final DatabaseReference reference1=database.getReference().child("Users");
+        reference1.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
@@ -93,9 +97,12 @@ public class EventDetailHostActivity extends AppCompatActivity {
                         Log.d(TAG,user.getfName()+" "+user.getlName());
 
                     }
-                    setadapter();
 
                 }
+                if(i==0) {
+                    setadapter();
+                }
+                i=i+1;
                 TextView numofattendees=findViewById(R.id.nattendee);
                 numofattendees.setText(Integer.toString(regusers.size()));
 
@@ -111,7 +118,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
     private void setadapter(){
     RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_item);
-    Log.d(TAG,"Befoer calling Adapter");
+    Log.d(TAG,"Before calling Adapter");
     regUsersAdapter = new RegUsersAdapter(this, regusers);
     recyclerView.setLayoutManager(new LinearLayoutManager(this));
     recyclerView.setAdapter(regUsersAdapter);
@@ -144,7 +151,10 @@ public class EventDetailHostActivity extends AppCompatActivity {
                 ewhen = ewhen +" to " + eenddate;
             }
                        estartime=estartime+" to "+etime;
-            setImage(edimageUrl,edeventTitle,ehname,ewhen,estartime,elocation,edes,numattendees,department,eventtype);
+            TextView totseat = findViewById(R.id.etotalseats);
+            totseat.setText("Total number of seats : "+total+"");
+
+            setImage(edimageUrl,edeventTitle,ehname,ewhen,estartime,elocation,edes,numattendees,eventtype, department);
         }
     }
 //String nattend
@@ -169,12 +179,10 @@ public class EventDetailHostActivity extends AppCompatActivity {
         description.setText(edes);
 
         TextView eventtype = findViewById(R.id.etype);
-        eventtype.setText(etype);
+        eventtype.setText("Event Type: "+etype);
 
         TextView department = findViewById(R.id.edept);
-        department.setText(edept);
-
-
+        department.setText("Department: "+edept);
 
         ImageView image = findViewById(R.id.edimage);
 
@@ -199,6 +207,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
         intent.putExtra("totalseats",getIntent().getIntExtra("totalseats",0));
         intent.putExtra("eventid",getIntent().getStringExtra("eventid"));
         startActivity(intent);
+        finish();
     }
 
 

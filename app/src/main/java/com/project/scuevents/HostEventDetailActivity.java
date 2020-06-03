@@ -1,6 +1,9 @@
 package com.project.scuevents;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -28,8 +31,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.project.scuevents.adapter.HostedEventAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
+import com.project.scuevents.ui.createevent.CreateModifyFragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -37,7 +42,7 @@ import java.util.Calendar;
 
 public class HostEventDetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "HostEventDetailActivity";
-    private final static String DEBUG_TAG = "CreateEventActivity";
+    private final static String DEBUG_TAG = "HostEventDetail";
     private final int PICK_IMAGE_REQUEST = 71;
     int datePicker;
     TextView eventTitle;
@@ -107,7 +112,29 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         Log.d(TAG, "onCreate: started.");
         getIncomingIntent();
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateventonresume();
+
+    }
+//Puppy this method seems complicated   sthahlle we try that fragment starting??
+    public void updateventonresume(){
+        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+        DatabaseReference reference = database.getReference().child("Events").child(eventid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -122,7 +149,8 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         if(getIntent().hasExtra("eaimage") && getIntent().hasExtra("eatitle")
                 && getIntent().hasExtra("estartdate") && getIntent().hasExtra("ealocation")
                 && getIntent().hasExtra("eadescription") && getIntent().hasExtra("eendtime")
-                && getIntent().hasExtra("eahname")){
+                && getIntent().hasExtra("eahname") && getIntent().hasExtra("estarttime") && getIntent().hasExtra("eenddate")
+                && getIntent().hasExtra("eventtype") && getIntent().hasExtra("department")){
             Log.d(TAG, "getIncomingIntent: foundintentExtras");
             Log.d(TAG, getIntent().getStringExtra("eatitle"));
             edimageUrl = getIntent().getStringExtra("eaimage");
@@ -251,7 +279,6 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         return 0;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -299,7 +326,9 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
         Glide.with(this).asBitmap().load(edimageUrl).into(image);
     }
-public void  updatedatabase(){
+
+    public void  updatedatabase(){
+
     event=new EventClass();
     event.setEventTitle(title.getText().toString());
     event.setEventTime(startTime.getText().toString());
@@ -336,14 +365,10 @@ public void  updatedatabase(){
         }
     });
 
-
-
     Toast.makeText(HostEventDetailActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
 
 }
     public void update(View view) {
-
-
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
             alertDialogBuilder.setMessage("Do you want to save the information?");
@@ -352,6 +377,8 @@ public void  updatedatabase(){
                                 @Override
                                 public void onClick(DialogInterface arg0, int arg1) {
                                         updatedatabase();
+//                                       finish();
+                                    onBackPressed();
 
                                 }
                             });
@@ -359,7 +386,9 @@ public void  updatedatabase(){
             alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    finish();
+//                    finish();
+
+                    Toast.makeText(HostEventDetailActivity.this,"Event details not saved",Toast.LENGTH_LONG).show();
                 }
             });
 

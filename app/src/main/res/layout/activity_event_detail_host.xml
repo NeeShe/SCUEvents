@@ -98,7 +98,7 @@
             android:id="@+id/edtime"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="20dp"
-            android:text="event Date,time"
+            android:text="event time"
             android:textSize="20sp"
             android:textColor="#000"
             android:drawableLeft="@drawable/clockicon"
@@ -143,7 +143,7 @@
             android:textColor="#000"
             android:drawableLeft="@drawable/ic_people_black_24dp"
             android:textSize="20sp"
-            app:layout_constraintTop_toBottomOf="@id/edept"
+            app:layout_constraintTop_toBottomOf="@id/etotalseats"
             tools:ignore="MissingConstraints" />
 
 
@@ -159,28 +159,68 @@
             android:drawableLeft="@drawable/ic_person_black_24dp"
             app:layout_constraintTop_toBottomOf="@id/enuma"
             tools:ignore="MissingConstraints" />
+        <TextView
+            android:id="@+id/etype"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_label_black_24dp"
+            android:text="event type"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/edept"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/edept"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_local_offer_black_24dp"
+            android:text="event department"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/eddescription"
+            tools:ignore="MissingConstraints" />
+
+        <TextView
+            android:id="@+id/etotalseats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/ic_group_add_black_24dp"
+            android:text="total seats"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:layout_constraintTop_toBottomOf="@id/etype"
+            tools:ignore="MissingConstraints" />
+
 
         <TextView
             android:id="@+id/nattendee"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
             android:text="NUM"
             android:textColor="#000"
             android:textSize="20sp"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
-
-            app:layout_constraintHorizontal_bias="0.558"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/enuma"
-            app:layout_constraintTop_toBottomOf="@+id/edept"
+            app:layout_constraintTop_toBottomOf="@+id/etotalseats"
+            app:layout_constraintLeft_toRightOf="@id/enuma"
             tools:ignore="MissingConstraints" />
-
 
         <Button
             android:id="@+id/modifybtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="20dp"
             android:background="@drawable/buttonpositivedesign"
             android:onClick="edit"
             android:padding="8dp"
@@ -200,6 +240,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
             android:background="@drawable/buttonpositivedesign"
             android:onClick="delete"
             android:padding="8dp"
@@ -223,33 +264,7 @@
             app:layout_constraintTop_toBottomOf="@id/elista"
             tools:ignore="MissingConstraints" />
 
-        <TextView
-            android:id="@+id/edept"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/ic_label_black_24dp"
-            android:text="event type"
-            android:textColor="#000"
-            android:textSize="20sp"
 
-            app:layout_constraintTop_toBottomOf="@id/etype"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
-            android:id="@+id/etype"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="20dp"
-            android:drawableLeft="@drawable/ic_local_offer_black_24dp"
-            android:text="event department"
-            android:textColor="#000"
-            android:textSize="20sp"
-
-            app:layout_constraintTop_toBottomOf="@id/eddescription"
-            tools:ignore="MissingConstraints" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

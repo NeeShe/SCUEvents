@@ -61,17 +61,17 @@
             app:layout_constraintBottom_toTopOf="@id/top2guideline"
             app:layout_constraintEnd_toEndOf="@id/imageview1" />
 
-        <TextView
-            android:id="@+id/eventtitletv"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="Event Title:"
-            android:textColor="@color/colorPrimaryDark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:layout_constraintEnd_toStartOf="@id/rightguideline"
-            app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/imageview1" />
+<!--        <TextView-->
+<!--            android:id="@+id/eventtitletv"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="8dp"-->
+<!--            android:text="Event Title:"-->
+<!--            android:textColor="@color/colorPrimaryDark"-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
+<!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/imageview1" />-->
 
 
         <!--        <EditText-->
@@ -90,19 +90,49 @@
 <!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
 <!--            app:layout_constraintTop_toBottomOf="@id/eventtitletv" />-->
 
+
+        <!--        <EditText-->
+        <!--            android:id="@+id/eventDescription"-->
+        <!--            android:layout_width="0dp"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:background="@drawable/editextbackground"-->
+        <!--            android:gravity="start|top"-->
+        <!--            android:hint="Describe!"-->
+        <!--            android:inputType="textMultiLine"-->
+        <!--            android:paddingStart="10dp"-->
+        <!--            android:paddingTop="10dp"-->
+        <!--            android:paddingEnd="10dp"-->
+        <!--            android:paddingBottom="10dp"-->
+        <!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
+        <!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
+        <!--            app:layout_constraintTop_toBottomOf="@id/eventdesctv" />-->
         <TextView
             android:id="@+id/eventTitle"
-            android:layout_width="373dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="40dp"
-            android:ems="10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/satisfy"
             android:text=""
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            android:textColor="#000000"
+            android:textColor="@color/colorPrimary"
+            android:textSize="33sp"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@id/eventtitletv"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/imageview1" />
+
+<!--        <EditText-->
+<!--            android:id="@+id/eventTitle"-->
+<!--            android:layout_width="373dp"-->
+<!--            android:layout_height="40dp"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:text=""-->
+<!--            android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
+<!--            android:textColor="#000000"-->
+<!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
+<!--            app:layout_constraintHorizontal_bias="0.0"-->
+<!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/imageview1" />-->
 
         <TextView
             android:id="@+id/eventdesctv"
@@ -117,22 +147,6 @@
             app:layout_constraintTop_toBottomOf="@id/eventTitle" />
 
 
-        <!--        <EditText-->
-<!--            android:id="@+id/eventDescription"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:background="@drawable/editextbackground"-->
-<!--            android:gravity="start|top"-->
-<!--            android:hint="Describe!"-->
-<!--            android:inputType="textMultiLine"-->
-<!--            android:paddingStart="10dp"-->
-<!--            android:paddingTop="10dp"-->
-<!--            android:paddingEnd="10dp"-->
-<!--            android:paddingBottom="10dp"-->
-<!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
-<!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/eventdesctv" />-->
-
         <TextView
             android:id="@+id/eventDescription"
             android:layout_width="373dp"
@@ -140,6 +154,7 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:text=""
+            android:textSize="20dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#000000"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
@@ -383,6 +398,8 @@
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/totSeattv" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
