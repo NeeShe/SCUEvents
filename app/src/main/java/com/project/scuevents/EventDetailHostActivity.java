@@ -187,6 +187,8 @@ public class EventDetailHostActivity extends AppCompatActivity {
         ImageView image = findViewById(R.id.edimage);
 
         Glide.with(this).asBitmap().load(edimageUrl).into(image);
+
+
     }
 
     public void edit(View view) {
