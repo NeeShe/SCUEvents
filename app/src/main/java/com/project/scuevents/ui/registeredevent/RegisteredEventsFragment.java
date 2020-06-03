@@ -46,12 +46,10 @@ public class RegisteredEventsFragment extends Fragment {
     DatabaseReference db;
     DatabaseReference db1;
     ProgressDialog nDialog;
-    TreeMap<String,ArrayList<EventClass>> classified;
-    ArrayList<EventClass> eventList;
-    ArrayList<RegisteredEventClassified> registeredEventClassifiedList;
     RegisteredEventClassifiedAdapter registeredEventClassifiedAdapter;
     ValueEventListener valueEventListener;
     ValueEventListener valueListener;
+
     private static final String TAG = "Registered";
 
     @Override
@@ -67,22 +65,17 @@ public class RegisteredEventsFragment extends Fragment {
 
         Log.d(TAG ,"eneteredRegistered ");
         View root = inflater.inflate(R.layout.fragment_registered_events, container, false);
-        eventList = new ArrayList<>();
-        registeredEventClassifiedList = new ArrayList<>();
+        //eventList = new ArrayList<>();
         eventCLassifiedRecyclerView = root.findViewById(R.id.registeredEvents);
-        /*LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        registeredEventClassifiedAdapter = new RegisteredEventClassifiedAdapter(buildClassifiedEventList());
-        eventCLassifiedRecyclerView.setAdapter(registeredEventClassifiedAdapter);
-        eventCLassifiedRecyclerView.setLayoutManager(layoutManager);*/
         return root;
     }
 
     @Override
     public void onResume() {
-        eventCLassifiedRecyclerView.removeAllViewsInLayout();
         super.onResume();
-        registeredEventClassifiedList.clear();
-        eventList.clear();
+        eventCLassifiedRecyclerView.removeAllViewsInLayout();
+        //registeredEventClassifiedList.clear();
+       // eventList.clear();
         if(registeredEventClassifiedAdapter != null){
             registeredEventClassifiedAdapter.notifyDataSetChanged();
         }
@@ -97,7 +90,8 @@ public class RegisteredEventsFragment extends Fragment {
         valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                eventList.clear();
+                 //registeredEventClassifiedList.clear();
+                 //eventList.clear();
                 HashSet<String> eventIDList = new HashSet<>();
 
                 for(DataSnapshot dataSnapshot1:dataSnapshot.getChildren()){
@@ -111,6 +105,8 @@ public class RegisteredEventsFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+                //this toast was throwing the
+                // Attempt to invoke virtual method 'java.lang.String android.content.Context.getPackageName()' on a null object reference error
                 Toast.makeText(getActivity(),databaseError.toString(),Toast.LENGTH_SHORT).show();
             }
         };
@@ -119,24 +115,30 @@ public class RegisteredEventsFragment extends Fragment {
     }
 
     private void setEventAdapter(final HashSet<String >eventIDList) {
-        Log.d(TAG ,"eventIDs retrieved from user table " );
+        //Log.d(TAG ,"eventIDs retrieved from user table " );
         Iterator<String> i = eventIDList.iterator();
         while (i.hasNext()){
-            Log.d(TAG ,"eventIDs are " + i.next() );
+            Log.d(TAG ,"eventIDs retireved are " + i.next() );
         }
 
+        //declaring a new arraylist solved the problem of duplicate values getting rendered
+        final ArrayList<EventClass> eventList = new ArrayList<>();
         for(String eventID: eventIDList){
             db1 = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventID);
             valueListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     EventClass eventClass = dataSnapshot.getValue(EventClass.class);
-                   // eventList.clear(); //this is clearing the whole eventlist , for which it was rendering only one event
+                    //eventList.clear(); //this is clearing the whole eventlist , for which it was rendering only one event
                     eventList.add(eventClass);
-                    registeredEventClassifiedAdapter = new RegisteredEventClassifiedAdapter(buildClassifiedEventList(eventList));
-                    eventCLassifiedRecyclerView.setAdapter(registeredEventClassifiedAdapter);
-                    LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-                    eventCLassifiedRecyclerView.setLayoutManager(layoutManager);
+                    if(!eventList.isEmpty()){
+                        registeredEventClassifiedAdapter = new RegisteredEventClassifiedAdapter(buildClassifiedEventList(eventList),getActivity());
+                        eventCLassifiedRecyclerView.setAdapter(registeredEventClassifiedAdapter);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+                        eventCLassifiedRecyclerView.setLayoutManager(layoutManager);
+                    }else{
+                        Log.d(TAG ,"eventList is null" );
+                    }
                     nDialog.dismiss();
                 }
 
@@ -154,9 +156,8 @@ public class RegisteredEventsFragment extends Fragment {
 //        for(EventClass eventClass:eventList){
 //            Log.d(TAG ,"eventId " + eventClass.getEventID() );
 //        }
-
-        registeredEventClassifiedList = new ArrayList<>();
-        classified = buildEventList(eventList);
+        ArrayList<RegisteredEventClassified> registeredEventClassifiedList = new ArrayList<>();
+        TreeMap<String,ArrayList<EventClass>> classified = buildEventList(eventList);
 
         for(Map.Entry mapElement:classified.entrySet()){
             String key = (String)mapElement.getKey();
@@ -173,30 +174,36 @@ public class RegisteredEventsFragment extends Fragment {
                 Log.d(TAG, "registered values " +eventClass.getEventID());
             }
         }
-
         return registeredEventClassifiedList;
     }
 
     private TreeMap<String,ArrayList<EventClass>> buildEventList(ArrayList<EventClass> eventList){
-        Log.d(TAG ,"eventList past to form the map " );
+        /*Log.d(TAG ,"eventList past to form the map " );
         for(EventClass eventClass:eventList){
             Log.d(TAG ,"eventId " + eventClass.getEventID() );
-        }
+        }*/
 
         HashMap<String,ArrayList<EventClass>> tempMap = new HashMap<>();
         for(EventClass eventClass:eventList){
-            long startTimeStamp = eventClass.getStartTimestamp();
-            if(Long.signum(startTimeStamp-todayTimestamp ) != -1){
-                if(!tempMap.containsKey("Upcoming Events")){
-                    tempMap.put("Upcoming Events",new ArrayList<EventClass>());
-                }
-                tempMap.get("Upcoming Events").add(eventClass);
-            }else{
-                if(!tempMap.containsKey("Past Events")){
-                    tempMap.put("Past Events",new ArrayList<EventClass>());
-                }
-                tempMap.get("Past Events").add(eventClass);
-            }
+                    if(eventClass != null) { //last change to handle null pointer
+                        long startTimeStamp = eventClass.getStartTimestamp();
+                        if (Long.signum(startTimeStamp - todayTimestamp) != -1) {
+                            if (!tempMap.containsKey("Upcoming Events")) {
+                                tempMap.put("Upcoming Events", new ArrayList<EventClass>());
+                            }
+                            tempMap.get("Upcoming Events").add(eventClass);
+                /*ArrayList tempEventClass = tempMap.get("Upcoming Events");
+                if(!tempEventClass.contains(eventClass))
+                    tempEventClass.add(eventClass);*/
+                        } else {
+                            if (!tempMap.containsKey("Past Events")) {
+                                tempMap.put("Past Events", new ArrayList<EventClass>());
+                            }
+                            tempMap.get("Past Events").add(eventClass);
+                        }
+                    }else{
+                        Log.d(TAG ,"event is null" );
+                    }
         }
         TreeMap<String, ArrayList<EventClass>> sortedTempMap = new TreeMap<>(Collections.<String>reverseOrder());
         sortedTempMap.putAll(tempMap);
@@ -205,9 +212,12 @@ public class RegisteredEventsFragment extends Fragment {
 
     @Override
     public void onPause() {
-        registeredEventClassifiedList.clear();
-        eventList.clear();
-        if(registeredEventClassifiedAdapter!= null){registeredEventClassifiedAdapter.notifyDataSetChanged();}
+        //registeredEventClassifiedList.clear();
+        //eventList.clear();
+        if(registeredEventClassifiedAdapter!= null){
+            Log.d(TAG ,"pausing of registeredEventClassifiedAdapter " );
+            registeredEventClassifiedAdapter.notifyDataSetChanged();
+        }
         if(valueEventListener!= null){db.removeEventListener(valueEventListener);}
         if(valueListener!=null){db1.removeEventListener(valueListener);}
         super.onPause();
