@@ -44,6 +44,7 @@ public class SignInActivity extends AppCompatActivity {
     EditText emailEditText;
     EditText passwordEditText;
     DatabaseReference db;
+    ValueEventListener valueEventListener;
     private Handler mHandler = new Handler();
 
 
@@ -114,7 +115,7 @@ public class SignInActivity extends AppCompatActivity {
                                     //user is already authenticated
 
                                     db= FireBaseUtilClass.getDatabaseReference().child("Users").child(auth.getCurrentUser().getUid());
-                                    db.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    valueEventListener = new ValueEventListener() {
                                         @Override
                                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                             UserDetails user = dataSnapshot.getValue(UserDetails.class);
@@ -137,7 +138,8 @@ public class SignInActivity extends AppCompatActivity {
                                         public void onCancelled(@NonNull DatabaseError databaseError) {
                                             Toast.makeText(SignInActivity.this, "Sorry Something went wrong ", Toast.LENGTH_SHORT).show();
                                         }
-                                    });
+                                    };
+                                    db.addListenerForSingleValueEvent(valueEventListener);
 
                                     //providing a delay to start the activity , so that shared preference gets saved
                                     mHandler.postDelayed(mUpdateTimeTask, 1000);
@@ -169,6 +171,12 @@ public class SignInActivity extends AppCompatActivity {
     public void forgotPassword(View view) {
         Intent intent = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if(valueEventListener!= null){db.removeEventListener(valueEventListener);}
     }
 }
 

@@ -1,5 +1,7 @@
 package com.project.scuevents.adapter;
 
+import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,15 +19,17 @@ import java.util.ArrayList;
 public class RegisteredEventClassifiedAdapter extends RecyclerView.Adapter<RegisteredEventClassifiedAdapter.viewHolder>{
     private RecyclerView.RecycledViewPool viewPool = new RecyclerView.RecycledViewPool();
     private ArrayList<RegisteredEventClassified> registeredEventClassifiedList;
+    private Context context;
 
-    public RegisteredEventClassifiedAdapter(ArrayList<RegisteredEventClassified> registeredEventClassifiedList){
+    public RegisteredEventClassifiedAdapter(ArrayList<RegisteredEventClassified> registeredEventClassifiedList,Context context){
         this.registeredEventClassifiedList = registeredEventClassifiedList;
+        this.context = context;
     }
 
     @NonNull
     @Override
     public RegisteredEventClassifiedAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_registeredeventclassified_recyclerview, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.fragment_registeredeventclassified_recyclerview, parent, false);
         return new viewHolder(view);
     }
 
@@ -42,8 +46,7 @@ public class RegisteredEventClassifiedAdapter extends RecyclerView.Adapter<Regis
         );
         layoutManager.setInitialPrefetchItemCount(registeredEventClassified.getEventClassList().size());
         // Create sub item view adapter
-        RegisteredEventAdapter registeredEventAdapter = new RegisteredEventAdapter(registeredEventClassified.getEventClassList());
-
+        RegisteredEventAdapter registeredEventAdapter = new RegisteredEventAdapter(registeredEventClassified.getEventClassList(),context);
         holder.eventRegisteredRecyclerView.setLayoutManager(layoutManager);
         holder.eventRegisteredRecyclerView.setAdapter(registeredEventAdapter);
         holder.eventRegisteredRecyclerView.setRecycledViewPool(viewPool);
