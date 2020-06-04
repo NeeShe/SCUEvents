@@ -6,12 +6,10 @@
     android:orientation="horizontal"
     android:padding="10dp"
     android:id="@+id/llayout">
-
     <TextView
         android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="#000"
         android:textSize="20sp"/>
-
 </LinearLayout>
