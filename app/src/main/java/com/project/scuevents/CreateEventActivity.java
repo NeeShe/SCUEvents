@@ -3,14 +3,18 @@ package com.project.scuevents;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -45,6 +49,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
 
     private final static String DEBUG_TAG = "CreateEventActivity";
     private final int PICK_IMAGE_REQUEST = 71;
+    private final int SET_CALENDAR_REQUEST = 72;
 
     EditText eventTitle;
     EditText eventDescript;
@@ -62,6 +67,11 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     Uri imageFilePath;
 
     Calendar startDateCal;
+    int startHour;
+    int startMin;
+    Calendar endDateCal;
+    int endHour;
+    int endMin;
     int datePicker; //0-start, 1-end
 
     ProgressDialog progressDialog;
@@ -70,6 +80,9 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     StorageReference storageReference;
 
     EventClass event;
+
+    String titleStr;
+    String descStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,6 +154,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             startDateCal = c;
         }else{
            endDate.setText(dateString);
+           endDateCal = c;
         }
 
     }
@@ -175,10 +189,14 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         Calendar mcurrentTime = Calendar.getInstance();
         int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
         int minute = mcurrentTime.get(Calendar.MINUTE);
+
+        int tempMin;
         TimePickerDialog mTimePicker;
         mTimePicker = new TimePickerDialog(this, new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                int tempHour = selectedHour;
+                int tempMin = selectedMinute;
                 String pmam = "AM";
                 if (selectedHour >= 12) {
                     pmam = "PM";
@@ -190,8 +208,12 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 String time = selectedHour + ":" + String.format("%02d", selectedMinute) + " " + pmam;
                 if(isStart){
                     startTime.setText(time);
+                    startHour = tempHour;
+                    startMin = tempMin;
                 }else{
                     endTime.setText(time);
+                    endHour = tempHour;
+                    endMin = tempMin;
                 }
             }
         }, hour, minute, false);//Yes 24 hour time
@@ -224,7 +246,10 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             {
                 e.printStackTrace();
             }
+        }else  if(requestCode == SET_CALENDAR_REQUEST){
+            Log.e(DEBUG_TAG, "resultCode:"+resultCode);
         }
+
     }
 
     //on click method of publish button
@@ -236,12 +261,12 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
     private void validatePublish() {
 
         //validate part
-        String titleStr = eventTitle.getText().toString();
+        titleStr = eventTitle.getText().toString();
         if(TextUtils.isEmpty(titleStr.trim())){
             eventTitle.setError("Should not be empty");
             return;
         }
-        String descStr = eventDescript.getText().toString();
+        descStr = eventDescript.getText().toString();
         if(TextUtils.isEmpty(descStr.trim())){
             eventDescript.setError("Should not be empty");
             return;
@@ -295,7 +320,14 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             Toast.makeText(this,"Select Cover Picture",Toast.LENGTH_SHORT).show();
             return;
         }
+
+        startDateCal.set(Calendar.HOUR_OF_DAY,startHour);
+        startDateCal.set(Calendar.MINUTE,startMin);
         long startTimestamp = startDateCal.getTimeInMillis();
+
+        endDateCal.set(Calendar.HOUR_OF_DAY,endHour);
+        endDateCal.set(Calendar.MINUTE,endMin);
+
         this.publishToFireBase(titleStr,descStr, sDateStr,sTimeStr,eDateStr,eTimeStr,
                 locStr,catStr,deptStr,Integer.parseInt(seatStr),imageFilePath,startTimestamp);
     }
@@ -360,7 +392,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
                 Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
-                CreateEventActivity.this.finish();
+                clearFields();
+                //CreateEventActivity.this.finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -368,5 +401,42 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 Toast.makeText(CreateEventActivity.this, "Failed to publish"+e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void clearFields() {
+        eventTitle.setText("");
+        eventDescript.setText("");
+        startDate.setText("");
+        startTime.setText("");
+        endDate.setText("");
+        endTime.setText("");
+        totalSeats.setText("");
+        //TODO decide if add to calendar required
+        addToCalendar();
+    }
+
+    private void addToCalendar() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create(); //Read Update
+        alertDialog.setTitle("Add to Calendar");
+        alertDialog.setMessage("Would you like to add the event to Calendar?");
+        alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }});
+
+        alertDialog.setButton( Dialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener()  {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Intent.ACTION_INSERT)
+                        .setData(CalendarContract.Events.CONTENT_URI)
+                        .putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, startDateCal.getTimeInMillis())
+                        .putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endDateCal.getTimeInMillis())
+                        .putExtra(CalendarContract.Events.TITLE, titleStr)
+                        .putExtra(CalendarContract.Events.DESCRIPTION,descStr)
+                        .putExtra(CalendarContract.Events.EVENT_LOCATION, "Santa Clara University")
+                        .putExtra(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                startActivityForResult(intent,SET_CALENDAR_REQUEST);
+            }});
+        alertDialog.show();
+
     }
 }

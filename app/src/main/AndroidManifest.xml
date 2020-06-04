@@ -8,9 +8,9 @@
 
     <application
         android:allowBackup="false"
-        android:icon="@mipmap/scu_launcher"
+        android:icon="@mipmap/funbroncos_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/scu_launcher_round"
+        android:roundIcon="@mipmap/funbroncos_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
