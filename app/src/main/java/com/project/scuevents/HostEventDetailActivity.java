@@ -1,14 +1,20 @@
 package com.project.scuevents;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -17,8 +23,18 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.project.scuevents.adapter.HostedEventAdapter;
+import com.project.scuevents.model.EventClass;
+import com.project.scuevents.model.FireBaseUtilClass;
+import com.project.scuevents.ui.createevent.CreateModifyFragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -26,10 +42,11 @@ import java.util.Calendar;
 
 public class HostEventDetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "HostEventDetailActivity";
+    private final static String DEBUG_TAG = "HostEventDetail";
     private final int PICK_IMAGE_REQUEST = 71;
     int datePicker;
-    EditText eventTitle;
-    EditText eventDescript;
+    TextView eventTitle;
+    TextView eventDescript;
     EditText startDate;
     EditText startTime;
     EditText endDate;
@@ -37,13 +54,44 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     EditText totalSeats;
     ImageView imageView;
     Uri imageFilePath;
+    EventClass event;
+    String edimageUrl ;
+    String edeventTitle;
+    String estartdate ;
+    String estarttime;
+    String elocation ;
+    String edes ;
+    String ehname;
+    String eendtime;
+    String eenddate ;
+    String category ;
+    String department;
+    String eventid;
+    int TotalSeats;
+    TextView title ;
+
+    EditText when;
+    EditText enddate ;
+
+    EditText time ;
+
+    EditText endtime ;
+
+    Spinner locSpinner;
+
+    Spinner depatspinner;
+
+    Spinner catspinner;
+
+    TextView description ;
+    ImageView image;
 
     Calendar startDateCal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_host_event_detail);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         datePicker=0;
         eventTitle = findViewById(R.id.eventTitle);
         eventDescript = findViewById(R.id.eventDescription);
@@ -64,7 +112,29 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         Log.d(TAG, "onCreate: started.");
         getIncomingIntent();
 
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateventonresume();
+
+    }
+    //Puppy this method seems complicated   sthahlle we try that fragment starting??
+    public void updateventonresume(){
+        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+        DatabaseReference reference = database.getReference().child("Events").child(eventid);
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
@@ -79,26 +149,29 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         if(getIntent().hasExtra("eaimage") && getIntent().hasExtra("eatitle")
                 && getIntent().hasExtra("estartdate") && getIntent().hasExtra("ealocation")
                 && getIntent().hasExtra("eadescription") && getIntent().hasExtra("eendtime")
-                && getIntent().hasExtra("eahname")){
+                && getIntent().hasExtra("eahname") && getIntent().hasExtra("estarttime") && getIntent().hasExtra("eenddate")
+                && getIntent().hasExtra("eventtype") && getIntent().hasExtra("department")){
             Log.d(TAG, "getIncomingIntent: foundintentExtras");
             Log.d(TAG, getIntent().getStringExtra("eatitle"));
-            String edimageUrl = getIntent().getStringExtra("eaimage");
-            String edeventTitle = getIntent().getStringExtra("eatitle");
-            String estartdate = getIntent().getStringExtra("estartdate");
-            String estarttime = getIntent().getStringExtra("estarttime");
-            String elocation = getIntent().getStringExtra("ealocation");
-            String edes = getIntent().getStringExtra("eadescription");
-            //String ehname = getIntent().getStringExtra("eahname");
-            String eendtime=getIntent().getStringExtra("eendtime");
-            String eenddate =getIntent().getStringExtra("eenddate");
-            String category =getIntent().getStringExtra("eventtype");
-            String department =getIntent().getStringExtra("department");
-//            ArrayList regusers=getIntent().getCharSequenceArrayListExtra("regusers");
+            edimageUrl = getIntent().getStringExtra("eaimage");
+            edeventTitle = getIntent().getStringExtra("eatitle");
+            estartdate = getIntent().getStringExtra("estartdate");
+            estarttime = getIntent().getStringExtra("estarttime");
+            elocation = getIntent().getStringExtra("ealocation");
+            edes = getIntent().getStringExtra("eadescription");
+            ehname = getIntent().getStringExtra("eahname");
+            eendtime=getIntent().getStringExtra("eendtime");
+            eenddate =getIntent().getStringExtra("eenddate");
+            category =getIntent().getStringExtra("eventtype");
+            department =getIntent().getStringExtra("department");
+            eventid=getIntent().getStringExtra("eventid");
+            TotalSeats=getIntent().getIntExtra("totalseats",0);
+
             setImage(edimageUrl,edeventTitle,estartdate,estarttime,elocation,edes,eenddate,eendtime,category,department);
 
         }
     }
-//    // On click method of start date edit text
+    // On click method of start date edit text
     public void setStartDate(View view) {
         Calendar c = Calendar.getInstance();
         int year = c.get(Calendar.YEAR);
@@ -110,7 +183,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
 
     @Override
     public void onBackPressed() {
-        Log.e(TAG,"On back pressed");
+        Log.e(DEBUG_TAG,"On back pressed");
         super.onBackPressed();
     }
 
@@ -206,42 +279,122 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         return 0;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                super.onBackPressed();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     private void setImage(String edimageUrl,String edeventTitle,String estartdate, String estarttime,
                           String elocation,String edes,String eenddate,String eendtime,String category,String department){
         Log.d(TAG, "setImage: setting the image and name to widgets");
-        EditText title = findViewById(R.id.eventTitle);
+        title = findViewById(R.id.eventTitle);
         title.setText(edeventTitle);
 
-        EditText when = findViewById(R.id.startDateInput);
+        when = findViewById(R.id.startDateInput);
         when.setText(estartdate);
 
-        EditText enddate = findViewById(R.id.endDateInput);
+        enddate = findViewById(R.id.endDateInput);
         enddate.setText(eenddate);
 
-//        TextView hname = findViewById(R.id.edhname);
-//        hname.setText(ehname);
+        totalSeats = findViewById(R.id.totalSeatInput);
+        totalSeats.setText(TotalSeats+"");
 
-        EditText time = findViewById(R.id.startTimeInput);
+        time = findViewById(R.id.startTimeInput);
         time.setText(estarttime);
 
-        EditText endtime = findViewById(R.id.endTimeInput);
+        endtime = findViewById(R.id.endTimeInput);
         endtime.setText(eendtime);
 
-        Spinner locSpinner=findViewById(R.id.locationSpinner);
+        locSpinner=findViewById(R.id.locationSpinner);
         locSpinner.setSelection(getIndex(locSpinner,elocation));
 
-        Spinner depatspinner=findViewById(R.id.deptSpinner);
+        depatspinner=findViewById(R.id.deptSpinner);
         depatspinner.setSelection(getIndex(depatspinner,department));
 
-        Spinner catspinner=findViewById(R.id.typeSpinner);
+        catspinner=findViewById(R.id.typeSpinner);
         catspinner.setSelection(getIndex(catspinner,category));
 
-        EditText description = findViewById(R.id.eventDescription);
+        description = findViewById(R.id.eventDescription);
         description.setText(edes);
 
-        ImageView image = findViewById(R.id.imageview1);
+        image = findViewById(R.id.imageview1);
 
         Glide.with(this).asBitmap().load(edimageUrl).into(image);
     }
 
+    public void  updatedatabase(){
+
+        event=new EventClass();
+        event.setEventTitle(title.getText().toString());
+        event.setEventTime(startTime.getText().toString());
+        event.setDepartment(depatspinner.getSelectedItem().toString());
+        event.setEndDate(endDate.getText().toString());
+        event.setEventDate(startDate.getText().toString());
+        event.setEventDescription(eventDescript.getText().toString());
+        event.setEventType(catspinner.getSelectedItem().toString());
+
+        FirebaseDatabase database = FireBaseUtilClass.getDatabase();
+        Log.d(TAG, eventid+ "event id" );
+//  database = FirebaseDatabase.getInstance();
+
+        DatabaseReference reference= database.getReference().child("Events");
+        reference.child(eventid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                dataSnapshot.getRef().child("eventType").setValue(catspinner.getSelectedItem().toString());
+                dataSnapshot.getRef().child("endDate").setValue(endDate.getText().toString());
+                dataSnapshot.getRef().child("department").setValue(depatspinner.getSelectedItem().toString());
+                dataSnapshot.getRef().child("eventDate").setValue(startDate.getText().toString());
+                dataSnapshot.getRef().child("endTime").setValue(endTime.getText().toString());
+                dataSnapshot.getRef().child("eventLocation").setValue(locSpinner.getSelectedItem().toString());
+                dataSnapshot.getRef().child("eventTime").setValue(startTime.getText().toString());
+                dataSnapshot.getRef().child("eventTitle").setValue(eventTitle.getText().toString());
+                dataSnapshot.getRef().child("eventDescription").setValue(eventDescript.getText().toString());
+                dataSnapshot.getRef().child("totalSeats").setValue(Integer.parseInt(totalSeats.getText().toString()));
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("User", databaseError.getMessage());
+            }
+        });
+
+        Toast.makeText(HostEventDetailActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
+
+    }
+    public void update(View view) {
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage("Do you want to save the information?");
+        alertDialogBuilder.setPositiveButton("yes",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        updatedatabase();
+//                                       finish();
+                        onBackPressed();
+
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+//                    finish();
+
+                Toast.makeText(HostEventDetailActivity.this,"Event details not saved",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 }
+
