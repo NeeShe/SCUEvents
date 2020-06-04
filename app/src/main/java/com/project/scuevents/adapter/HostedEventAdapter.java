@@ -20,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.project.scuevents.EventDetailActivity;
+import com.project.scuevents.EventDetailHostActivity;
 import com.project.scuevents.HostEventDetailActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.hostViewHolder>{
-
+    private static final String TAG = "EventDetailHostActivity";
     ArrayList<EventClass> eventList;
     Context context;
     DatabaseReference db;
@@ -55,16 +56,18 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
     @Override
     public void onBindViewHolder(@NonNull hostViewHolder holder, int position) {
         final EventClass eventClass = eventList.get(position);
-        Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
-        holder.eventTimeDate.setText(eventClass.getEventDate());
-        holder.eventName.setText(eventClass.getEventTitle());
-        holder.eventVenue.setText(eventClass.getEventLocation());
-
+        if(eventClass==null){Log.d(TAG,"event class is null");}
+        else {
+            Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
+            holder.eventTimeDate.setText(eventClass.getEventDate());
+            holder.eventName.setText(eventClass.getEventTitle());
+            holder.eventVenue.setText(eventClass.getEventLocation());
+        }
         //assigning onClickListener to per event view card
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, HostEventDetailActivity.class);
+                Intent intent = new Intent(context, EventDetailHostActivity.class);
                 intent.putExtra("eaimage",eventClass.getImageUrl());
                 intent.putExtra("eatitle",eventClass.getEventTitle());
                 intent.putExtra("estartdate",eventClass.getEventDate());
@@ -78,6 +81,7 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
                 intent.putExtra("availableseats",eventClass.getAvailableSeats());
                 intent.putExtra("eventtype",eventClass.getEventType());
                 intent.putExtra("department",eventClass.getDepartment());
+                intent.putExtra("eventid",eventClass.getEventID());
 //                intent.putExtra("regusers",eventClass.getRegusers());
                 context.startActivity(intent);
 

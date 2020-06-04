@@ -3,6 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.project.scuevents">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="false"
         android:icon="@mipmap/scu_launcher"
@@ -11,9 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".Notification1Activity"
+        <activity android:name=".EventDetailHostActivity"></activity>
+        <activity
+            android:name=".Notification1Activity"
             android:label="Notifications"
-            android:parentActivityName=".NavigationActivity" ></activity>
+            android:parentActivityName=".NavigationActivity" />
         <activity
             android:name=".ChangePasswordActivity"
             android:configChanges="screenLayout|orientation|screenSize"
@@ -68,8 +73,5 @@
             </intent-filter>
         </service>
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
