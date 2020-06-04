@@ -120,7 +120,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
         updateventonresume();
 
     }
-    //Puppy this method seems complicated   sthahlle we try that fragment starting??
+
     public void updateventonresume(){
         FirebaseDatabase database = FireBaseUtilClass.getDatabase();
         DatabaseReference reference = database.getReference().child("Events").child(eventid);
