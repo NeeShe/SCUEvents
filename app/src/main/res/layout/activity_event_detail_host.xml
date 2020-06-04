@@ -46,7 +46,6 @@
             android:layout_weight="99"
             android:id="@+id/edimage"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/topguideline"
