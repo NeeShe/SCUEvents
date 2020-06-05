@@ -70,6 +70,7 @@ public class Notification1Adapter extends RecyclerView.Adapter<Notification1Adap
         holder.notificationId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final View view = v;
 //                Toast.makeText(context,"the notification for key "+notificationKeyStr+" is "+notificationClass.getBody()+" for event "+notificationClass.getEventName()
 //                        +" view set from "+notificationClass.isView()+" to true",Toast.LENGTH_SHORT).show();
                 //on click setting the background color from red to white and redirecting to event details page
@@ -100,7 +101,10 @@ public class Notification1Adapter extends RecyclerView.Adapter<Notification1Adap
                             intent.putExtra("Object", eventClass);
                             context.startActivity(intent);
                         }else{
-                            Toast.makeText(context,"The Event is cancelled ",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(context,"The Event is cancelled ",Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar_success = Snackbar
+                                    .make(view, "This Event is cancelled", Snackbar.LENGTH_LONG);
+                            snackbar_success.show();
                         }
                     }
 
