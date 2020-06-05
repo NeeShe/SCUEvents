@@ -28,6 +28,7 @@ import com.project.scuevents.model.FireBaseUtilClass;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Set;
 
 public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.hostViewHolder>{
@@ -67,23 +68,35 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
         holder.eventId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, EventDetailHostActivity.class);
-                intent.putExtra("eaimage",eventClass.getImageUrl());
-                intent.putExtra("eatitle",eventClass.getEventTitle());
-                intent.putExtra("estartdate",eventClass.getEventDate());
-                intent.putExtra("eenddate",eventClass.getEndDate());
-                intent.putExtra("eendtime",eventClass.getEndTime());
-                intent.putExtra("estarttime",eventClass.getEventTime());
-                intent.putExtra("ealocation",eventClass.getEventLocation());
-                intent.putExtra("eadescription",eventClass.getEventDescription());
-                intent.putExtra("eahname","(Event hosted by "+eventClass.getHostName()+")");
-                intent.putExtra("totalseats",eventClass.getTotalSeats());
-                intent.putExtra("availableseats",eventClass.getAvailableSeats());
-                intent.putExtra("eventtype",eventClass.getEventType());
-                intent.putExtra("department",eventClass.getDepartment());
-                intent.putExtra("eventid",eventClass.getEventID());
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.YEAR,c.get(Calendar.YEAR));
+                c.set(Calendar.MONTH,c.get(Calendar.MONTH));
+                c.set(Calendar.DATE,c.get(Calendar.DATE));
+                c.set(Calendar.HOUR_OF_DAY,c.get(Calendar.HOUR_OF_DAY));
+                c.set(Calendar.MINUTE,c.get(Calendar.MINUTE));
+                long currentTime = c.getTimeInMillis();
+                if(eventClass.getStartTimestamp() < currentTime){
+                    Toast.makeText(context,"Cannot modify past event",Toast.LENGTH_SHORT).show();
+                }else{
+                    Intent intent = new Intent(context, EventDetailHostActivity.class);
+                    intent.putExtra("eaimage",eventClass.getImageUrl());
+                    intent.putExtra("eatitle",eventClass.getEventTitle());
+                    intent.putExtra("estartdate",eventClass.getEventDate());
+                    intent.putExtra("eenddate",eventClass.getEndDate());
+                    intent.putExtra("eendtime",eventClass.getEndTime());
+                    intent.putExtra("estarttime",eventClass.getEventTime());
+                    intent.putExtra("ealocation",eventClass.getEventLocation());
+                    intent.putExtra("eadescription",eventClass.getEventDescription());
+                    intent.putExtra("eahname","(Event hosted by "+eventClass.getHostName()+")");
+                    intent.putExtra("totalseats",eventClass.getTotalSeats());
+                    intent.putExtra("availableseats",eventClass.getAvailableSeats());
+                    intent.putExtra("eventtype",eventClass.getEventType());
+                    intent.putExtra("department",eventClass.getDepartment());
+                    intent.putExtra("eventid",eventClass.getEventID());
 //                intent.putExtra("regusers",eventClass.getRegusers());
-                context.startActivity(intent);
+                    context.startActivity(intent);
+                }
+
 
             }
         });

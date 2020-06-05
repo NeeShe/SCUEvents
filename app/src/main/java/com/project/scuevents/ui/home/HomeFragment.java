@@ -107,10 +107,10 @@ public class HomeFragment extends Fragment {
         //addign the remove listner was the last change made to make runnable work properly
         if(eventAdapter!= null){eventAdapter.notifyDataSetChanged();}
         if(valueEventListener!= null){
-            Log.e(TAG,"entering into  onresume removelistner");
+            //Log.e(TAG,"entering into  onresume removelistner");
             db.removeEventListener(valueEventListener);}
         if(notifyListener!=null){
-            Log.e(TAG,"entering into onresume  removelistner1");
+            //Log.e(TAG,"entering into onresume  removelistner1");
             dbNotifications.removeEventListener(notifyListener);}
 
        // Log.d("Notificationbutton" ,"after retrieving onViewStateRestored values "+mNotificationCountOld+" "+mNotificationCountNew+" "+notificationButtonClicked);
@@ -152,7 +152,7 @@ public class HomeFragment extends Fragment {
                         notificationClassArrayList.add(notificationClass);
                     }
                 }else{
-                    Log.d(TAG, "entering into non notification exixting part ");
+                    //Log.d(TAG, "entering into non notification exixting part ");
                 }
                 for(NotificationClass notificationClass:notificationClassArrayList){
                     if(!notificationClass.isView()){
@@ -260,14 +260,14 @@ public class HomeFragment extends Fragment {
 
     private void setupBadge() {
         if (notificationCount != null) {
-            Log.d(TAG, "entering the setBadge");
+            //Log.d(TAG, "entering the setBadge");
             if (isClicked || displayCount == 0) {
-                Log.d(TAG, "entering the setBadge to make invisible ");
+                //Log.d(TAG, "entering the setBadge to make invisible ");
                 if (notificationCount.getVisibility() != View.INVISIBLE) {
                     notificationCount.setVisibility(View.INVISIBLE);
                 }
             } else {
-                Log.d(TAG, "entering the setBadge to make visible ");
+                //Log.d(TAG, "entering the setBadge to make visible ");
                 notificationCount.setText(String.valueOf(displayCount));
                 if (notificationCount.getVisibility() != View.VISIBLE) {
                     notificationCount.setVisibility(View.VISIBLE);
@@ -305,7 +305,7 @@ public class HomeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.e(TAG,"onPause");
+        //Log.e(TAG,"onPause");
          nDialog.dismiss();
          prefsNotification = getActivity().getSharedPreferences("NOTIFICATION_COUNT", Context.MODE_PRIVATE);
          SharedPreferences.Editor editorNotification = prefsNotification.edit().clear();
@@ -327,10 +327,10 @@ public class HomeFragment extends Fragment {
             eventList.clear();
             if(eventAdapter!= null){eventAdapter.notifyDataSetChanged();}
             if(valueEventListener!= null){
-                Log.e(TAG,"entering into removelistner");
+                //Log.e(TAG,"entering into removelistner");
                 db.removeEventListener(valueEventListener);}
             if(notifyListener!=null){
-                Log.e(TAG,"entering into removelistner1");
+                //Log.e(TAG,"entering into removelistner1");
                 dbNotifications.removeEventListener(notifyListener);}
 
         mHandler.removeCallbacksAndMessages(null);
