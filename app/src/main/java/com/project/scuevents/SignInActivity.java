@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -130,7 +131,10 @@ public class SignInActivity extends AppCompatActivity {
                                                 myEdit.commit();
 
                                             }else{
-                                                Toast.makeText(SignInActivity.this, "Incorrect Email provided", Toast.LENGTH_LONG).show();
+                                                //Toast.makeText(SignInActivity.this, "Incorrect Email/Password provided", Toast.LENGTH_LONG).show();
+                                                Snackbar snackbar_success = Snackbar
+                                                        .make(findViewById(android.R.id.content), "Incorrect Email provided", Snackbar.LENGTH_LONG);
+                                                snackbar_success.show();
                                             }
                                         }
 
@@ -144,13 +148,20 @@ public class SignInActivity extends AppCompatActivity {
                                     //providing a delay to start the activity , so that shared preference gets saved
                                     mHandler.postDelayed(mUpdateTimeTask, 1000);
                                 } else {
-                                    Toast.makeText(SignInActivity.this, "Email not verified", Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(SignInActivity.this, "Email not verified", Toast.LENGTH_LONG).show();
+                                    Snackbar snackbar_success = Snackbar
+                                            .make(findViewById(android.R.id.content), "Email not verified", Snackbar.LENGTH_LONG);
+                                    snackbar_success.show();
                                 }
                             } else {
-                                Toast.makeText(SignInActivity.this, "Sign In Unsuccessful", Toast.LENGTH_LONG).show();
+                                //Toast.makeText(SignInActivity.this, "Sign In Unsuccessful", Toast.LENGTH_LONG).show();
+                                Snackbar snackbar_success = Snackbar
+                                        .make(findViewById(android.R.id.content), "Sign In Unsuccessful", Snackbar.LENGTH_LONG);
+                                snackbar_success.show();
                             }
                         }
                     });
+            progressDialog.hide();
         }
     }
 

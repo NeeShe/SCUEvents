@@ -16,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -76,7 +77,10 @@ public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.
                 c.set(Calendar.MINUTE,c.get(Calendar.MINUTE));
                 long currentTime = c.getTimeInMillis();
                 if(eventClass.getStartTimestamp() < currentTime){
-                    Toast.makeText(context,"Cannot modify past event",Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context,"Cannot modify past event",Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar_success = Snackbar
+                            .make(v, "Cannot modify past event", Snackbar.LENGTH_LONG);
+                    snackbar_success.show();
                 }else{
                     Intent intent = new Intent(context, EventDetailHostActivity.class);
                     intent.putExtra("eaimage",eventClass.getImageUrl());
