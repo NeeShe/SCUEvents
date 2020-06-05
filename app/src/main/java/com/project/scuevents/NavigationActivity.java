@@ -1,7 +1,22 @@
 package com.project.scuevents;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.project.scuevents.model.UserDetails;
+
+import androidx.annotation.NonNull;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -12,7 +27,10 @@ import androidx.appcompat.widget.Toolbar;
 
 public class NavigationActivity extends AppCompatActivity {
 
+    private static final String TAG ="In NAV" ;
     private AppBarConfiguration mAppBarConfiguration;
+    public static Context contextOfApplication;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +49,12 @@ public class NavigationActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        contextOfApplication = getApplicationContext();
+    }
+
+    public static Context getContextOfApplication()
+    {
+        return contextOfApplication;
     }
 
     @Override
@@ -44,4 +68,5 @@ public class NavigationActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
     }
+
 }
