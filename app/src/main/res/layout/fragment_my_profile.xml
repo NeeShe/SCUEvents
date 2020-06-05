@@ -1,70 +1,190 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.profile.MyProfileFragment">
 
-    <!--Ramya can modify the rest , will tell her -->
-
-    <LinearLayout
-        android:id="@+id/emailId"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topguideline"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        app:layout_constraintBottom_toTopOf="@+id/changePassword"
-        android:layout_marginTop="250dp"
         android:orientation="horizontal"
-        android:background="@drawable/borderbottomline">
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightguideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/top2guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="220dp" />
+
+
+
+    <ImageView
+        android:id="@+id/profilepic"
+        android:layout_width="157dp"
+        android:layout_height="158dp"
+        android:layout_weight="99"
+        android:scaleType="centerCrop"
+        android:src="@drawable/blankprofilepic"
+        app:layout_constraintBottom_toTopOf="@id/top2guideline"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/topguideline" />
+
+    <ImageButton
+        android:id="@+id/addimage"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/editextbackground"
+        android:src="@drawable/camera"
+        android:clickable="true"
+        app:layout_constraintBottom_toTopOf="@id/top2guideline"
+        app:layout_constraintEnd_toEndOf="@id/profilepic" />
+
+    <TextView
+        android:id="@+id/userinfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:fontFamily="@font/satisfy"
+        android:text="User Info"
+        android:textColor="@color/colorPrimary"
+        android:textSize="33sp"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/profilepic"/>
+
+       <RelativeLayout
+        android:id="@+id/rl_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@id/rightguideline"
+        app:layout_constraintStart_toEndOf="@id/leftguideline"
+        app:layout_constraintTop_toBottomOf="@id/userinfo">
+
+     <TextView
+         android:id="@+id/firstn"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_marginStart="10dp"
+         android:layout_marginTop="10dp"
+         android:layout_marginEnd="10dp"
+         android:layout_marginBottom="10dp"
+         android:gravity="center"
+         android:text="First Name"
+         android:textColor="@color/colorPrimaryDark"
+         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+         />
+
+    <TextView
+        android:id="@+id/firstnval"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="firstname"
+        android:layout_toRightOf="@id/firstn"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        />
+
         <TextView
-            android:layout_width="250dp"
+            android:id="@+id/lastn"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Email ID"
-            android:textSize="20sp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginBottom="20dp"
-            android:textColor="@color/colorPrimary"
+            android:layout_below="@id/firstn"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Last Name"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             />
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/changePassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="6dp"
-        android:layout_marginRight="6dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/logoutTab"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:background="@drawable/borderbottomline"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?attr/selectableItemBackground">
         <TextView
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
+            android:id="@+id/lastnval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="lastname"
+            android:layout_below="@id/firstnval"
+            android:layout_toRightOf="@id/lastn"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/emailid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/lastn"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:gravity="center"
+            android:text="Emailid"
+            android:textColor="@color/colorPrimaryDark"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+        <TextView
+            android:id="@+id/emailidval"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Emailidvalue"
+            android:layout_below="@id/lastnval"
+            android:layout_toRightOf="@id/emailid"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            />
+
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/changePassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Change Password"
-            android:textSize="20sp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18sp"
             android:textColor="@color/colorPrimary"
-            android:layout_margin="15dp"/>
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_marginLeft="40dp"
-            android:src="@drawable/rightarrow"/>
-    </LinearLayout>
-
-
+            android:background="@drawable/borderbottomline"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintTop_toBottomOf="@id/rl_layout"
+            app:layout_constraintBottom_toTopOf="@id/logoutTab"
+            app:layout_constraintEnd_toStartOf="@id/rightguideline"
+            app:layout_constraintStart_toEndOf="@id/leftguideline"
+            />
 
     <!--logout button layout-->
     <LinearLayout
@@ -97,5 +217,5 @@
             android:textColor="@color/colorPrimary"/>
 
     </LinearLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
