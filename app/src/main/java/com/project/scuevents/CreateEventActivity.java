@@ -31,7 +31,6 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -325,8 +324,25 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         startDateCal.set(Calendar.MINUTE,startMin);
         long startTimestamp = startDateCal.getTimeInMillis();
 
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR,c.get(Calendar.YEAR));
+        c.set(Calendar.MONTH,c.get(Calendar.MONTH));
+        c.set(Calendar.DATE,c.get(Calendar.DATE));
+        c.set(Calendar.HOUR_OF_DAY,c.get(Calendar.HOUR_OF_DAY));
+        c.set(Calendar.MINUTE,c.get(Calendar.MINUTE));
+        long currentTime = c.getTimeInMillis();
+        if(startTimestamp < currentTime){
+            Toast.makeText(this,"Invalid start date/time",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         endDateCal.set(Calendar.HOUR_OF_DAY,endHour);
         endDateCal.set(Calendar.MINUTE,endMin);
+
+        if(endDateCal.getTimeInMillis() < startTimestamp){
+            Toast.makeText(this,"Invalid end date/time",Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         this.publishToFireBase(titleStr,descStr, sDateStr,sTimeStr,eDateStr,eTimeStr,
                 locStr,catStr,deptStr,Integer.parseInt(seatStr),imageFilePath,startTimestamp);

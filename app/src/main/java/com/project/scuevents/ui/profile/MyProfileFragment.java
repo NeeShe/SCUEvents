@@ -1,27 +1,26 @@
 package com.project.scuevents.ui.profile;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -34,6 +33,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -52,12 +52,10 @@ import com.project.scuevents.R;
 import com.project.scuevents.SignInActivity;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.UserDetails;
-import com.project.scuevents.service.MyFirebaseInstanceService;
-import com.google.firebase.storage.StorageReference;
 
-
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.UUID;
 
 import static android.app.Activity.RESULT_OK;
@@ -74,14 +72,12 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     TextView em;
     SharedPreferences sh;
     DatabaseReference db;
-    String fname;
-    String lname;
-    String email;
+
     ImageButton add;
 
     ImageView imageView;
     Uri imageFilePath;
-    int save=0;
+
     Bitmap bitmap;
 
     FirebaseStorage storage;
@@ -93,7 +89,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
     ProgressDialog progressDialog;
 
 
-
+    NavigationView navigationView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,6 +98,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         View view =  inflater.inflate(R.layout.fragment_my_profile, container, false);
         logoutButton = view.findViewById(R.id.logoutTab);
         changePassword = view.findViewById(R.id.changePassword);
+
         logoutButton.setOnClickListener(this);
         changePassword.setOnClickListener(this);
         //Displaying user details
@@ -120,6 +117,12 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         return view;
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        navigationView = ((NavigationActivity)getActivity()).findViewById(R.id.nav_view);
+
+    }
 
     @Override
     public void onClick(View v) {
@@ -151,7 +154,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 break;
             case R.id.changePassword:
                 Intent intent = new Intent(getActivity(), ChangePasswordActivity.class);
-                Toast.makeText(getActivity(), "Going to change password activity", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), "Going to change password activity", Toast.LENGTH_LONG).show();
                 startActivity(intent);
                 break;
             case R.id.addimage:
@@ -172,15 +175,16 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
             imageFilePath = data.getData();
             try {
                bitmap = MediaStore.Images.Media.getBitmap(applicationContext.getContentResolver(), imageFilePath);
-                //imageView.setImageBitmap(bitmap);
-                Log.d(TAG, "onActivityResult:in dialog entering dialog ");
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setMessage("Save Profile Picture").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
-                Log.d(TAG, "onActivityResult:left dialog save value"+save);
-
-
-
+                imageView.setImageBitmap(bitmap);
+                //add a delay
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Save Profile Picture").setPositiveButton("Yes", dialogClickListener)
+                                .setNegativeButton("No", dialogClickListener).show();
+                    }
+                }, 2000);
             }
             catch (IOException e)
             {
@@ -194,7 +198,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         public void onClick(DialogInterface dialog, int which) {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
-                    imageView.setImageBitmap(bitmap);
+                    //imageView.setImageBitmap(bitmap);
                     Log.d(TAG, "onClick: of YES");
                     if(imageFilePath!=null) {
                         uploadStorage(imageFilePath);
@@ -206,6 +210,29 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
             }
         }
     };
+
+    private void saveToDevice(Bitmap bitmap) {
+        ContextWrapper cw = new ContextWrapper(applicationContext);
+        File directory = cw.getDir("profile", Context.MODE_PRIVATE);
+        if (!directory.exists()) {
+            directory.mkdir();
+        }
+        File mypath = new File(directory, "profilepic.png");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+        }
+        //try to dynamically update
+        View hView =  navigationView.getHeaderView(0);
+        ImageView profImage = hView.findViewById(R.id.profimage);
+        profImage.setImageBitmap(bitmap);
+    }
+
     private void uploadStorage(Uri uri){
         Log.d(TAG, "uploadStorage: entered");
         Log.d(TAG, "uploadStorage: image file path "+imageFilePath);
@@ -244,18 +271,15 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
                 });
     }
     private void uploadDatabase(){
-        Log.d(TAG, "uploadDatabase: entered");
         SharedPreferences s = getActivity().getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
         final String userId=s.getString("USER_ID", "");
-        Log.d(TAG, "uploadDatabase:accessing shared preferences "+userId);
-        FireBaseUtilClass.getDatabaseReference().child("Users").child(userId).child("imageUri").setValue(imageFilePath.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        //Log.d(TAG, "uploadDatabase:accessing shared preferences "+userId);
+        FireBaseUtilClass.getDatabaseReference().child("Users").child(userId).child("imageUri").setValue(user.getImageUri()).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
                 Toast.makeText(getActivity(),"Uploaded Sucessfully",Toast.LENGTH_SHORT).show();
-
-
-
+                saveToDevice(bitmap);
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -273,7 +297,7 @@ public class MyProfileFragment extends Fragment implements View.OnClickListener 
         Log.d(TAG, "getUserInfo:"+userId);
         db = FirebaseDatabase.getInstance().getReference();
         Query query = db.child("Users").child(userId);
-        query.addValueEventListener(new ValueEventListener() {
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());

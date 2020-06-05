@@ -126,7 +126,7 @@ public class CreateModifyFragment extends Fragment {
 
     @Override
     public void onPause() {
-        Log.e(DEBUG_TAG,"onPause");
+        //Log.e(DEBUG_TAG,"onPause");
         eventList.clear();
         if(eventAdapter!= null){eventAdapter.notifyDataSetChanged();}
         if(valueEventListener!= null){

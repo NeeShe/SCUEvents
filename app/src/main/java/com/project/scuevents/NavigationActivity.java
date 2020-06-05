@@ -1,22 +1,15 @@
 package com.project.scuevents;
 
 import android.content.Context;
-import android.content.SharedPreferences;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.navigation.NavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-import com.project.scuevents.model.UserDetails;
 
-import androidx.annotation.NonNull;
+import com.google.android.material.navigation.NavigationView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -25,21 +18,28 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+
 public class NavigationActivity extends AppCompatActivity {
 
-    private static final String TAG ="In NAV" ;
+    private static final String TAG ="NavigationActivity" ;
     private AppBarConfiguration mAppBarConfiguration;
     public static Context contextOfApplication;
-
+    NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_navigation);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+
+        navigationView = findViewById(R.id.nav_view);
+        this.setImage();
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -69,4 +69,32 @@ public class NavigationActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    void setImage(){
+        Bitmap bitmap = null;
+        ContextWrapper cw = new ContextWrapper(this);
+        File directory = cw.getDir("profile", Context.MODE_PRIVATE);
+        if(directory.exists()){
+            File mypath = new File(directory, "profilepic.png");
+            FileInputStream inputStream = null;
+            try {
+                inputStream = new FileInputStream(mypath);
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                try {
+                    if (inputStream != null) {
+                        inputStream.close();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        if(bitmap != null){
+            View hView =  navigationView.getHeaderView(0);
+            ImageView profImage = hView.findViewById(R.id.profimage);
+            profImage.setImageBitmap(bitmap);
+        }
+    }
 }
