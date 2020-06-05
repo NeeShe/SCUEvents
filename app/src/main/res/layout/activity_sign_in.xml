@@ -44,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="44dp"
-        android:text="SCU EVENTS"
+        android:text="FunBroncos"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="32dp"
         android:textStyle="bold"

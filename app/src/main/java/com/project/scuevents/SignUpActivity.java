@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -31,6 +32,7 @@ public class SignUpActivity extends AppCompatActivity {
     EditText email;
     EditText password;
     EditText confPassword;
+    private static final String TAG = "SignUp";
 
     private FirebaseAuth auth;
     @Override
@@ -45,6 +47,7 @@ public class SignUpActivity extends AppCompatActivity {
         confPassword=findViewById(R.id.cnfpwd);
 
         auth = FirebaseAuth.getInstance();
+
     }
 
     public void signup(View view) {
@@ -77,7 +80,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar_success = Snackbar
+                            .make(findViewById(android.R.id.content), task.getException().getMessage(), Snackbar.LENGTH_LONG);
+                    snackbar_success.show();
                 } else { //success
                     //verify user
                     verifyEmail();
@@ -95,14 +101,19 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                            Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
+                           // Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
+                            Snackbar snackbar_success = Snackbar
+                                    .make(findViewById(android.R.id.content), "Verification email sent to " + user.getEmail(), Snackbar.LENGTH_LONG);
+                            snackbar_success.show();
                         } else {
-                            Toast.makeText(SignUpActivity.this,
-                                    "Failed to send verification email.",
-                                    Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(SignUpActivity.this,"Failed to send verification email.",Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar_fail = Snackbar
+                                    .make(findViewById(android.R.id.content), "Failed to send verification email.", Snackbar.LENGTH_LONG);
+                            snackbar_fail.show();
                         }
 
                         onBackPressed();
+
                     }
                 });
     }
@@ -112,13 +123,18 @@ public class SignUpActivity extends AppCompatActivity {
         FireBaseUtilClass.getDatabaseReference().child("Users").child(auth.getCurrentUser().getUid()).setValue(user).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                Snackbar snackbar_success = Snackbar
+                        .make(findViewById(android.R.id.content), "Account Creation Successful", Snackbar.LENGTH_LONG);
+                snackbar_success.show();
             }
 
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SignUpActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), e.getMessage(), Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         });
     }
@@ -144,5 +160,10 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

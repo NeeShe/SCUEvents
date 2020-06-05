@@ -38,7 +38,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SignUpActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="FunBroncos"
+            android:configChanges="screenLayout|orientation|screenSize"/>
         <activity android:name=".ForgotPasswordActivity" />
         <activity
             android:name=".HostEventDetailActivity"
