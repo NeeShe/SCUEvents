@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
     int displayCount = 0;
     long todayTimestamp;
     boolean isClicked;
-    private Handler mHandler = new Handler();
+    private Handler mHandler;
     ArrayList<NotificationClass> notificationClassArrayList;
 
     @Override
@@ -78,10 +78,14 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        mHandler = new Handler();
+
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR,c.get(Calendar.YEAR));
         c.set(Calendar.MONTH,c.get(Calendar.MONTH));
         c.set(Calendar.DATE,c.get(Calendar.DATE));
+        c.set(Calendar.HOUR_OF_DAY,c.get(Calendar.HOUR_OF_DAY));
+        c.set(Calendar.MINUTE,c.get(Calendar.MINUTE));
         startDateCal = c;
         todayTimestamp = startDateCal.getTimeInMillis();
 
@@ -219,12 +223,12 @@ public class HomeFragment extends Fragment {
         db.addValueEventListener(valueEventListener);
     }
 
-    private Runnable mUpdateTimeTask = new Runnable() {
+  /*  private Runnable mUpdateTimeTask = new Runnable() {
         @Override
         public void run() {
            setupBadge();
         }
-    };
+    };*/
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -233,7 +237,18 @@ public class HomeFragment extends Fragment {
         View actionView = menuItem.getActionView();
         notificationCount = actionView.findViewById(R.id.notification_badge);
         notificationCount.setVisibility(View.INVISIBLE);
-        mHandler.postDelayed(mUpdateTimeTask, 1000);
+       // mHandler.postDelayed(mUpdateTimeTask, 1000);
+        //last update made to run the setup badge after frequent interval , so that if once it doesn't work second time it will work and also to give realtime
+        //notification count
+        final Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "delaying the setup badge");
+                mHandler.postDelayed(this,1000);
+                setupBadge();
+            }
+        };
+        mHandler.postDelayed(r,1000);
        // setupBadge();
         actionView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,5 +332,7 @@ public class HomeFragment extends Fragment {
             if(notifyListener!=null){
                 Log.e(TAG,"entering into removelistner1");
                 dbNotifications.removeEventListener(notifyListener);}
+
+        mHandler.removeCallbacksAndMessages(null);
     }
 }
