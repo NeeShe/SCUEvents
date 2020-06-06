@@ -1,16 +1,13 @@
 package com.project.scuevents;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,19 +25,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.project.scuevents.adapter.RegUsersAdapter;
+import com.project.scuevents.adapter.RegisteredUsersAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.UserDetails;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class EventDetailHostActivity extends AppCompatActivity {
     private static final String TAG = "EventDetailHostActivity";
     final ArrayList regUserID =new ArrayList();
     final ArrayList regusers=new ArrayList();
-    RegUsersAdapter regUsersAdapter;
+    RegisteredUsersAdapter registeredUsersAdapter;
     String edimageUrl ;
     String edeventTitle;
     String ewhen ;
@@ -127,9 +123,9 @@ public class EventDetailHostActivity extends AppCompatActivity {
     private void setadapter(){
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.list_item);
         Log.d(TAG,"Before calling Adapter");
-        regUsersAdapter = new RegUsersAdapter(this, regusers);
+        registeredUsersAdapter = new RegisteredUsersAdapter(this, regusers);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(regUsersAdapter);
+        recyclerView.setAdapter(registeredUsersAdapter);
     }
 
     private void getIncomingIntent(){
@@ -201,7 +197,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
     public void edit(View view) {
         Log.d(TAG,"from eventdetail to host");
-        Intent intent = new Intent(EventDetailHostActivity.this, HostEventDetailActivity.class);
+        Intent intent = new Intent(EventDetailHostActivity.this, HostEventModifyActivity.class);
         Log.d(TAG,getIntent().getStringExtra("eatitle"));
         intent.putExtra("eaimage",getIntent().getStringExtra("eaimage"));
         intent.putExtra("eatitle",getIntent().getStringExtra("eatitle"));

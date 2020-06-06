@@ -21,7 +21,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.R;
-import com.project.scuevents.adapter.RegisteredEventAdapter1;
+import com.project.scuevents.adapter.RegisteredEventAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.EventIDNameClass;
 import com.project.scuevents.model.FireBaseUtilClass;
@@ -44,7 +44,7 @@ public class PastEventFragment extends Fragment {
     ValueEventListener valueEventListener;
     ValueEventListener valueListener;
    // ArrayList<EventClass> eventList;
-    RegisteredEventAdapter1 registeredEventAdapter;
+    RegisteredEventAdapter registeredEventAdapter;
     private static final String TAG = "Registered";
 
     public PastEventFragment() {
@@ -131,7 +131,7 @@ public class PastEventFragment extends Fragment {
                         if (Long.signum(startTimeStamp - todayTimestamp) == -1) {
                             //Log.d(TAG ,"adding this particular upcoming event " + eventClass.getEventTitle());
                             eventList.add(eventClass);
-                            registeredEventAdapter = new RegisteredEventAdapter1(eventList,getActivity());
+                            registeredEventAdapter = new RegisteredEventAdapter(eventList,getActivity());
                             eventDetailsRecyclerView.setAdapter(registeredEventAdapter);
                             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
                             eventDetailsRecyclerView.setLayoutManager(linearLayoutManager);

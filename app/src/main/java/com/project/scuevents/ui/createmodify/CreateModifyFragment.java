@@ -1,4 +1,4 @@
-package com.project.scuevents.ui.createevent;
+package com.project.scuevents.ui.createmodify;
 
 import android.app.ProgressDialog;
 import android.content.Context;

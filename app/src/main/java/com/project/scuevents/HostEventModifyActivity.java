@@ -2,8 +2,6 @@ package com.project.scuevents;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -16,7 +14,6 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -31,18 +28,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.project.scuevents.adapter.HostedEventAdapter;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
-import com.project.scuevents.ui.createevent.CreateModifyFragment;
 
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 
-public class HostEventDetailActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
-    private static final String TAG = "HostEventDetailActivity";
-    private final static String DEBUG_TAG = "HostEventDetail";
+public class HostEventModifyActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
+    private static final String TAG = "HostEventModifyActivity";
+    private final static String DEBUG_TAG = "HostEventModifyActivity";
     private final int PICK_IMAGE_REQUEST = 71;
     int datePicker;
     TextView eventTitle;
@@ -90,7 +84,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_host_event_detail);
+        setContentView(R.layout.activity_host_event_modify);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         datePicker=0;
         eventTitle = findViewById(R.id.eventTitle);
@@ -365,7 +359,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
             }
         });
 
-        Toast.makeText(HostEventDetailActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
+        Toast.makeText(HostEventModifyActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
 
     }
     public void update(View view) {
@@ -388,7 +382,7 @@ public class HostEventDetailActivity extends AppCompatActivity implements DatePi
             public void onClick(DialogInterface dialog, int which) {
 //                    finish();
 
-                Toast.makeText(HostEventDetailActivity.this,"Event details not saved",Toast.LENGTH_LONG).show();
+                Toast.makeText(HostEventModifyActivity.this,"Event details not saved",Toast.LENGTH_LONG).show();
             }
         });
 

@@ -2,7 +2,6 @@ package com.project.scuevents.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,11 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.project.scuevents.EventDetailActivity;
 import com.project.scuevents.EventDetailHostActivity;
-import com.project.scuevents.HostEventDetailActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
@@ -30,7 +24,6 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Set;
 
 public class HostedEventAdapter extends RecyclerView.Adapter<HostedEventAdapter.hostViewHolder>{
     private static final String TAG = "EventDetailHostActivity";
