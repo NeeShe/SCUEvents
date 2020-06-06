@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.project.scuevents">
 
@@ -15,65 +16,82 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
-        <activity android:name=".EventDetailHostActivity"></activity>
-        <activity
-            android:name=".Notification1Activity"
-            android:label="Notifications"
-            android:parentActivityName=".NavigationActivity" />
-        <activity
-            android:name=".ChangePasswordActivity"
-            android:configChanges="screenLayout|orientation|screenSize"
-            android:label="Change Password" />
+
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="screenLayout|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".SignInActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="screenLayout|orientation|screenSize"/>
+
         <activity
             android:name=".SignUpActivity"
             android:label="FunBroncos"
             android:configChanges="screenLayout|orientation|screenSize"/>
-        <activity android:name=".ForgotPasswordActivity" />
-        <activity
-            android:name=".HostEventDetailActivity"
-            android:configChanges="screenLayout|orientation|screenSize" />
+
+        <activity android:name=".ForgotPasswordActivity"
+            android:configChanges="screenLayout|orientation|screenSize"/>
+
         <activity
             android:name=".NavigationActivity"
             android:configChanges="screenLayout|orientation|screenSize"
             android:label="@string/title_activity_navigation"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".NotificationActivity"
-            android:label="Notifications"
-            android:parentActivityName=".NavigationActivity" />
-        <activity
-            android:name=".EventDetailActivity"
-            android:configChanges="screenLayout|orientation|screenSize" />
+
         <activity
             android:name=".SearchActivity"
             android:configChanges="screenLayout|orientation|screenSize"
             android:parentActivityName=".NavigationActivity" />
+
+        <activity
+            android:name=".NotificationActivity"
+            android:label="Notifications"
+            android:configChanges="screenLayout|orientation|screenSize"
+            android:parentActivityName=".NavigationActivity" />
+
+        <activity
+            android:name=".EventDetailActivity"
+            android:configChanges="screenLayout|orientation|screenSize" />
+
+        <activity
+            android:name=".HostEventModifyActivity"
+            android:configChanges="screenLayout|orientation|screenSize" />
+
+        <activity
+            android:name=".EventDetailHostActivity"
+            android:configChanges="screenLayout|orientation|screenSize"/>
+
         <activity
             android:name=".CreateEventActivity"
             android:configChanges="screenLayout|orientation|screenSize" />
-        <activity android:name=".ui.chat.ChatActivity" />
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+        <activity
+            android:name=".ui.chat.ChatActivity"
+            android:configChanges="screenLayout|orientation|screenSize"/>
+
+        <activity
+            android:name=".ChangePasswordActivity"
+            android:configChanges="screenLayout|orientation|screenSize"
+            android:label="Change Password" />
 
         <service android:name=".service.MyFirebaseInstanceService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

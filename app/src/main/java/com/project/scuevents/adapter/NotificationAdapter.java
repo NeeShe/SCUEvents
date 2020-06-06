@@ -4,11 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,102 +14,96 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.EventDetailActivity;
-import com.project.scuevents.NotificationActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
-import com.squareup.picasso.Picasso;
+import com.project.scuevents.model.NotificationClass;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
 
-import static androidx.constraintlayout.widget.Constraints.TAG;
-
-public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.viewHolder>{
-    ArrayList<String> notificationBodyList;
-    ArrayList<String> eventIds;
-    ArrayList<String> notificationKeyList;
-    Set<String> viewedNotifications;
-    SharedPreferences prefs;
-  // ArrayList<NotificationClass> notificationClassList;
+public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapter.viewHolder> {
+    ArrayList<NotificationClass> notificationList;
+    ArrayList<String> notificationKeysList;
     Context context;
-    private static final String TAG = "NotificationModule";
+    SharedPreferences prefs;
+    String userID;
 
-
-
-    //initializing the eventAdapter constructor
-    public NotificationAdapter(ArrayList<String> notificationBodyList, Context context,ArrayList<String> eventIds,ArrayList<String> notificationKeyList, Set<String> viewedNotifications) {
-        this.notificationBodyList = notificationBodyList;
-        this.eventIds = eventIds;
+    public NotificationAdapter(ArrayList<NotificationClass> notificationList, Context context, ArrayList<String> notificationKeysList, String userID) {
+        this.notificationList = notificationList;
         this.context = context;
-        this.notificationKeyList = notificationKeyList;
-        this.viewedNotifications = viewedNotifications;
-
+        this.notificationKeysList = notificationKeysList;
+        this.userID = userID;
     }
-
-  /*public NotificationAdapter(ArrayList<NotificationClass> notificationClassList,Context context){
-      this.notificationClassList = notificationClassList;
-      this.context = context;
-  }*/
 
     @NonNull
     @Override
-    //inflating the view on the recyclerview
-    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public NotificationAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.activity_notification_recyclerview,parent,false);
 
         return new viewHolder(view);
     }
 
-    //binding each event to the view holder
     @Override
     public void onBindViewHolder(@NonNull final NotificationAdapter.viewHolder holder, int position) {
-      /*final String notificationBodyItem = notificationClassList.get(position).getNotificationBody();
-      holder.notificationBody.setText(notificationBodyItem);*/
-        final String notificationKeyStr = notificationKeyList.get(position);
-        final String notificationBodyStr = notificationBodyList.get(position);
-        final String eventId = eventIds.get(position);
-        holder.notificationBody.setText(notificationBodyStr);
+        final NotificationClass notificationClass = notificationList.get(position);
+        holder.notificationBody.setText(notificationClass.getBody());
 
+        final String notificationKeyStr = notificationKeysList.get(position);
         //checking whether the notification body is already present in the cache , if  yes then white background if not red background
-
-        if(viewedNotifications!= null && viewedNotifications.contains(notificationKeyStr)){
+        if(notificationClass.isView()){
             holder.notificationId.setBackgroundColor(Color.WHITE);
             holder.notificationBody.setTextColor(Color.parseColor("#B30738"));
         }
 
+        final String eventId = notificationClass.getEventId();
         //assigning onClickListener to per event view card
         holder.notificationId.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final View view = v;
+//                Toast.makeText(context,"the notification for key "+notificationKeyStr+" is "+notificationClass.getBody()+" for event "+notificationClass.getEventName()
+//                        +" view set from "+notificationClass.isView()+" to true",Toast.LENGTH_SHORT).show();
                 //on click setting the background color from red to white and redirecting to event details page
                 //saving the viewed notifications in shared preference
-               //Toast.makeText(context,"eventId" +eventId + "is clicked!",Toast.LENGTH_SHORT).show();
-               holder.notificationId.setBackgroundColor(Color.WHITE);
-               holder.notificationBody.setTextColor(Color.parseColor("#B30738"));
-               viewedNotifications.add(notificationKeyStr);
-               prefs = context.getSharedPreferences("USER_NOTIFICATIONS", Context.MODE_PRIVATE);
-               SharedPreferences.Editor editor = prefs.edit();
-               editor.clear();
-               editor.putStringSet("viewNotifiationNames", viewedNotifications);
-               editor.apply();
-               //getting the particular event object which needs to be passed on the event detail activity
+                holder.notificationId.setBackgroundColor(Color.WHITE);
+                holder.notificationBody.setTextColor(Color.parseColor("#B30738"));
+                //setting the value of view to true
+                boolean viewed = true;
+                FireBaseUtilClass.getDatabaseReference().child("Users").child(userID).child("notification").child(notificationKeyStr).child("view").setValue(viewed).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //Toast.makeText(context,"view updated successfully",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,"view updation unsuccessfull",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                //getting the particular event object which needs to be passed on the event detail activity
                 DatabaseReference db = FireBaseUtilClass.getDatabaseReference().child("Events").child(eventId);
-                db.addValueEventListener(new ValueEventListener() {
+                db.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        EventClass eventClass = dataSnapshot.getValue(EventClass.class);
-                        Log.d(TAG ,"event name " + eventClass.getEventTitle());
-                        Log.d(TAG ,"event id " + eventClass.getEventID());
-                        Intent intent = new Intent(context, EventDetailActivity.class);
-                        intent.putExtra("Object", eventClass);
-                        context.startActivity(intent);
+                        if(dataSnapshot.exists()) {
+                            EventClass eventClass = dataSnapshot.getValue(EventClass.class);
+                            Intent intent = new Intent(context, EventDetailActivity.class);
+                            intent.putExtra("Object", eventClass);
+                            context.startActivity(intent);
+                        }else{
+                            //Toast.makeText(context,"The Event is cancelled ",Toast.LENGTH_SHORT).show();
+                            Snackbar snackbar_success = Snackbar
+                                    .make(view, "This Event is cancelled", Snackbar.LENGTH_LONG);
+                            snackbar_success.show();
+                        }
                     }
 
                     @Override
@@ -124,13 +116,10 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @Override
-    //returning the size of the eventList
     public int getItemCount() {
-        return notificationBodyList.size();
-        //return notificationClassList.size();
+        return notificationList.size();
     }
 
-    //assignning the views variables required to be passed to the viewHolder class
     public class viewHolder extends RecyclerView.ViewHolder {
         TextView notificationBody;
         LinearLayout notificationId;
@@ -141,5 +130,4 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             notificationId = itemView.findViewById(R.id.notificationId);
         }
     }
-
 }

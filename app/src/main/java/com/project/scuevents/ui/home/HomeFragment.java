@@ -26,7 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
-import com.project.scuevents.Notification1Activity;
 import com.project.scuevents.NotificationActivity;
 import com.project.scuevents.R;
 import com.project.scuevents.SearchActivity;
@@ -293,7 +292,7 @@ public class HomeFragment extends Fragment {
                 editorNotification.apply();
 
                 //passing to the notification activity
-                Intent intent = new Intent(getActivity(), Notification1Activity.class);
+                Intent intent = new Intent(getActivity(), NotificationActivity.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
                 return true;

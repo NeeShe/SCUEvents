@@ -23,20 +23,20 @@ public class RegisteredEventAdapter extends RecyclerView.Adapter<RegisteredEvent
     ArrayList<EventClass> eventList;
     Context context;
 
-    RegisteredEventAdapter(ArrayList<EventClass> eventList,Context context) {
+    //initializing the eventAdapter constructor
+    public RegisteredEventAdapter(ArrayList<EventClass> eventList, Context context) {
         this.eventList = eventList;
         this.context = context;
     }
-
     @NonNull
     @Override
-    public viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RegisteredEventAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.fragment_registeredevents_recyclerview, parent, false);
         return new viewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull viewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RegisteredEventAdapter.viewHolder holder, int position) {
         final EventClass eventClass = eventList.get(position);
         Picasso.get().load(eventClass.getImageUrl()).into(holder.eventImg);
         holder.eventTimeDate.setText(eventClass.getEventDate());
@@ -60,7 +60,6 @@ public class RegisteredEventAdapter extends RecyclerView.Adapter<RegisteredEvent
         return eventList.size();
     }
 
-
     public class viewHolder extends RecyclerView.ViewHolder {
 
         ImageView eventImg;
@@ -77,7 +76,7 @@ public class RegisteredEventAdapter extends RecyclerView.Adapter<RegisteredEvent
             eventName = itemView.findViewById(R.id.eventName);
             eventVenue = itemView.findViewById(R.id.eventVenue);
             eventId = itemView.findViewById(R.id.eventIdRegistered);
-           // eventUpdateSign = itemView.findViewById(R.id.eventSign);
+            // eventUpdateSign = itemView.findViewById(R.id.eventSign);
         }
     }
 }

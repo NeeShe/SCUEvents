@@ -408,8 +408,8 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
                 Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
-                clearFields();
-                //CreateEventActivity.this.finish();
+                //clearFields();
+                CreateEventActivity.this.finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -419,6 +419,7 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         });
     }
 
+    //not using this anymore
     private void clearFields() {
         eventTitle.setText("");
         eventDescript.setText("");
@@ -427,7 +428,6 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
         endDate.setText("");
         endTime.setText("");
         totalSeats.setText("");
-        //TODO decide if add to calendar required
         addToCalendar();
     }
 

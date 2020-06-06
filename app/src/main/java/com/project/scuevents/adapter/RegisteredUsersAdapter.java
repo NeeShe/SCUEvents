@@ -12,15 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.project.scuevents.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class RegUsersAdapter extends RecyclerView.Adapter<RegUsersAdapter.ViewHolder> {
+public class RegisteredUsersAdapter extends RecyclerView.Adapter<RegisteredUsersAdapter.ViewHolder> {
     final String TAG="From Adapter";
     private ArrayList<String> regusers;
     private LayoutInflater mInflater;
 
-    public RegUsersAdapter(Context context, ArrayList data) {
+    public RegisteredUsersAdapter(Context context, ArrayList data) {
         Log.d(TAG,"in Constructor");
         this.mInflater = LayoutInflater.from(context);
         this.regusers = data;
@@ -29,7 +28,7 @@ public class RegUsersAdapter extends RecyclerView.Adapter<RegUsersAdapter.ViewHo
 
     @NonNull
     @Override
-    public RegUsersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public RegisteredUsersAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 //        Log.d(TAG,"in onCreate View Holder");
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View listItem= layoutInflater.inflate(R.layout.regusersrecyclerview, parent, false);
@@ -38,7 +37,7 @@ public class RegUsersAdapter extends RecyclerView.Adapter<RegUsersAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RegUsersAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RegisteredUsersAdapter.ViewHolder holder, int position) {
 //        Log.d(TAG,"in onBind View Holder");
         String username = (String) regusers.get(position);
         holder.myTextView.setText(username);
