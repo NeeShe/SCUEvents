@@ -1,6 +1,8 @@
 package com.project.scuevents;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
@@ -24,8 +26,10 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.project.scuevents.adapter.RegUsersAdapter;
+import com.project.scuevents.model.EventClass;
 import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.UserDetails;
 
@@ -48,6 +52,9 @@ public class EventDetailHostActivity extends AppCompatActivity {
     String eenddate;
     String eventtype;
     String department;
+    DatabaseReference db;
+    EventClass event;
+    String eveId;
 
     int i=0;
     @Override
@@ -65,6 +72,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
         //fetching reguserids
         FirebaseDatabase database = FireBaseUtilClass.getDatabase();
         final DatabaseReference reference= database.getReference().child("Events").child(getIntent().getStringExtra("eventid")).child("registeredUsers");
+        eveId=getIntent().getStringExtra("eventid");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -221,5 +229,63 @@ public class EventDetailHostActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    public void delete(View view){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Confirm delete event?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
+
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    //Toast.makeText(EventDetailHostActivity.this,"Clicked Yes",Toast.LENGTH_LONG).show();
+                    deleteEvent();
+                    Log.d(TAG, "onClick: of YES");
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    Toast.makeText(EventDetailHostActivity.this,"Clicked No",Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    };
+    public void deleteEvent(){
+        db = FirebaseDatabase.getInstance().getReference();
+        SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
+        final String userId = sh.getString("USER_ID", "");
+        Query delQuery=db.child("Events").child(eveId);
+        delQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Query delHosE=db.child("Users").child(userId).child("hostedEvents");
+                delHosE.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot ds: dataSnapshot.getChildren()) {
+                            event= ds.getValue(EventClass.class);
+                            if(event.getEventID().equals(eveId)) {
+                                ds.getRef().removeValue();
+                                //Toast.makeText(EventDetailHostActivity.this,"deleted host event",Toast.LENGTH_LONG).show();
+                                EventDetailHostActivity.this.finish();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        Log.e(TAG, "onCancelled", databaseError.toException());
+                    }
+                });
+                dataSnapshot.getRef().removeValue();
+                Toast.makeText(EventDetailHostActivity.this,"Event deleted Sucessfully",Toast.LENGTH_LONG).show();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e(TAG, "onCancelled", databaseError.toException());
+            }
+        });
+    }
+
 
 }

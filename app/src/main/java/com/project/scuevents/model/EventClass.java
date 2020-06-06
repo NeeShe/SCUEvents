@@ -91,6 +91,10 @@ public class EventClass implements Serializable {
         this.availableSeats=availableSeats;
         this.startTimestamp=startTimestamp;
     }
+    public EventClass(String eventId, String eventTitle){
+        this.eventID = eventId;
+        this.eventTitle = eventTitle;
+    }
     public String getEventID() {
         return eventID;
     }
