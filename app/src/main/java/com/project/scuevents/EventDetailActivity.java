@@ -33,6 +33,8 @@ import com.project.scuevents.model.FireBaseUtilClass;
 import com.project.scuevents.model.MessageClass;
 import com.project.scuevents.model.UserDetails;
 
+import java.util.Calendar;
+
 public class EventDetailActivity extends AppCompatActivity{
     private static final String TAG = "EventDetailActivity";
     private EventClass group;
@@ -43,9 +45,15 @@ public class EventDetailActivity extends AppCompatActivity{
     TextView time;
     TextView location;
     TextView description;
+    TextView dept;
+    TextView type;
+    TextView seats;
+
     ImageView image;
     Button RegButton;
     DatabaseReference db;
+    long todayTimestamp;
+    Calendar startDateCal;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +65,12 @@ public class EventDetailActivity extends AppCompatActivity{
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         Intent i = getIntent();
         group = (EventClass) i.getSerializableExtra("Object");
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR,c.get(Calendar.YEAR));
+        c.set(Calendar.MONTH,c.get(Calendar.MONTH));
+        c.set(Calendar.DATE,c.get(Calendar.DATE));
+        startDateCal = c;
+        todayTimestamp = startDateCal.getTimeInMillis();
 
         SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
         final String userId = sh.getString("USER_ID", "");
@@ -68,16 +82,15 @@ public class EventDetailActivity extends AppCompatActivity{
         Query q=db.child("Events").child(group.getEventID()).child("registeredUsers").child(userId);
         Log.d(TAG, "onCreateUID: "+q);
         q.addValueEventListener(new ValueEventListener() {
-           @Override
+            @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-               Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
+                Log.d(TAG, "onDataChange: "+dataSnapshot.getValue());
                 if (dataSnapshot.getValue()==null) {
                     RegButton.setText("Register");
                 }
                 else {
                     RegButton.setText("Deregister");
                 }
-
             }
 
             @Override
@@ -97,7 +110,7 @@ public class EventDetailActivity extends AppCompatActivity{
         hname.setText("(event hosted by "+group.getHostName()+")");
 
         time = findViewById(R.id.edtime);
-        time.setText(group.getEventTime());
+        time.setText(group.getEventTime()+" to "+group.getEndTime());
 
         location = findViewById(R.id.edlocation);
         location.setText(group.getEventLocation());
@@ -108,6 +121,14 @@ public class EventDetailActivity extends AppCompatActivity{
         image = findViewById(R.id.edimage);
         Glide.with(this).asBitmap().load(group.getImageUrl()).into(image);
 
+        dept = findViewById(R.id.eddept);
+        dept.setText(group.getDepartment());
+
+        type = findViewById(R.id.edeventtype);
+        type.setText(group.getEventType());
+
+        seats = findViewById(R.id.edseats);
+        seats.setText("Available Seats "+group.getAvailableSeats()+"/"+group.getTotalSeats());
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -120,14 +141,28 @@ public class EventDetailActivity extends AppCompatActivity{
     }
 
     public void regButtonClick(View view){
-        if(RegButton.getText()=="Register"){
-            registerUsers(view);
-        }
-        else if(RegButton.getText()=="Deregister"){
-            deregisterUsers(view);
+        //check the present time stamp
+        long startTimeStamp = group.getStartTimestamp();
+        if(Long.signum(startTimeStamp-todayTimestamp ) != -1 && group.getAvailableSeats()>0) {
+            if (RegButton.getText() == "Register") {
+                registerUsers(view);
+            } else if (RegButton.getText() == "Deregister") {
+                deregisterUsers(view);
+            } else {
+                Toast.makeText(getBaseContext(), "System not responding", Toast.LENGTH_SHORT).show();
+            }
         }
         else{
-            Toast.makeText(getBaseContext(),"System not responding",Toast.LENGTH_SHORT).show();
+            if(group.getAvailableSeats()==0){
+                if (RegButton.getText() == "Deregister") {
+                    deregisterUsers(view);
+                }
+                else {
+                    Toast.makeText(getBaseContext(), "No seats available", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else
+                Toast.makeText(getBaseContext(), "Event registration expired", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -139,8 +174,10 @@ public class EventDetailActivity extends AppCompatActivity{
         delQuery.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                    dataSnapshot.getRef().removeValue();
-                    RegButton.setText("Register");
+                dataSnapshot.getRef().removeValue();
+                Log.d(TAG, "onDataChange:available seats"+group.getAvailableSeats());
+                updateDeregcount();
+                RegButton.setText("Register");
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -172,12 +209,14 @@ public class EventDetailActivity extends AppCompatActivity{
         SharedPreferences pref = getSharedPreferences("MyPreferenceFileName", MODE_PRIVATE);
         String userToken=pref.getString("UserToken","");
         this.addUsersToFirebase(new UserDetails(userId,userToken));
+
     }
     private void addUsersToFirebase(final UserDetails item) {
         FireBaseUtilClass.getDatabaseReference().child("Events").child(group.getEventID()).child("registeredUsers").child(item.getUserID()).setValue(item).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getBaseContext(),"registered successfully",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"registered successfully",Toast.LENGTH_SHORT).show();
+                updateRegCount();
                 RegButton.setText("Deregister");
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -188,8 +227,39 @@ public class EventDetailActivity extends AppCompatActivity{
         });
     }
 
+    public void updateRegCount(){
+        FireBaseUtilClass.getDatabaseReference().child("Events").child(group.getEventID()).child("availableSeats").setValue(group.getAvailableSeats()-1).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getBaseContext(),"registered successfully",Toast.LENGTH_SHORT).show();
+                group.setAvailableSeats(group.getAvailableSeats()-1);
+                seats.setText("Available Seats "+group.getAvailableSeats()+"/"+group.getTotalSeats());
+                RegButton.setText("Deregister");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getBaseContext(),"registeration unsuccessfull",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+    public void updateDeregcount(){
+        FireBaseUtilClass.getDatabaseReference().child("Events").child(group.getEventID()).child("availableSeats").setValue(group.getAvailableSeats()+1).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getBaseContext(),"Deregistered successfully",Toast.LENGTH_SHORT).show();
+                group.setAvailableSeats(group.getAvailableSeats()+1);
+                seats.setText("Available Seats "+group.getAvailableSeats()+"/"+group.getTotalSeats());
+                RegButton.setText("Register");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getBaseContext(),"unsuccessfull",Toast.LENGTH_SHORT).show();
+            }
+        });
 
-
+    }
 
 
 

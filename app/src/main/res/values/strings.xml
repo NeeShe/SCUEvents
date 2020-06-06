@@ -36,11 +36,4 @@
         <item>Department</item>
     </string-array>
 
-    <string-array name="Location">
-        <item>Select Location</item>
-        <item>Benson Memorial Hall</item>
-        <item>Locatelli Hall</item>
-        <item>Music Recital Hall</item>
-        <item>Louis B Mayer Theatre</item>
-    </string-array>
 </resources>
