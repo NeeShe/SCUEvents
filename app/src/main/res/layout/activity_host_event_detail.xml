@@ -43,69 +43,24 @@
             android:id="@+id/imageview1"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            android:scaleType="fitXY"
             android:background="@drawable/editextbackground"
+            android:scaleType="fitXY"
+            app:layout_constraintBottom_toTopOf="@id/top2guideline"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/topguideline"
-            app:layout_constraintBottom_toTopOf="@id/top2guideline"
-            />
+            app:layout_constraintTop_toBottomOf="@id/topguideline" />
 
         <ImageButton
             android:id="@+id/imagebutton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:background="@drawable/editextbackground"
             android:onClick="setImage"
             android:src="@drawable/camera"
-            android:background="@drawable/editextbackground"
             app:layout_constraintBottom_toTopOf="@id/top2guideline"
-            app:layout_constraintEnd_toEndOf="@id/imageview1" />
+            app:layout_constraintEnd_toEndOf="@id/imageview1"
+            app:layout_constraintBottom_toBottomOf="@id/imageview1"/>
 
-        <!--        <TextView-->
-        <!--            android:id="@+id/eventtitletv"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:layout_marginTop="8dp"-->
-        <!--            android:text="Event Title:"-->
-        <!--            android:textColor="@color/colorPrimaryDark"-->
-        <!--            android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
-        <!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/imageview1" />-->
-
-
-        <!--        <EditText-->
-        <!--            android:id="@+id/eventTitle"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@drawable/editextbackground"-->
-        <!--            android:ems="10"-->
-        <!--            android:hint="Enter Here"-->
-        <!--            android:inputType="textPersonName"-->
-        <!--            android:paddingStart="10dp"-->
-        <!--            android:paddingTop="10dp"-->
-        <!--            android:paddingEnd="10dp"-->
-        <!--            android:paddingBottom="10dp"-->
-        <!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/eventtitletv" />-->
-
-
-        <!--        <EditText-->
-        <!--            android:id="@+id/eventDescription"-->
-        <!--            android:layout_width="0dp"-->
-        <!--            android:layout_height="wrap_content"-->
-        <!--            android:background="@drawable/editextbackground"-->
-        <!--            android:gravity="start|top"-->
-        <!--            android:hint="Describe!"-->
-        <!--            android:inputType="textMultiLine"-->
-        <!--            android:paddingStart="10dp"-->
-        <!--            android:paddingTop="10dp"-->
-        <!--            android:paddingEnd="10dp"-->
-        <!--            android:paddingBottom="10dp"-->
-        <!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/eventdesctv" />-->
         <TextView
             android:id="@+id/eventTitle"
             android:layout_width="wrap_content"
@@ -119,20 +74,8 @@
             android:textSize="33sp"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-            app:layout_constraintTop_toBottomOf="@id/imageview1" />
-
-        <!--        <EditText-->
-        <!--            android:id="@+id/eventTitle"-->
-        <!--            android:layout_width="373dp"-->
-        <!--            android:layout_height="40dp"-->
-        <!--            android:layout_marginTop="40dp"-->
-        <!--            android:text=""-->
-        <!--            android:textAppearance="@style/TextAppearance.AppCompat.Medium"-->
-        <!--            android:textColor="#000000"-->
-        <!--            app:layout_constraintEnd_toStartOf="@id/rightguideline"-->
-        <!--            app:layout_constraintHorizontal_bias="0.0"-->
-        <!--            app:layout_constraintStart_toEndOf="@id/leftguideline"-->
-        <!--            app:layout_constraintTop_toBottomOf="@id/imageview1" />-->
+            app:layout_constraintTop_toBottomOf="@id/imageview1"
+            app:layout_constraintBottom_toTopOf="@id/eventdesctv"/>
 
         <TextView
             android:id="@+id/eventdesctv"
@@ -140,8 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Description:"
-            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/eventTitle" />
@@ -154,9 +97,9 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:text=""
-            android:textSize="20dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textColor="#000000"
+            android:textSize="20dp"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
@@ -168,8 +111,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Date:"
-            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/eventDescription" />
@@ -193,8 +136,8 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="From"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark" />
 
             <EditText
                 android:id="@+id/startDateInput"
@@ -216,8 +159,8 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Time"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark" />
 
             <EditText
                 android:id="@+id/startTimeInput"
@@ -243,8 +186,8 @@
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
                 android:text="To"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark" />
 
             <EditText
                 android:id="@+id/endDateInput"
@@ -267,8 +210,8 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginBottom="10dp"
                 android:text="Time"
-                android:textColor="@color/colorPrimaryDark"
-                android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/colorPrimaryDark" />
 
             <EditText
                 android:id="@+id/endTimeInput"
@@ -290,8 +233,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Location:"
-            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/relativelayout1" />
@@ -313,8 +256,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Event Category:"
-            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/locationSpinner" />
@@ -336,8 +279,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Department:"
-            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/typeSpinner" />
@@ -369,7 +312,7 @@
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
-          app:layout_constraintTop_toBottomOf="@id/totalSeatInput"/>
+            app:layout_constraintTop_toBottomOf="@id/totalSeatInput" />
 
         <TextView
             android:id="@+id/totSeattv"
@@ -377,8 +320,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Total Seats:"
-            android:textColor="@color/colorPrimaryDark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="@color/colorPrimaryDark"
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/deptSpinner" />
@@ -398,8 +341,6 @@
             app:layout_constraintEnd_toStartOf="@id/rightguideline"
             app:layout_constraintStart_toEndOf="@id/leftguideline"
             app:layout_constraintTop_toBottomOf="@id/totSeattv" />
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
