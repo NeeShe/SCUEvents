@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -84,7 +85,10 @@ public class EventDetailHostActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(EventDetailHostActivity.this,"Error getting registered Users",Toast.LENGTH_LONG).show();
+                //Toast.makeText(EventDetailHostActivity.this,"Error getting registered Users",Toast.LENGTH_LONG).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "Error getting registered Users", Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         });
 //fetching usernames
@@ -242,7 +246,7 @@ public class EventDetailHostActivity extends AppCompatActivity {
                     Log.d(TAG, "onClick: of YES");
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
-                    Toast.makeText(EventDetailHostActivity.this,"Clicked No",Toast.LENGTH_LONG).show();
+                    //Toast.makeText(EventDetailHostActivity.this,"Clicked No",Toast.LENGTH_LONG).show();
                     break;
             }
         }
@@ -274,7 +278,10 @@ public class EventDetailHostActivity extends AppCompatActivity {
                     }
                 });
                 dataSnapshot.getRef().removeValue();
-                Toast.makeText(EventDetailHostActivity.this,"Event deleted Sucessfully",Toast.LENGTH_LONG).show();
+                //Toast.makeText(EventDetailHostActivity.this,"Event deleted Sucessfully",Toast.LENGTH_LONG).show();
+                Snackbar snackbar_success = Snackbar
+                        .make(findViewById(android.R.id.content), "Event deleted Sucessfully", Snackbar.LENGTH_LONG);
+                snackbar_success.show();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
