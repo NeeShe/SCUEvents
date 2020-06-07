@@ -96,7 +96,7 @@ public class PastEventFragment extends Fragment {
                     EventIDNameClass eventIDNameClass = dataSnapshot1.getValue(EventIDNameClass.class);
                     eventIDList.add(eventIDNameClass.getEventID());
                 }
-
+                nDialog.dismiss();
                 setEventAdapter(eventIDList);
 
             }

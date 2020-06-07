@@ -80,10 +80,10 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (!task.isSuccessful()) {
-                    //Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    Snackbar snackbar_success = Snackbar
-                            .make(findViewById(android.R.id.content), task.getException().getMessage(), Snackbar.LENGTH_LONG);
-                    snackbar_success.show();
+                    Toast.makeText(SignUpActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+//                    Snackbar snackbar_success = Snackbar
+//                            .make(findViewById(android.R.id.content), task.getException().getMessage(), Snackbar.LENGTH_LONG);
+//                    snackbar_success.show();
                 } else { //success
                     //verify user
                     verifyEmail();
@@ -101,10 +101,10 @@ public class SignUpActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
 
                         if (task.isSuccessful()) {
-                           // Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
-                            Snackbar snackbar_success = Snackbar
-                                    .make(findViewById(android.R.id.content), "Verification email sent to " + user.getEmail(), Snackbar.LENGTH_LONG);
-                            snackbar_success.show();
+                            Toast.makeText(SignUpActivity.this, "Verification email sent to " + user.getEmail(), Toast.LENGTH_LONG).show();
+//                            Snackbar snackbar_success = Snackbar
+//                                    .make(findViewById(android.R.id.content), "Verification email sent to " + user.getEmail(), Snackbar.LENGTH_LONG);
+//                            snackbar_success.show();
                         } else {
                             //Toast.makeText(SignUpActivity.this,"Failed to send verification email.",Toast.LENGTH_SHORT).show();
                             Snackbar snackbar_fail = Snackbar
