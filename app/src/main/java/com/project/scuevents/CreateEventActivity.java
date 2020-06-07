@@ -31,6 +31,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -397,7 +398,10 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(CreateEventActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(CreateEventActivity.this, "Failed "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                        Snackbar snackbar_fail = Snackbar
+                                .make(findViewById(android.R.id.content), "Failed "+e.getMessage(), Snackbar.LENGTH_LONG);
+                        snackbar_fail.show();
                     }
                 });
     }
@@ -407,14 +411,20 @@ public class CreateEventActivity extends AppCompatActivity implements DatePicker
             @Override
             public void onSuccess(Void aVoid) {
                 progressDialog.dismiss();
-                Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"Published Successfully!",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_success = Snackbar
+                        .make(findViewById(android.R.id.content), "Published Successfully!", Snackbar.LENGTH_LONG);
+                snackbar_success.show();
                 //clearFields();
                 CreateEventActivity.this.finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(CreateEventActivity.this, "Failed to publish"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(CreateEventActivity.this, "Failed to publish"+e.getMessage(), Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "Failed to publish"+e.getMessage(), Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         });
     }

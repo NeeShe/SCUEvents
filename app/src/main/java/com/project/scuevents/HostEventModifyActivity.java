@@ -23,6 +23,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -359,7 +360,10 @@ public class HostEventModifyActivity extends AppCompatActivity implements DatePi
             }
         });
 
-        Toast.makeText(HostEventModifyActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
+        //Toast.makeText(HostEventModifyActivity.this,"Event details saved",Toast.LENGTH_LONG).show();
+        Snackbar snackbar_success = Snackbar
+                .make(findViewById(android.R.id.content), "Event details saved", Snackbar.LENGTH_LONG);
+        snackbar_success.show();
 
     }
     public void update(View view) {
@@ -382,7 +386,11 @@ public class HostEventModifyActivity extends AppCompatActivity implements DatePi
             public void onClick(DialogInterface dialog, int which) {
 //                    finish();
 
-                Toast.makeText(HostEventModifyActivity.this,"Event details not saved",Toast.LENGTH_LONG).show();
+               // Toast.makeText(HostEventModifyActivity.this,"Event details not saved",Toast.LENGTH_LONG).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "Event details not saved", Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
+
             }
         });
 

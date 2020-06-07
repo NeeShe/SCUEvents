@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -67,6 +68,12 @@ public class EventDetailActivity extends AppCompatActivity{
         c.set(Calendar.DATE,c.get(Calendar.DATE));
         startDateCal = c;
         todayTimestamp = startDateCal.getTimeInMillis();
+
+        //last update by pooja
+        if(Long.signum(group.getStartTimestamp()-todayTimestamp) == -1){
+            if(RegButton.getVisibility() != View.INVISIBLE)
+                RegButton.setVisibility(View.INVISIBLE);
+        }
 
         SharedPreferences sh = getSharedPreferences("USER_TOKENS", MODE_PRIVATE);
         final String userId = sh.getString("USER_ID", "");
@@ -145,7 +152,10 @@ public class EventDetailActivity extends AppCompatActivity{
             } else if (RegButton.getText() == "Deregister") {
                 deregisterUsers(view);
             } else {
-                Toast.makeText(getBaseContext(), "System not responding", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(), "System not responding", Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "System not responding", Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         }
         else{
@@ -154,11 +164,15 @@ public class EventDetailActivity extends AppCompatActivity{
                     deregisterUsers(view);
                 }
                 else {
-                    Toast.makeText(getBaseContext(), "No seats available", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getBaseContext(), "No seats available", Toast.LENGTH_SHORT).show();
+                    Snackbar snackbar_fail = Snackbar
+                            .make(findViewById(android.R.id.content), "No seats available", Snackbar.LENGTH_LONG);
+                    snackbar_fail.show();
                 }
             }
-            else
-                Toast.makeText(getBaseContext(), "Event registration expired", Toast.LENGTH_SHORT).show();
+
+            /*else
+                Toast.makeText(getBaseContext(), "Event registration expired", Toast.LENGTH_SHORT).show();*/
         }
     }
 
@@ -194,7 +208,10 @@ public class EventDetailActivity extends AppCompatActivity{
             }
         });
 
-        Toast.makeText(getBaseContext(),"Deregistered Successfully",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getBaseContext(),"Deregistered Successfully",Toast.LENGTH_SHORT).show();
+        Snackbar snackbar_success = Snackbar
+                .make(findViewById(android.R.id.content), "Deregistered Successfully", Snackbar.LENGTH_LONG);
+        snackbar_success.show();
         //RegButton.setText("Register");
     }
 
@@ -218,7 +235,10 @@ public class EventDetailActivity extends AppCompatActivity{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getBaseContext(),"registeration unsuccessfull",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getBaseContext(),"registeration unsuccessfull",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "registeration unsuccessfull", Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         });
     }
@@ -227,7 +247,10 @@ public class EventDetailActivity extends AppCompatActivity{
         FireBaseUtilClass.getDatabaseReference().child("Events").child(group.getEventID()).child("availableSeats").setValue(group.getAvailableSeats()-1).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getBaseContext(),"registered successfully",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"registered successfully",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_success = Snackbar
+                        .make(findViewById(android.R.id.content), "registered successfully", Snackbar.LENGTH_LONG);
+                snackbar_success.show();
                 group.setAvailableSeats(group.getAvailableSeats()-1);
                 seats.setText("Available Seats "+group.getAvailableSeats()+"/"+group.getTotalSeats());
                 RegButton.setText("Deregister");
@@ -235,7 +258,10 @@ public class EventDetailActivity extends AppCompatActivity{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getBaseContext(),"registeration unsuccessfull",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"registeration unsuccessfull",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "registeration unsuccessfull", Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         });
     }
@@ -243,7 +269,10 @@ public class EventDetailActivity extends AppCompatActivity{
         FireBaseUtilClass.getDatabaseReference().child("Events").child(group.getEventID()).child("availableSeats").setValue(group.getAvailableSeats()+1).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(getBaseContext(),"Deregistered successfully",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"Deregistered successfully",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_success = Snackbar
+                        .make(findViewById(android.R.id.content), "Deregistered successfully", Snackbar.LENGTH_LONG);
+                snackbar_success.show();
                 group.setAvailableSeats(group.getAvailableSeats()+1);
                 seats.setText("Available Seats "+group.getAvailableSeats()+"/"+group.getTotalSeats());
                 RegButton.setText("Register");
@@ -251,7 +280,10 @@ public class EventDetailActivity extends AppCompatActivity{
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getBaseContext(),"unsuccessfull",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getBaseContext(),"unsuccessfull",Toast.LENGTH_SHORT).show();
+                Snackbar snackbar_fail = Snackbar
+                        .make(findViewById(android.R.id.content), "deregistration unsuccessfull", Snackbar.LENGTH_LONG);
+                snackbar_fail.show();
             }
         });
 
